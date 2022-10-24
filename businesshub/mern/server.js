@@ -13,9 +13,9 @@ app.use(express.json())
 
 app.use(express.urlencoded(false))
 
-app.use('/api/logins', require('./routes/loginRoutes'))
+app.use('/api/Users', require('./routes/userRoutes'))
 
-app.get('/api/logins', (req, res) =>{
+app.get('/api/Users', (req, res) =>{
     res.json({message: 'Hamburger'})
 })
 
