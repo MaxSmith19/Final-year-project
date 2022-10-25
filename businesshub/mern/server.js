@@ -15,8 +15,5 @@ app.use(express.urlencoded(false))
 
 app.use('/api/Users', require('./routes/userRoutes'))
 
-app.get('/api/Users', (req, res) =>{
-    res.json({message: 'Hamburger'})
-})
 
 app.listen(port,()=>console.log(`Server started on port ${port}`))

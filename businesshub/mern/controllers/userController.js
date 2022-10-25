@@ -7,15 +7,33 @@ const getUser = asyncHandler(async (req, res) => {
     res.status(200).json(Users)
   })
 
-const setUser = asyncHandler(async(req, res) =>{
-    console.log(req.body)
-    if(!req.body.text){
-        res.status(400)
-        throw new Error("Please add text")
-    }
 
+//LOGS USER INTO SYSTEM, CHECKING DATA FROM MONGO
+const loginUser = asyncHandler(async(req,res) =>{
+    const {email} = req.body
+    const user= await User.findOne({email});
+
+    if(!user){
+        res.status(404).json("User not found")
+        throw new Error("not found")
+    }
+    // console.log(req.body.password)
+    // console.log(user.password)
+    if(req.body.password==user.password){
+        res.status(200).json(`${user.email} Logged into system `)
+    }else{
+        res.status(204).json("Password not correct")
+        throw new Error("Wrong password")
+    }
+})
+
+//REGISTERS USER, ADDS DATA INTO MONGO
+const registerUser = asyncHandler(async(req, res) =>{
+    //TODO hashing passwords
     const Users = await User.create({
-        text: req.body.text,
+        username:req.body.username,
+        password:req.body.password,
+        email:req.body.email
     })
 
     res.status(200).json(Users)
@@ -49,7 +67,8 @@ const deleteUser = asyncHandler(async(req, res) =>{
 
 module.exports ={
     getUser,
-    setUser,
+    loginUser,
+    registerUser,
     updateUser,
     deleteUser
 }
