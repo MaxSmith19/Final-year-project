@@ -11,8 +11,6 @@ const getUser = asyncHandler(async (req, res) => {
 //LOGS USER INTO SYSTEM, CHECKING DATA FROM MONGO
 const loginUser = asyncHandler(async(req,res) =>{
     const {email} = req.body
-    const user= await User.findOne({email});
-
     if(!user){
         res.status(404).json("User not found")
         throw new Error("not found")
@@ -30,12 +28,17 @@ const loginUser = asyncHandler(async(req,res) =>{
 //REGISTERS USER, ADDS DATA INTO MONGO
 const registerUser = asyncHandler(async(req, res) =>{
     //TODO hashing passwords
+    
+    if(User.exists({email:req.body.email})){
+        res.status(302)
+        throw new Error("User already exists")
+    }
     const Users = await User.create({
         username:req.body.username,
         password:req.body.password,
         email:req.body.email
     })
-
+    
     res.status(200).json(Users)
 })
 
