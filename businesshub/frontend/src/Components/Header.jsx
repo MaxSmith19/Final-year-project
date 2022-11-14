@@ -1,27 +1,26 @@
-import React from 'react'
+import React, {Component} from 'react'
+import { render } from 'react-dom'
 import {Link} from 'react-router-dom'
-import {FaSignInAlt}from 'react-icons/fa'
+import {VscThreeBars}from 'react-icons/vsc'
+import {useState} from 'react'
 
-function Header() {
-  return (
-    <header >
-        <div ><h1 className="text-3xl">Logo</h1></div>
+var {navOpen,navClosed} = useState;
+
+export default class Header extends Component {
+  render() {
+    return (
+    <header className="border border-b-2 mb-24 bg-white">
         <div className='flex flex-row-reverse'>
-            <ul className='flex flex-row-reverse float-right mt-5'>
-                <li className="flex-initial w-32">
-                    <Link to='/Register'>
-                        <FaSignInAlt />Register
-                    </Link>
-                </li>
-                <li className="flex-none w-32">
-                    <Link to='/Login'>
-                        <FaSignInAlt />Login
+            <div className='grow'><h1 className='text-5xl mr-5 mt-2 float-right'>Logo</h1></div> {/*TODO Come up with name & Create LOGO*/}
+            <ul className='grid grid-cols-2 grid-rows-1 gap-5 m-5'>
+                <li className="w-24">
+                    <Link className="" to='/Register'>
+                        <span onClick={navOpen=true}><VscThreeBars size={32}/></span>
                     </Link>
                 </li>
             </ul>
         </div>
     </header>
-  )
+    )
+    }
 }
-
-export default Header

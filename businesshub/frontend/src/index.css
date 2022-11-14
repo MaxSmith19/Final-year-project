@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities
+@tailwind utilities;
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+html{
+    background-color: lightgray;
+}

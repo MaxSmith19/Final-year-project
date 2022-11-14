@@ -7,12 +7,14 @@ function App() {
   return (
     <>
     <Router>
-      <div className='container '>
+      <div className=''>
         <Header />
+        <div className="container">
         <Routes>
           <Route path='/Login' element={<Login />} /> 
           <Route path='/Register' element={<Registration/>} />
         </Routes>
+        </div>
       </div>
     </Router>
     </>
