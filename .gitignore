@@ -256,3 +256,6 @@ google-services.json
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/reactnative
+businesshub/frontend/node_modules/.cache/.eslintcache
+businesshub/frontend/node_modules/.cache/default-development/0.pack
+Documentation/
