@@ -1,26 +1,31 @@
 import React, {Component} from 'react'
 import { render } from 'react-dom'
 import {Link} from 'react-router-dom'
-import {VscThreeBars}from 'react-icons/vsc'
+import {VscThreeBars, VscChevronRight, VscChevronLeft}from 'react-icons/vsc'
 import {useState} from 'react'
 
-var {navOpen,navClosed} = useState;
+const Nav = () => {
+    var [isNavOpen,setNav] = useState(false);
 
-export default class Header extends Component {
-  render() {
+
     return (
-    <header className="border border-b-2 mb-24 bg-white">
-        <div className='flex flex-row-reverse'>
+    <>
+        <div className="border bg-white">
             <div className='grow'><h1 className='text-5xl mr-5 mt-2 float-right'>Logo</h1></div> {/*TODO Come up with name & Create LOGO*/}
-            <ul className='grid grid-cols-2 grid-rows-1 gap-5 m-5'>
-                <li className="w-24">
-                    <Link className="" to='/Register'>
-                        <span onClick={navOpen=true}><VscThreeBars size={32}/></span>
-                    </Link>
-                </li>
-            </ul>
+            <div className='grid grid-cols-2 grid-rows-1 gap-5 m-5'>
+                <div className="w-24">
+                    <button className={isNavOpen? "w-0 h-0" :"transition -rotate-180 duration-300"} onClick={()=>setNav(true)}> <VscThreeBars size={isNavOpen? "0":"32"}/></button>
+                    <button className={isNavOpen? "transition -rotate-180 duration-300" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft size={isNavOpen? "32":"0"} /></button>
+                </div>
+            </div>
+        </div> 
+        <div className={isNavOpen ? "transition ease-in-out delay-150 bg-slate-300 duration-300 w-64 border border-white h-screen absolute block" : "invisible"}>
+                <ul className="ml-5 text-left mt-4">
+                    <Link to="/Register">Register</Link>
+                </ul>
         </div>
-    </header>
+    </>
     )
-    }
 }
+
+export default Nav

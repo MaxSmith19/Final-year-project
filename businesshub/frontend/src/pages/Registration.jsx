@@ -57,7 +57,7 @@ export default class Registration extends Component {
 
   render() {
     return(
-      <div class="w-full max-w-lg">
+      <div class="w-full max-w-lg mt-12">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={this.onSubmit}>
       <h1 class="block text-gray-700 text-sm font-bold mb-2">Register an account</h1>
         <div class="mb-4">

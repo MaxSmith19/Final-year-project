@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes bodyAnimation {
+    0%   {background-color:red; left:0px; top:0px;}
+    25%  {background-color:yellow; left:200px; top:0px;}
+    50%  {background-color:blue; left:200px; top:200px;}
+    75%  {background-color:green; left:0px; top:200px;}
+    100% {background-color:red; left:0px; top:0px;}
+}
+
 .container {
     display: flex;
     justify-content: center;
@@ -9,4 +17,22 @@
 }
 html{
     background-color: lightgray;
+
+}
+.bodyAnimationObject{
+    bottom: 0px;
+    width: 20px;
+    height: 20px;
+    background-color: lightslategray;
+    border-radius: 50%;
+    animation-name: bodyAnimation;
+    animation-duration: 4s;
+}
+.navbarCollapse {
+    background-color: red;
+    transition: height 2s ease;
+    overflow: hidden;
+}
+.navbar-show{
+    height: 100vh;
 }

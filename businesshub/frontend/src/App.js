@@ -2,12 +2,13 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Header from './Components/Header';
+import Footer from "./Components/Footer";
 
 function App() {
   return (
     <>
     <Router>
-      <div className=''>
+      <div className='m-auto'>
         <Header />
         <div className="container">
         <Routes>
@@ -16,6 +17,7 @@ function App() {
         </Routes>
         </div>
       </div>
+    <Footer />
     </Router>
     </>
     );
