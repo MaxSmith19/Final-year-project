@@ -14,6 +14,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    top: 30%;
+    left: 10%;
+    width: 100%;
 }
 html{
     background-color: lightgray;
@@ -36,3 +40,31 @@ html{
 .navbar-show{
     height: 100vh;
 }
+.overlay {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: rgb(255, 0, 0); 
+    background-color: rgba(0, 0, 0, 0.9);
+    overflow-x: hidden; 
+    transition: 0.5s;
+}
+
+.overlay-content {
+    position: relative;
+    top: 10%; /* 25% from the top */
+    width: 100%;
+    text-align: center;
+    margin-top: 30px; 
+}
+.overlay a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: block; /* Display block instead of inline */
+    transition: 0.3s; /* Transition effects on hover (color) */
+  }

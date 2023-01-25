@@ -8,7 +8,6 @@ function App() {
   return (
     <>
     <Router>
-      <div className='m-auto'>
         <Header />
         <div className="container">
         <Routes>
@@ -16,7 +15,6 @@ function App() {
           <Route path='/Register' element={<Registration/>} />
         </Routes>
         </div>
-      </div>
     <Footer />
     </Router>
     </>
