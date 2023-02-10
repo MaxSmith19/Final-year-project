@@ -22,8 +22,10 @@ const Nav = () => {
         <div className={isNavOpen? "overlay":"h-0"}>
         <button className={isNavOpen? "transition -rotate-180 duration-300 text-white" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft size={isNavOpen? "70":"0"} /></button>
 
-                <div className='overlay-content'> 
+                <div className={isNavOpen? "overlay-content":"hidden"}> 
                     <a><Link to="/Register">Register</Link></a>
+                    <a><Link to="/Login">Login</Link></a>
+
                 </div>
             </div>
     </>

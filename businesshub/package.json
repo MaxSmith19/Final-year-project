@@ -21,7 +21,8 @@
   "scripts": {
     "start": "node mern/server.js",
     "server": "nodemon mern/server.js",
-    "client": "npm start --prefix frontend"
+    "client": "npm start --prefix frontend",
+    "app": "concurrently \"npm run server\" \"npm run client\""
   },
   "eslintConfig": {
     "extends": [
