@@ -1,12 +1,9 @@
-import react, {Component} from 'react'
-
-import {useState, onSubmit} from 'react'
+import React, { Component } from 'react'
 import axios from "axios"
 
 export default class Registration extends Component {
   constructor(props){
     super(props);
-
 
     this.state = {
       username: '',
@@ -19,7 +16,7 @@ export default class Registration extends Component {
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
-
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onChangeUsername(e){
@@ -38,17 +35,16 @@ export default class Registration extends Component {
     })
   }
   onChangeConfirmPassword(e){
-    this.setState({
+    this.setState({ 
       confirmPassword: e.target.value
     })
   }
 
   onSubmit(e){
     e.preventDefault();
-    
     const newUser ={
       username: this.state.username,
-      email: this.state.email,
+      email: this.state.email, 
       password: this.state.password,
       confirmPassword: this.state.confirmPassword
     }
