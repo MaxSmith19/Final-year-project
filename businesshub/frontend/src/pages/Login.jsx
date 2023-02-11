@@ -32,12 +32,11 @@ export default class Registration extends Component {
 
   onSubmit(e){
     e.preventDefault();
-
+    //TODO IF NULL
     const data =  qs.stringify({
       'email': this.state.email,
       'password': this.state.password
     })
-
     var config = {
       method: 'post',
       url: 'http://localhost:5000/api/Users/login/',
@@ -59,7 +58,7 @@ export default class Registration extends Component {
 
   render() {
     return(
-      <div class="max-w-lg mt-12">
+      <div class="max-w-lg mt-12 form-width form-length">
       <h1 class="block text-gray-700 font-bold text-center text-5xl mb-10">Login</h1>
 
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full p-20" onSubmit={this.onSubmit}>
