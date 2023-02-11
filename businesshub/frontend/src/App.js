@@ -9,7 +9,7 @@ function App() {
     <>
     <Router>
         <Header />
-        <div className="justify-center grid">
+        <div className="justify-center flex ">
         <Routes>
           <Route path='/Login' element={<Login />} /> 
           <Route path='/Register' element={<Registration/>} />

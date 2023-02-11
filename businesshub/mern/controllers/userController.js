@@ -16,7 +16,7 @@ const loginUser = asyncHandler(async(req,res) =>{
 
     if(!user){
         res.status(404).json("User not found")
-        throw new Error("not found")
+        throw new Error("User not found")
     }
 
     if(req.body.password==user.password){

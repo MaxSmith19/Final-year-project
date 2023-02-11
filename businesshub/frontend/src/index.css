@@ -17,6 +17,9 @@
     left: 10%;
     width: 100%;
 }
+.form-width{
+    width: 40em;
+}
 html{
     background-color: lightgray;
 
