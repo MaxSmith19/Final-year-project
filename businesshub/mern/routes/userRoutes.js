@@ -9,7 +9,7 @@ const {
     } = require('../controllers/UserController')
 
 router.route('/').get(getUser).post(registerUser)
-router.route('/login/').get(loginUser);
+router.route('/login/').post(loginUser);
 router.route('/:id').put(updateUser).delete(deleteUser)
 
 

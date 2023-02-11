@@ -39,7 +39,7 @@ export default class Registration extends Component {
     })
 
     var config = {
-      method: 'get',
+      method: 'post',
       url: 'http://localhost:5000/api/Users/login/',
       headers: { 
         'Content-Type': 'application/x-www-form-urlencoded',
