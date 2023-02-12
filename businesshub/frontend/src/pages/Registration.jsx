@@ -12,7 +12,8 @@ export default class Registration extends Component {
       username: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      errorMessage: ''
     }
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
@@ -20,6 +21,8 @@ export default class Registration extends Component {
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  
+
   }
 
   onChangeUsername(e){
@@ -38,13 +41,16 @@ export default class Registration extends Component {
     })
   }
   onChangeConfirmPassword(e){
-    this.setState({ 
+    this.setState({
       confirmPassword: e.target.value
     })
+
   }
 
   onSubmit(e){
     e.preventDefault();
+    const dataArray = [this.state.email,this.state.username,this.state.password,this.state.confirmPassword]
+    let nullFlag = false
     const data =  qs.stringify({
       'email': this.state.email,
       'username': this.state.username,
@@ -52,22 +58,32 @@ export default class Registration extends Component {
       'confirmPassword': this.state.confirmPassword
     })
 
-    var config = {
-      method: 'post',
-      url: 'http://localhost:5000/api/Users/',
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      data : data
-    };
     
-    axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
+    dataArray.forEach(function(item){
+      if(item===""){
+        nullFlag=true
+        console.log("item is empty")
+      }
     });
+
+    if(nullFlag===false){
+      var config = {
+        method: 'post',
+        url: 'http://localhost:5000/api/Users/',
+        headers: { 
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        data : data
+      };
+      
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
   }
 
   render() {
@@ -99,6 +115,9 @@ export default class Registration extends Component {
             Confirm password
           </label>
           <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3" type="password" onChange={this.onChangeConfirmPassword} value={this.state.confirmPassword}/>
+        </div>
+        <div>
+          <h1 className="mb-5">{this.state.errorMessage}</h1>
         </div>
         <div>
           <h1 className="mb-5">Already have an account? Login here <Link className="text-blue-600"to="/Register">here</Link></h1>
