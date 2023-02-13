@@ -15,14 +15,14 @@ const loginUser = asyncHandler(async(req,res) =>{
 
 
     if(!user){
-        res.status(404).json("User not found")
+        res.status(401).json("User not found")
         throw new Error("User not found")
     }
 
     if(req.body.password==user.password){
-        res.status(200).json(`${user.email} Logged into system `)
+        res.status(200).json(`${user._id}`)
     }else{
-        res.status(204).json("Password not correct")
+        res.status(401).json("Password not correct")
         throw new Error("Wrong password")
     }
 })

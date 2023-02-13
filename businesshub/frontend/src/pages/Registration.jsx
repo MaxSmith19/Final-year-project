@@ -83,6 +83,7 @@ export default class Registration extends Component {
       .catch(function (error) {
         console.log(error);
       });
+      
     }
   }
 
@@ -120,7 +121,7 @@ export default class Registration extends Component {
           <h1 className="mb-5">{this.state.errorMessage}</h1>
         </div>
         <div>
-          <h1 className="mb-5">Already have an account? Login here <Link className="text-blue-600"to="/Register">here</Link></h1>
+          <h1 className="mb-5">Already have an account? Login <Link className="text-blue-600"to="/Login">here</Link></h1>
         </div>
         <div class="flex items-center justify-between">
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded " type="submit">

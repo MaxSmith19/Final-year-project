@@ -11,11 +11,11 @@ export default class Registration extends Component {
     this.state = {
       email: '',
       password: '',
+      errorMessage: ''
     }
 
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -31,6 +31,7 @@ export default class Registration extends Component {
   }
 
   onSubmit(e){
+    let response=""
     e.preventDefault();
     //TODO IF NULL
     const data =  qs.stringify({
@@ -49,11 +50,17 @@ export default class Registration extends Component {
     axios(config)
     .then(function (response) {
       console.log(JSON.stringify(response.data));
+      if(response.status===200){
+        localStorage.setItem("ID",response.data)
+        //TODO remember me?
+      }
     })
     .catch(function (error) {
-      console.log(error);
+      console.log(error.response.data);
+      if(error.response.status===401){
+        //TODO error message
+      }
     });
-
   }
 
   render() {
@@ -81,6 +88,9 @@ export default class Registration extends Component {
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded " type="submit">
             Sign In
           </button>
+          <div>
+          <h1 className="mb-5">{this.errorMessage}</h1>
+        </div>
         </div>
       </form>
       </div>
