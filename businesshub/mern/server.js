@@ -21,6 +21,8 @@ app.use(cors())
 
 app.use('/api/Users', require('./routes/userRoutes'))
 app.use('/api/Admin', require('./routes/adminRoutes'))
+app.use('/api/Accounts', require('./routes/accountRoutes'))
+
 
 
 app.listen(port,()=>console.log(`Server started on port ${port}`))

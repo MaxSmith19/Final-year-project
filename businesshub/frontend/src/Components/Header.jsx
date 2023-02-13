@@ -26,6 +26,8 @@ const Nav = () => {
                 <div className={isNavOpen? "overlay-content":"hidden"}> 
                     <a onClick={()=>setNav(false)}><Link to="/Register">Register</Link></a>
                     <a onClick={()=>setNav(false)}><Link to="/Login">Login</Link></a>
+                    <a onClick={()=>setNav(false)}><Link to="/Accounts">Accounts</Link></a>
+
 
                 </div>
             </div>
