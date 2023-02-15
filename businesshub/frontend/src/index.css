@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @keyframes bodyAnimation {
-   from {transform : translateY(0em)}
-   to {transform: translateY(100em);}
+   from {top: 0px}
+   to {top: 1000px}
 }
 
 .container {
@@ -21,26 +21,22 @@
     height: 50em;
 }
 html{
-    background-color: lightgray;
+    background-color: #53cbfb;
 
 }
 .bodyAnimationObject{
-    bottom: 0px;
-    width: 20px;
+    position: absolute;
+    top: 0px;
     height: 20px;
+    width: 20px;
     background-color: lightslategray;
     border-radius: 50%;
     animation-name: bodyAnimation;
-    animation-duration: infinite;
+    animation-duration: 10s;
+    text-align: center;
+    z-index: -1;
 }
-.navbarCollapse {
-    background-color: red;
-    transition: height 2s ease;
-    overflow: hidden;
-}
-.navbar-show{
-    height: 100vh;
-}
+
 .overlay {
     height: 100%;
     width: 100%;
@@ -69,3 +65,6 @@ html{
     display: block; /* Display block instead of inline */
     transition: 0.3s; /* Transition effects on hover (color) */
   }
+.overlay-content a:hover{
+    color: orange;
+}

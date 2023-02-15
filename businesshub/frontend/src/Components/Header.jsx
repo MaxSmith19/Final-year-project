@@ -6,13 +6,15 @@ import {useState} from 'react'
 
 const Nav = () => {
     var [isNavOpen,setNav] = useState(false);
-    
-
-
+    var [isLoggedIn,setIsLoggedIn] = useState(false);
+    if(localStorage.getItem("ID")!==null){
+        isLoggedIn=true; //NEEDS CHANGING ONCE LOCALSTORAGE CHANGED
+    }
     return (
     <>
-        <div className="border bg-white h-20">
-            <div className='grow'><h1 className='text-5xl mr-5 mt-2 float-right'>WorkFlock</h1></div> {/*TODO Come up with name & Create LOGO*/}
+    <div className={isLoggedIn? "":"hidden "}>
+            <div className="border bg-white ">
+            <div className='grow'><h1 className='text-5xl mr-5 mt-2 float-right'>Logo</h1></div> {/*TODO Come up with name & Create LOGO*/}
             <div className='grid grid-cols-2 grid-rows-1 gap-5 m-5'>
                 <div className="w-24">
                     <button className={isNavOpen? "w-0 h-0" :"transition -rotate-180 duration-300"} onClick={()=>setNav(true)}> <VscThreeBars size={isNavOpen? "0":"50"}/></button>
@@ -28,6 +30,7 @@ const Nav = () => {
                     <a onClick={()=>setNav(false)}><Link to="/Login">Login</Link></a>
 
                 </div>
+            </div>
             </div>
     </>
     )
