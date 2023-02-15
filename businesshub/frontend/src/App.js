@@ -16,6 +16,7 @@ function App() {
   }
   return (
     <>
+
     <Router>
       <div></div>
         <Header />
@@ -23,18 +24,16 @@ function App() {
         <Routes>
           <Route path='/Login' element={<Login />} /> 
           <Route path='/Register' element={<Registration/>} />
-          <Route path="/" exact element={<Navigate replace to="/Login" />} />
+          <Route path="/" exact element={<Navigate replace to="/Login" />} /> 
         </Routes>
         </div>
     {/* <Footer /> */}
     </Router>
-    <li className="bodyAnimationObject"></li>
-    <li className="bodyAnimationObject"></li> {/*DO ANIMATIONS */}
-    <li className="bodyAnimationObject"></li>
-    <li className="bodyAnimationObject"></li>
-    <li className="bodyAnimationObject"></li>
+
+    
     </>
     );
 }
+
 
 export default App;
