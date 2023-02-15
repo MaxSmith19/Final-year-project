@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @keyframes bodyAnimation {
-   from {top: 0px}
-   to {top: 1000px}
+   from {top: 0}
+   to {top: 10000px;}
 }
 
 .container {
@@ -24,17 +24,17 @@ html{
     background-color: #53cbfb;
 
 }
-.bodyAnimationObject{
-    position: absolute;
-    top: 0px;
-    height: 20px;
-    width: 20px;
-    background-color: lightslategray;
-    border-radius: 50%;
-    animation-name: bodyAnimation;
-    animation-duration: 10s;
+.bodyAnimationContainer{
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-gap: 8rem;
+
+}
+.bodyAnimationContainer li{
     text-align: center;
     z-index: -1;
+    animation: bodyAnimation 10s linear infinite;
+
 }
 
 .overlay {
