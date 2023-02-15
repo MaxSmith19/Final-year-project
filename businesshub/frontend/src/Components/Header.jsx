@@ -25,7 +25,7 @@ const Nav = () => {
         <button className={isNavOpen? "transition -rotate-180 duration-300 text-white" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="m-5"size={isNavOpen? "50":"0"} /></button>
 
                 <div className={isNavOpen? "overlay-content":"hidden"}> 
-                    <a onClick={()=>setNav(false)}><Link to="/Accounts">Accounts</Link></a>
+                    <a onClick={()=>setNav(false)}><Link to="/accounts">Accounts</Link></a>
 
 
                 </div>

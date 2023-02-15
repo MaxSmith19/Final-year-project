@@ -2,6 +2,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Header from './Components/Header';
+import Accounts from './pages/accounts';
 import { Navigate } from 'react-router-dom';
 import Footer from "./Components/Footer";
 import { useState } from 'react';
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path='/Login' element={<Login />} /> 
           <Route path='/Register' element={<Registration/>} />
+          <Route path='/Accounts' element={<Accounts/>} />
           <Route path="/" exact element={<Navigate replace to="/Login" />} /> 
         </Routes>
         </div>
