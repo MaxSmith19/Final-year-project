@@ -6,12 +6,15 @@ import {useState} from 'react'
 
 var {navOpen,navClosed} = useState;
 
-export default class Footer extends Component {
-  render() {
-    return (
-    <div className="border border-b-2 bg-black">
-        <div className='flex flex-row-reverse'></div>
-    </div>
-    )
-    }
-}
+
+const Footer = () => {
+  return (
+    <footer className="bg-gray-800 px-4 py-8">
+      <div className="container mx-auto">
+        
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

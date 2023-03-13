@@ -15,17 +15,17 @@ const Nav = () => {
     <div className={isLoggedIn? "":"hidden "}>
             <div className="border bg-white h-20">
             <div className='grid grid-cols-3 grid-rows-1 gap-5'>
-            <div className="m-3">
+            <div className="mt-5 ml-3">
                     <button className={isNavOpen? "w-0 h-0" :"transition -rotate-180 duration-300"} onClick={()=>setNav(true)}> <VscThreeBars size={isNavOpen? "0":"50"}/></button>
                 </div>
             <h1 className='m-3 text-5xl text-center'>Logo</h1>
-            <div className="m-3">
-                    <a className="float-right" onClick={()=>setIsAccountOpen(!isAccountOpen)} > <VscAccount size="50"/></a>
-                        <div className={isAccountOpen? 'block float-right text-right mt-16 w-56':'hidden'}>
-                            <a href="#" class="block py-2 text-sm bg-gray-400 hover:bg-gray-700 hover:text-white">Account information</a>
-                            <a href="#" class="block py-2 text-sm bg-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
-                            <a href="#" class="block py-2 text-sm bg-gray-400 hover:bg-gray-700 hover:text-white"onClick={()=>{localStorage.removeItem("ID")}}>Log out</a>
-                        </div>
+            <div className="mt-3 relative">
+                    <a className="float-right bg-white mr-3 mt-3" onClick={()=>setIsAccountOpen(!isAccountOpen)} > <VscAccount size="50"/></a>
+                    <div className={isAccountOpen? 'absolute top-0 right-0 float-right text-right mt-16 w-4/12 border-gray-500 shadow-xl p-1 bg-white ':'hidden'}>
+                        <a href="#" className="block text-xl bg-white border shadow-xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md">Account information</a>
+                        <a href="#" className="block text-xl bg-white border shadow-xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md">Settings</a>
+                        <a href="#" className="block text-xl bg-white border shadow-xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md">Log out</a>
+                    </div>
                 </div>
             </div>
         </div>

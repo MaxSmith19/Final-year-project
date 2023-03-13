@@ -29,7 +29,7 @@ function App() {
           <Route path="/" exact element={<Navigate replace to="/Login" />} /> 
         </Routes>
         </div>
-    {/* <Footer /> */}
+    <Footer />
     </Router>
 
     
