@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {VscThreeBars, VscChevronRight, VscChevronLeft}from 'react-icons/vsc'
+import {VscThreeBars, VscChevronRight, VscChevronLeft, VscAccount}from 'react-icons/vsc'
 import {useState} from 'react'
 
 const Nav = () => {
@@ -13,10 +13,18 @@ const Nav = () => {
     <>
     <div className={isLoggedIn? "":"hidden "}>
             <div className="border bg-white h-20">
-            <div className='grow'><h1 className='text-5xl mr-5 mt-2 float-right'>Logo</h1></div> {/*TODO Come up with name & Create LOGO*/}
-            <div className='grid grid-cols-2 grid-rows-1 gap-5 m-5'>
-                <div className="w-24">
+            <div className='grid grid-cols-3 grid-rows-1 gap-5'>
+            <div className="m-3">
                     <button className={isNavOpen? "w-0 h-0" :"transition -rotate-180 duration-300"} onClick={()=>setNav(true)}> <VscThreeBars size={isNavOpen? "0":"50"}/></button>
+                </div>
+            <h1 className='m-3 text-5xl text-center'>Logo</h1>
+            <div className="m-3">
+                    <button className="float-right"> <VscAccount size="50"/></button>
+                    <div className='btnAccount-options'>
+                        <a href='#'>Account information</a>
+                        <a href='#'>Settings</a>
+                        <a href='#'>Log out</a>
+                    </div>
                 </div>
             </div>
         </div>
