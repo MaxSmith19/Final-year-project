@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler")
-
+const bcrypt = require("bcrypt")
 const User = require("../models/UserModel")
 
 const getUser = asyncHandler(async (req, res) => {
@@ -19,7 +19,7 @@ const loginUser = asyncHandler(async(req,res) =>{
         throw new Error("User not found")
     }
 
-    if(req.body.password==user.password){
+    if(await(bcrypt.compare(req.body.password, user.password))){
         res.status(200).json(`${user._id}`)
     }else{
         res.status(401).json("Password not correct")
@@ -29,7 +29,6 @@ const loginUser = asyncHandler(async(req,res) =>{
 
 //REGISTERS USER, ADDS DATA INTO MONGO
 const registerUser = asyncHandler(async(req, res) =>{
-    //TODO hashing passwords
     const email = req.body.email
 
     const userExists = await User.findOne({email})
@@ -37,9 +36,11 @@ const registerUser = asyncHandler(async(req, res) =>{
         res.status(400).json("User already exists")
         throw new Error("User already exists")
     }
+    const hashedPassword= await bcrypt.hash(req.body.password,10)
+    
     const users = await User.create({
         username:req.body.username,
-        password:req.body.password,
+        password: hashedPassword,
         email:req.body.email
     })
     
