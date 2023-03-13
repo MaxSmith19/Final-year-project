@@ -32,17 +32,22 @@ const loginUser = asyncHandler(async(req,res) =>{
 const registerUser = asyncHandler(async(req, res) =>{
     const email = req.body.email
     const userExists = await User.findOne({email})
+    console.log(validEmail.test(req.body.email))
     if(userExists){
         res.status(400).json("User already exists")
         throw new Error("User already exists")
     }
-    const hashedPassword= await bcrypt.hash(req.body.password,10)
     if(validEmail.test(req.body.email)){
         throw new Error("email does not meet requirements!")
     }
-    if(validPassword.test(req.body.password)){
+    if(!validPassword.test(req.body.password)){
         throw new Error("Password does not meet requirements!")
     }
+
+    const hashedPassword= await bcrypt.hash(req.body.password,10)
+
+
+    
     const users = await User.create({
         username:req.body.username,
         password: hashedPassword,

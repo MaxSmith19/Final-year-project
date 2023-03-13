@@ -6,6 +6,7 @@ import {useState} from 'react'
 const Nav = () => {
     var [isNavOpen,setNav] = useState(false);
     var [isLoggedIn,setIsLoggedIn] = useState(false);
+    var [isAccountOpen,setIsAccountOpen] = useState(true);
     if(localStorage.getItem("ID")!==null){
         isLoggedIn=true; //NEEDS CHANGING ONCE LOCALSTORAGE CHANGED
     }
@@ -19,12 +20,12 @@ const Nav = () => {
                 </div>
             <h1 className='m-3 text-5xl text-center'>Logo</h1>
             <div className="m-3">
-                    <button className="float-right"> <VscAccount size="50"/></button>
-                    <div className='btnAccount-options'>
-                        <a href='#'>Account information</a>
-                        <a href='#'>Settings</a>
-                        <a href='#'>Log out</a>
-                    </div>
+                    <a className="float-right" onClick={()=>setIsAccountOpen(!isAccountOpen)} > <VscAccount size="50"/></a>
+                        <div className={isAccountOpen? 'block float-right text-right mt-16 w-56':'hidden'}>
+                            <a href="#" class="block py-2 text-sm bg-gray-400 hover:bg-gray-700 hover:text-white">Account information</a>
+                            <a href="#" class="block py-2 text-sm bg-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
+                            <a href="#" class="block py-2 text-sm bg-gray-400 hover:bg-gray-700 hover:text-white"onClick={()=>{localStorage.removeItem("ID")}}>Log out</a>
+                        </div>
                 </div>
             </div>
         </div>

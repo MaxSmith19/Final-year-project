@@ -52,6 +52,7 @@ export default class Registration extends Component {
       console.log(JSON.stringify(response.data));
       if(response.status===200){
         localStorage.setItem("ID",response.data)
+        this.props.history.push('/home')
         //TODO remember me?
       }
     })
@@ -59,6 +60,7 @@ export default class Registration extends Component {
       console.log(error.response.data);
       if(error.response.status===401){
         //TODO error message
+        //use the nice toast function
       }
     });
   }
