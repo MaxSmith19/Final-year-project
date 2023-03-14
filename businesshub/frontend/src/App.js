@@ -3,15 +3,15 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Header from './Components/Header';
 import Accounts from './pages/accounts';
+import Dashboard from './pages/dashboard'
 import { Navigate } from 'react-router-dom';
 import Footer from "./Components/Footer";
 import { useState } from 'react';
 
 function App() {
-  var [isLoggedIn,setIsLoggedIn] = useState(false);
+  var [authenticated,setAuthenticated] = useState(false);
 
   const username = localStorage.getItem("ID")
-  console.log(username)
   if(username===null){
     //TODO MAKE IT ONLY LOAD HEADER WHEN LOGGED IN
   }
@@ -26,10 +26,11 @@ function App() {
           <Route path='/Login' element={<Login />} /> 
           <Route path='/Register' element={<Registration/>} />
           <Route path='/Accounts' element={<Accounts/>} />
+          <Route path='/Dashboard' element={<Dashboard/>} />
           <Route path="/" exact element={<Navigate replace to="/Login" />} /> 
         </Routes>
         </div>
-    <Footer />
+    {/* <Footer /> */}
     </Router>
 
     
