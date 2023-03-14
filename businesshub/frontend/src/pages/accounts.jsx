@@ -9,8 +9,14 @@ export default class Accounts extends Component{
     render(){
         return(
             <div>
-                <h1>Manage your accounts!</h1>
+            <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2">
+                <h1 className="text-5xl ">Your Accounts</h1>
+                <hr />
+                <p>Manage your accounts here</p>
             </div>
+
+
+        </div>
         )
     }
 }

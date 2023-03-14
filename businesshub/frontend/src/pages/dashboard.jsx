@@ -9,7 +9,12 @@ export default class Dashboard extends Component{
     render(){
         return(
             <div>
-                <h1>Dashboard</h1>
+                <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2">
+                    <h1 className="text-5xl ">Dashboard</h1>
+                    <hr />
+                </div>
+
+
             </div>
         )
     }

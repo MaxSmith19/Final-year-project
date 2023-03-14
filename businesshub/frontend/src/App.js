@@ -21,9 +21,8 @@ function App() {
     <>
 
     <Router>
-      <div></div>
         <Header />
-        <div className="justify-center flex ">
+        <div className="m-12">
           
         <Routes>
           <Route path='/Login' element={<Login />} /> 

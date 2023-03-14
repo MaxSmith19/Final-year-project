@@ -24,7 +24,7 @@ const Nav = () => {
     return (
     <>
     <div className={isLoggedIn? "":"hidden "}>
-            <div className="border bg-white h-20">
+            <div className="border bg-white h-20 shadow-md">
             <div className='grid grid-cols-3 grid-rows-1 gap-5'>
             <div className="mt-3 ml-2">
                         <button className={isNavOpen? "w-0 h-0" :"transition -rotate-180 duration-300"} onClick={()=>setNav(true)}> <VscThreeBars size={isNavOpen? "0":"50"}/></button>

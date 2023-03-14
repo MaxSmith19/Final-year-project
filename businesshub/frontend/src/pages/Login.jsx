@@ -46,6 +46,7 @@ const Login = () => {
   }
 
   return(
+    <div className="flex justify-center">
     <div className="max-w-lg mt-12 form-width form-length">
       <h1 className="block text-gray-700 font-bold text-center text-5xl mb-10">Login</h1>
 
@@ -70,6 +71,7 @@ const Login = () => {
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded " type="submit" >Log in</button>
         </div>
       </form>
+    </div>
     </div>
   )
 }
