@@ -7,6 +7,8 @@ import Dashboard from './pages/dashboard'
 import { Navigate } from 'react-router-dom';
 import Footer from "./Components/Footer";
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   var [authenticated,setAuthenticated] = useState(false);
@@ -22,6 +24,7 @@ function App() {
       <div></div>
         <Header />
         <div className="justify-center flex ">
+          
         <Routes>
           <Route path='/Login' element={<Login />} /> 
           <Route path='/Register' element={<Registration/>} />

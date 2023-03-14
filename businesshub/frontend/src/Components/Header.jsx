@@ -4,6 +4,7 @@ import {VscThreeBars, VscChevronRight, VscChevronLeft, VscAccount}from 'react-ic
 import {RiAccountCircleFill, RiAccountCircleLine} from 'react-icons/ri'
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast} from 'react-toastify'
 
 const Nav = () => {
     var [isNavOpen,setNav] = useState(false);
@@ -17,6 +18,7 @@ const Nav = () => {
     const logOut =() =>{
         localStorage.removeItem("ID");
         setIsLoggedIn(false);
+        toast.success("You have been logged out");
         navigate("/login");
     }
     return (
@@ -43,6 +45,7 @@ const Nav = () => {
         <button className={isNavOpen? "transition -rotate-180 duration-300 text-white" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="m-5"size={isNavOpen? "50":"0"} /></button>
 
                 <div className={isNavOpen? "overlay-content":"hidden"}> 
+                    <a onClick={()=>setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>
                     <a onClick={()=>setNav(false)}><Link to="/accounts">Accounts</Link></a>
 
 

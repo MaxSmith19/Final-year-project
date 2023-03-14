@@ -45,9 +45,7 @@ const registerUser = asyncHandler(async(req, res) =>{
     }
 
     const hashedPassword= await bcrypt.hash(req.body.password,10)
-
-
-    
+        
     const users = await User.create({
         username:req.body.username,
         password: hashedPassword,
