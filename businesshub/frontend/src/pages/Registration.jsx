@@ -9,14 +9,14 @@ export default class Registration extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      businessName: '',
       email: '',
       password: '',
       confirmPassword: '',
       errorMessage: ''
     }
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeBusinessName = this.onChangeBusinessName.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
@@ -25,9 +25,9 @@ export default class Registration extends Component {
 
   }
 
-  onChangeUsername(e){
+  onChangeBusinessName(e){
     this.setState({
-      username: e.target.value
+      businessName: e.target.value
     })
   }
   onChangeEmail(e){
@@ -49,11 +49,11 @@ export default class Registration extends Component {
 
   onSubmit(e){
     e.preventDefault();
-    const dataArray = [this.state.email,this.state.username,this.state.password,this.state.confirmPassword]
+    const dataArray = [this.state.email,this.state.businessName,this.state.password,this.state.confirmPassword]
     let nullFlag = false
     const data =  qs.stringify({
       'email': this.state.email,
-      'username': this.state.username,
+      'businessName': this.state.businessName,
       'password': this.state.password,
       'confirmPassword': this.state.confirmPassword
     })
@@ -89,15 +89,16 @@ export default class Registration extends Component {
 
   render() {
     return(
+      <div class="flex justify-center">
       <div class="max-w-lg mt-12 form-width form-length">
       <h1 class="block text-gray-700 font-bold text-center text-5xl mb-10">Register an account</h1>
 
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={this.onSubmit}>
         <div class="mb-4">
-          <label class="block text-gray-700 text-xl font-bold mb-2" for="username">
-            Username
+          <label class="block text-gray-700 text-xl font-bold mb-2" for="businessName">
+            Name of business
           </label>
-          <input class="shadow border rounded w-full py-2 px-3 text-gray-700"type="text" onChange={this.onChangeUsername} value={this.state.username}/>
+          <input class="shadow border rounded w-full py-2 px-3 text-gray-700"type="text" onChange={this.onChangeBusinessName} value={this.state.businessName}/>
         </div>
         <div class="mb-6">
           <label class="block text-gray-700 text-xl font-bold mb-2" for="password">
@@ -129,6 +130,7 @@ export default class Registration extends Component {
           </button>
         </div>
       </form>
+      </div>
       </div>
     )
   }

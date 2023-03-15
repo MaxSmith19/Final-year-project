@@ -3,8 +3,10 @@ const bcrypt = require("bcrypt")
 const User = require("../models/UserModel");
 const { validEmail,validPassword } = require("../regex");
 
+//Returns all data on user based on their given mongo _id
 const getUser = asyncHandler(async (req, res) => {
-    const Users = await User.find();
+    const Users = await User.find({_id:req.query.id});
+    console.log(req.query.id);
     res.status(200).json(Users)
   })
 
@@ -47,7 +49,7 @@ const registerUser = asyncHandler(async(req, res) =>{
     const hashedPassword= await bcrypt.hash(req.body.password,10)
         
     const users = await User.create({
-        username:req.body.username,
+        businessName:req.body.businessName,
         password: hashedPassword,
         email:req.body.email
     })

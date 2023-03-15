@@ -12,7 +12,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = (e) => {
-    let response=""
     e.preventDefault();
 
     const data =  qs.stringify({
@@ -32,6 +31,7 @@ const Login = () => {
     axios(config)
     .then((response) => {
       console.log(JSON.stringify(response.data));
+      console.log(data)
       if (response.status === 200) {
         localStorage.setItem("ID", response.data);
         navigate("/dashboard")
