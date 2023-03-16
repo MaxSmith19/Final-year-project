@@ -5,11 +5,7 @@ import * as qs from 'qs'
 
 const UserSettings = () => {
   const [businessName, setBusinessName] = useState('')
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -29,6 +25,7 @@ const UserSettings = () => {
     axios(config)
     .then(function (response) {
         localStorage.setItem('businessName', response.data[0].businessName);
+        navigate('/user-settings')
     })
     .catch(function (error) {
         console.log(error);

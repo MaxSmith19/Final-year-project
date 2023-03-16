@@ -22,13 +22,17 @@
     animation: bodyAnimation 10s ease-in-out infinite;
 
 }
+
 @keyframes bodyAnimation {
     from {
       /* transform: translateY(100%); */
-      rotate: 0deg;
+      transform: rotate(0deg);
+      transform: translateX(0%);
     }
     to {
       /* transform: translateY(0%); */
-      rotate: 360deg;
+      transform: rotate(360deg);
+      transform: translateX(100%);
+      
     }
   }

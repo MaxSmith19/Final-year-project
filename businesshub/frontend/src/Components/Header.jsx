@@ -43,8 +43,9 @@ const Nav = () => {
 
         <div className={isNavOpen? "overlay":"h-0"}>
         <button className={isNavOpen? "transition -rotate-180 duration-300 text-white mt-3 ml-3" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="mt-3 ml-2" size={isNavOpen? "50":"0"} /></button>
-
                 <div className={isNavOpen? "overlay-content":"hidden"}> 
+                    <h1 className="text-gray-400 text-6xl text-center underline mb-10">Menu</h1>
+
                     <a onClick={()=>setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>
                     <a onClick={()=>setNav(false)}><Link to="/accounts">Accounts</Link></a>
 

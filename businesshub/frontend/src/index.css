@@ -38,10 +38,13 @@ html{
 
 .overlay-content {
     position: relative;
-    top: 10%; /* 25% from the top */
+    top: 5%; /* 25% from the top */
     width: 100%;
     text-align: center;
     margin-top: 30px; 
+}
+.overlay-content a:hover{
+    animation: increaseTextSize 1s ease-in-out 1;
 }
 .overlay a {
     padding: 8px;
@@ -49,8 +52,14 @@ html{
     font-size: 36px;
     color: #818181;
     display: block; /* Display block instead of inline */
-    transition: 0.3s; /* Transition effects on hover (color) */
   }
 .overlay-content a:hover{
     color: orange;
+}
+@keyframes increaseTextSize {
+    0%{
+        transform: scale(1)
+    }100%{
+        transform: scale(1.1)
+    }
 }
