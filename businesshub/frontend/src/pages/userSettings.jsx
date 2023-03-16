@@ -10,20 +10,19 @@ const UserSettings = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    var data = qs.stringify({
-      'businessName': businessName,
-      'businessLogo': businessLogo
-    });
-    data ={}
+    const formData = new FormData();
+    formData.append('businessName', businessName);
+    formData.append('businessLogo', businessLogo);
+
     if(businessLogo === ''){
-      data.businessLogo = localStorage.getItem('businessLogo')
+      formData.businessLogo = localStorage.getItem('businessLogo')
     }else{
-      data.businessLogo = businessLogo
+      formData.businessLogo = businessLogo
     }
     if(businessName === ''){
-      data.businessName = localStorage.getItem('businessName')
+      formData.businessName = localStorage.getItem('businessName')
     }else{
-      data.businessName = businessName
+      formData.businessName = businessName
     }
     var config = {
       method: 'put',
@@ -32,12 +31,14 @@ const UserSettings = () => {
       headers: { 
           'Content-Type': 'application/x-www-form-urlencoded'
       },
-      data : data
+      data : formData
     };
   
     axios(config)
     .then(function (response) {
+      console.log(response.data)
         localStorage.setItem('businessName', response.data[0].businessName);
+        localStorage.setItem('businessLogo', response.data[0].businessLogo);
         navigate('/user-settings')
     })
     .catch(function (error) {
@@ -58,12 +59,14 @@ const UserSettings = () => {
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3" type="text" onChange={(e) => setBusinessName(e.target.value)} value={businessName}/>
         </div>
+        <formControl>
         <div className="mb-6">
           <label className="block text-gray-700 text-xl font-bold mb-2">
             Business Logo
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3" type="file" onChange={(e) => setBusinessLogo(e.target.value)} value={businessLogo} />
         </div>
+        </formControl>
         <div className="flex items-center justify-between">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded " type="submit" >Save changes</button>
         </div>

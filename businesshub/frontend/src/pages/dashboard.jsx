@@ -9,6 +9,7 @@ const Dashboard = () =>{
     const [userInfo, setUserInfo] = useState(null);
     const [userEmail, setUserEmail] = useState("");
     const [businessName, setBusinessName] = useState("");
+    const [imageSrc, setImageSrc] = useState("");
     const [userID, setUserID] = useState('');
 
     useEffect(() => {
@@ -25,15 +26,19 @@ const Dashboard = () =>{
         .then((response) => {
           var responseData = {
             businessName: response.data[0].businessName,
-            email: response.data[0].email
+            email: response.data[0].email,
+            businessLogo: response.data[0].businessLogo
           }       
           setBusinessName(responseData.businessName);
-          setUserEmail(responseData.email);   
+          setUserEmail(responseData.email);
+          setImageSrc(responseData.businessLogo);
           localStorage.setItem('businessName', responseData.businessName);
+          localStorage.setItem('businessLogo', responseData.businessLogo);
         })
         .catch((error) => {
           console.log(error);
         });
+        
       }
       
     return(
@@ -47,7 +52,7 @@ const Dashboard = () =>{
                     <div>
                         {/* topHalf */}
                         {/* todo image */}
-                        <img src="https://images.unsplash.com/photo-1514349127858-111111111111?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=10" />
+                        <img src={imageSrc} alt="jdja" />
                         <hr/>
                     </div> 
                     
