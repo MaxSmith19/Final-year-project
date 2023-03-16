@@ -2,10 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes bodyAnimation {
-   from {top: 0}
-   to {top: 10000px;}
-}
+
 
 .container {
     display: flex;
@@ -24,18 +21,7 @@ html{
     background-color: #9ae2ff;
 
 }
-.bodyAnimationContainer{
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-gap: 8rem;
 
-}
-.bodyAnimationContainer li{
-    text-align: center;
-    z-index: -1;
-    animation: bodyAnimation 10s linear infinite;
-
-}
 
 .overlay {
     height: 100%;

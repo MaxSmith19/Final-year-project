@@ -29,11 +29,11 @@ const Nav = () => {
             <div className="mt-3 ml-2">
                         <button className={isNavOpen? "w-0 h-0" :"transition -rotate-180 duration-300"} onClick={()=>setNav(true)}> <VscThreeBars size={isNavOpen? "0":"50"}/></button>
                     </div>
-                <h1 className='m-3 text-5xl text-center'>Logo</h1>
+                <h1 className='m-3 text-5xl text-center'>{localStorage.getItem("businessName")}</h1>
                 <div className="mt-3 relative">
-                        <a className="float-right bg-white mr-2 transition-all " onClick={()=>setIsAccountOpen(!isAccountOpen)} >{isAccountOpen? <RiAccountCircleLine size="50"/>:<RiAccountCircleFill size="50"/>}</a>
+                        <a className="float-right bg-white mr-2 transition-all ease-in-out duration-75 " onClick={()=>setIsAccountOpen(!isAccountOpen)} >{isAccountOpen? <RiAccountCircleLine size="50"/>:<RiAccountCircleFill size="50"/>}</a>
                         <div className={isAccountOpen? 'invisible':'transition ease-in-out duration-300 absolute top-0 right-0 float-right text-right mt-16 w-6/12 border-gray-500 shadow-xl p-1 bg-white '}>
-                            <a href="#" className="block text-2xl bg-white border shadow-2xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300">Account information</a>
+                            <a href="#" className="block text-2xl bg-white border shadow-2xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300"><Link to="/UserSettings">Account settings</Link></a>
                             <a href="#" className="block text-2xl bg-white border shadow-2xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300">Settings</a>
                             <a href="#" className="block text-2xl bg-white border shadow-xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300" onClick={()=>logOut()}>Log out</a>
                         </div>
@@ -42,7 +42,7 @@ const Nav = () => {
             </div>
 
         <div className={isNavOpen? "overlay":"h-0"}>
-        <button className={isNavOpen? "transition -rotate-180 duration-300 text-white" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="m-5"size={isNavOpen? "50":"0"} /></button>
+        <button className={isNavOpen? "transition -rotate-180 duration-300 text-white mt-3 ml-3" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="mt-3 ml-2" size={isNavOpen? "50":"0"} /></button>
 
                 <div className={isNavOpen? "overlay-content":"hidden"}> 
                     <a onClick={()=>setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>

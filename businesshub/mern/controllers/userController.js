@@ -6,7 +6,6 @@ const { validEmail,validPassword } = require("../regex");
 //Returns all data on user based on their given mongo _id
 const getUser = asyncHandler(async (req, res) => {
     const Users = await User.find({_id:req.query.id});
-    console.log(req.query.id);
     res.status(200).json(Users)
   })
 
@@ -59,7 +58,7 @@ const registerUser = asyncHandler(async(req, res) =>{
 
 const updateUser = asyncHandler(async( req, res) =>{
     const Users = await User.findById(req.params.id)
-
+    console.log(Users)
     if(!Users){
         res.status(400)
         throw new Error("User not found")
