@@ -2,10 +2,16 @@ const asyncHandler = require("express-async-handler")
 const bcrypt = require("bcrypt")
 const User = require("../models/UserModel");
 const { validEmail,validPassword } = require("../regex");
+const jwt = require("jsonwebtoken");
+const { RiCreativeCommonsZeroLine } = require("react-icons/ri");
 
 //Returns all data on user based on their given mongo _id
 const getUser = asyncHandler(async (req, res) => {
-    const Users = await User.find({_id:req.query.id});
+    const token = req.headers.authorization.split(" ")[1]
+    const decoded=jwt.verify(token, process.env.JWT_SECRET);
+    
+    const Users = await User.find({_id:decoded.id}).select("-password");
+    console.log(Users)
     res.status(200).json(Users)
   })
 
@@ -22,7 +28,10 @@ const loginUser = asyncHandler(async(req,res) =>{
     }
 
     if(await(bcrypt.compare(req.body.password, user.password))){
-        res.status(200).json(`${user._id}`)
+        res.status(200).json({
+            _id : user._id,
+            token: generateToken(user._id)
+        })
     }else{
         res.status(401).json("Password not correct")
         throw new Error("Wrong password")
@@ -50,10 +59,12 @@ const registerUser = asyncHandler(async(req, res) =>{
     const users = await User.create({
         businessName:req.body.businessName,
         password: hashedPassword,
-        email:req.body.email
+        email:req.body.email,
     })
     
-    res.status(200).json(users)
+    res.status(200).json({
+        token: generateToken(users._id)
+    })
 })
 
 const updateUser = asyncHandler(async( req, res) =>{
@@ -67,7 +78,17 @@ const updateUser = asyncHandler(async( req, res) =>{
 
     res.status(200).json(updatedUser)
 })
- 
+const decodeJWT = (req, res) => {
+    return jwt.verify(req.cookies.token, process.env.JWT_SECRET, (err))
+}
+//for generating jwt tokens for authentication
+const generateToken = (id) => {
+    
+    return jwt.sign({id}, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES,
+    })
+}
+
 const deleteUser = asyncHandler(async(req, res) =>{
     const Users = await User.findById(req.params.id)
 

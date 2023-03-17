@@ -3,7 +3,7 @@ import axios from "axios"
 import { Link, useNavigate } from 'react-router-dom';
 import * as qs from 'qs'
 
-const Login = () => {
+const Login = (props) => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,19 +30,23 @@ const Login = () => {
     
     axios(config)
     .then((response) => {
-      console.log(JSON.stringify(response.data));
-      console.log(data)
       if (response.status === 200) {
-        localStorage.setItem("ID", response.data);
-        navigate("/dashboard")
+        const token = response.data.token;
+        document.cookie = "token=" + token +"; SameSite=Strict";
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+        navigate("/Dashboard");
       }
     })
     .catch((error) => {
-      if (error.response.status === 401) {
+      console.log(error);
+      if (error.status === 401) {
         setErrorMessage("Email or password is incorrect");
         console.log(errorMessage);
       }
+
     });
+    props.onLogin();
+
   }
 
   return(

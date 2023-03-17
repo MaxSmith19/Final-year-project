@@ -7,8 +7,10 @@ const {
     updateUser,
     deleteUser,
     } = require('../controllers/UserController')
+const { protect} = require("../middleware/authMiddleware")
 
-router.route('/').get(getUser).post(registerUser)
+router.route('/').post(registerUser)
+router.get('/get', protect, getUser)
 router.route('/login/').post(loginUser);
 router.route('/:id').put(updateUser).delete(deleteUser)
 
