@@ -39,7 +39,13 @@ function App() {
     setAuthenticated(true);
     console.log(authenticated)
   }
-
+  const containers = document.querySelectorAll('.bodyAnimation');
+  containers.forEach((container) => {
+    const randomTranslate = Math.floor(Math.random() * 500) + 1;
+    const randomDelay = Math.floor(Math.random() * 10) + 's';
+    container.style.transform = `translateY(${randomTranslate}%)`;
+    container.style.animationDelay = randomDelay;
+  });
   return (
     <>
       <Router>
@@ -62,6 +68,58 @@ function App() {
       </Router>
       <div className="animationContainer">
       </div>
+      <div className='animationContainer'>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+      <div className="bodyAnimation"> </div>
+
+
+    </div>
     </>
   );
 }
