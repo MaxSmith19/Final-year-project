@@ -78,10 +78,10 @@ export default class Registration extends Component {
       
       axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        console.log("User Created");
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error.statusCode);
       });
       
     }
