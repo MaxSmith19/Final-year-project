@@ -44,9 +44,10 @@ const UserSettings = () => {
   
     axios(config)
     .then(function (response) {
-        localStorage.setItem('businessName', response.data[0].businessName);
-        localStorage.setItem('businessLogo', response.data[0].businessLogo);
-        navigate('/user-settings')
+      console.log(response.data)
+        localStorage.setItem('businessName', response.data.businessName);
+        localStorage.setItem('businessLogo', response.data.businessLogo);
+        //figure this out
     })
     .catch(function (error) {
         console.log(error);

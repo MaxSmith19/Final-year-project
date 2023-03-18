@@ -82,8 +82,8 @@ const decodeJWT = (req, res) => {
 }
 //for generating jwt tokens for authentication
 const generateToken = (id) => {
-    
-    return jwt.sign({id}, process.env.JWT_SECRET, {
+
+    return jwt.sign({id, data:{}}, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES,
     })
 }
