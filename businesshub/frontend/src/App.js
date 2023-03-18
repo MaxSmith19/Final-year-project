@@ -51,7 +51,10 @@ function App() {
       <Router>
         {authenticated ? (
         <Header authenticated={authenticated} onLogout={handleLogout}/>
-        ): null}
+        ): 
+        <div className="border bg-white h-20 shadow-md"></div>
+        
+        }
         <div className="m-12">
           <Routes>
             {authenticated ? (

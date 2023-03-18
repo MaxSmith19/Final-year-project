@@ -15,9 +15,9 @@
 
 .bodyAnimation{
     background-color: #65d3ff;
-    border-radius: 30%;
-    width: 2em;
-    height: 2em;
+    border-radius: 10%;
+    width: 5em;
+    height: 5em;
     z-index: -3;
     animation: bodyAnimation 1s ease-in-out infinite;
 

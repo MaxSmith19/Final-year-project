@@ -7,10 +7,8 @@ const { RiCreativeCommonsZeroLine } = require("react-icons/ri");
 
 //Returns all data on user based on their given mongo _id
 const getUser = asyncHandler(async (req, res) => {
-    const token = req.headers.authorization.split(" ")[1]
-    const decoded=jwt.verify(token, process.env.JWT_SECRET);
-    
-    const Users = await User.find({_id:decoded.id}).select("-password");
+    const token=decodeJWT(req,res)
+    const Users = await User.find({_id:token.id}).select("-password");
     console.log(Users)
     res.status(200).json(Users)
   })
@@ -68,18 +66,19 @@ const registerUser = asyncHandler(async(req, res) =>{
 })
 
 const updateUser = asyncHandler(async( req, res) =>{
-    const Users = await User.findById(req.params.id)
-    console.log(Users)
+    const token = decodeJWT(req,res)
+    const Users = await User.findById({_id: token.id})
     if(!Users){
         res.status(400)
         throw new Error("User not found")
     }
-    const updatedUser = await User.findByIdAndUpdate(req.params.id,req.body,{new: true,})
-
+    const updatedUser = await User.findByIdAndUpdate(token.id,req.body,{new: true,})
     res.status(200).json(updatedUser)
 })
+
 const decodeJWT = (req, res) => {
-    return jwt.verify(req.cookies.token, process.env.JWT_SECRET, (err))
+    const token = req.headers.authorization.split(" ")[1]
+    return decoded=jwt.verify(token, process.env.JWT_SECRET);
 }
 //for generating jwt tokens for authentication
 const generateToken = (id) => {
@@ -90,17 +89,18 @@ const generateToken = (id) => {
 }
 
 const deleteUser = asyncHandler(async(req, res) =>{
-    const Users = await User.findById(req.params.id)
+    const token = decodeJWT(req,res)
+    const Users = await User.findById({_id: token.id})
 
     if(!Users){
         res.status(400)
         throw new Error("User not found")
     }
-    const deletedUser = await User.findByIdAndDelete(req.params.id,req.body)
+    const deletedUser = await User.findByIdAndDelete({_id: token.id},req.body)
 
     res.status(200).json(deletedUser);
 
-    res.status(200).json({message: `deleting User ${req.params.id}`})
+    res.status(200).json({message: `deleting User ${token.id}`})
 })
 
 module.exports ={

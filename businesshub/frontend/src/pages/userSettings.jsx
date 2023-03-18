@@ -10,33 +10,40 @@ const UserSettings = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('businessName', businessName);
-    formData.append('businessLogo', businessLogo);
+    const userIDCookie = document.cookie.split("=")[1];
+    const token = userIDCookie.split(";")[0];
+    
+    let data = qs.stringify({
+      'businessName': businessName,
+      'businessLogo': businessLogo
+    });
 
-    if(businessLogo === ''){
-      formData.businessLogo = localStorage.getItem('businessLogo')
-    }else{
-      formData.businessLogo = businessLogo
-    }
-    if(businessName === ''){
-      formData.businessName = localStorage.getItem('businessName')
-    }else{
-      formData.businessName = businessName
-    }
-    var config = {
+    // if(businessLogo === ''){
+    //   data.businessLogo = localStorage.getItem('businessLogo')
+    // }else{
+    //   data.businessLogo = businessLogo
+    // }
+    // if(businessName === ''){
+    //   data.businessName = localStorage.getItem('businessName')
+    // }else{
+    //   data.businessName = businessName
+    // }
+
+    
+  
+  let config = {
       method: 'put',
       maxBodyLength: Infinity,
-      url: 'http://localhost:5000/api/Users/'+localStorage.getItem('ID'),
+      url: 'http://localhost:5000/api/Users/update',
       headers: { 
+          'Authorization': `Bearer ${token}`,  
           'Content-Type': 'application/x-www-form-urlencoded'
       },
-      data : formData
-    };
+      data : data
+  };
   
     axios(config)
     .then(function (response) {
-      console.log(response.data)
         localStorage.setItem('businessName', response.data[0].businessName);
         localStorage.setItem('businessLogo', response.data[0].businessLogo);
         navigate('/user-settings')
