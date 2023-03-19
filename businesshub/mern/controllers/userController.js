@@ -2,10 +2,14 @@ const asyncHandler = require("express-async-handler")
 const bcrypt = require("bcrypt")
 const User = require("../models/UserModel");
 const { validEmail,validPassword } = require("../regex");
+const jwt = require("jsonwebtoken");
+const { RiCreativeCommonsZeroLine } = require("react-icons/ri");
 
 //Returns all data on user based on their given mongo _id
 const getUser = asyncHandler(async (req, res) => {
-    const Users = await User.find({_id:req.query.id});
+    const token=decodeJWT(req,res)
+    const Users = await User.find({_id:token.id}).select("-password");
+    console.log(Users)
     res.status(200).json(Users)
   })
 
@@ -22,7 +26,10 @@ const loginUser = asyncHandler(async(req,res) =>{
     }
 
     if(await(bcrypt.compare(req.body.password, user.password))){
-        res.status(200).json(`${user._id}`)
+        res.status(200).json({
+            _id : user._id,
+            token: generateToken(user._id)
+        })
     }else{
         res.status(401).json("Password not correct")
         throw new Error("Wrong password")
@@ -50,36 +57,50 @@ const registerUser = asyncHandler(async(req, res) =>{
     const users = await User.create({
         businessName:req.body.businessName,
         password: hashedPassword,
-        email:req.body.email
+        email:req.body.email,
     })
     
-    res.status(200).json(users)
+    res.status(200).json({
+        token: generateToken(users._id)
+    })
 })
 
 const updateUser = asyncHandler(async( req, res) =>{
-    const Users = await User.findById(req.params.id)
-    console.log(Users)
+    const token = decodeJWT(req,res)
+    const Users = await User.findById({_id: token.id})
     if(!Users){
         res.status(400)
         throw new Error("User not found")
     }
-    const updatedUser = await User.findByIdAndUpdate(req.params.id,req.body,{new: true,})
-
+    const updatedUser = await User.findByIdAndUpdate(token.id,req.body,{new: true,})
     res.status(200).json(updatedUser)
 })
- 
+
+const decodeJWT = (req, res) => {
+    const token = req.headers.authorization.split(" ")[1]
+    return decoded=jwt.verify(token, process.env.JWT_SECRET);
+}
+//for generating jwt tokens for authentication
+const generateToken = (id) => {
+
+    return jwt.sign({id}, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES,
+    })
+}
+
 const deleteUser = asyncHandler(async(req, res) =>{
-    const Users = await User.findById(req.params.id)
+    const token = decodeJWT(req,res)
+    const Users = await User.findById({_id: token.id})
 
     if(!Users){
         res.status(400)
         throw new Error("User not found")
     }
-    const deletedUser = await User.findByIdAndDelete(req.params.id,req.body)
+    const deletedUser = await User.findByIdAndDelete({_id: token.id},req.body)
 
     res.status(200).json(deletedUser);
 
-    res.status(200).json({message: `deleting User ${req.params.id}`})
+    res.status(200).json({message: `deleting User ${token.id}`})
 })
 
 module.exports ={

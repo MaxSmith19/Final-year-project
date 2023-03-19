@@ -5,6 +5,7 @@ import axios from 'axios';
 import qs from 'qs';
 import { useEffect } from 'react';
 import { RiAccountBoxFill } from 'react-icons/ri';
+
 const Dashboard = () =>{
     const [userInfo, setUserInfo] = useState(null);
     const [userEmail, setUserEmail] = useState("");
@@ -18,9 +19,12 @@ const Dashboard = () =>{
       }, []);
 
       const getUserInfo = () => {
-        axios.get('http://localhost:5000/api/Users', {
-          params: {
-            id: '6411cf394d954e0638bf9f77'
+        const userIDCookie = document.cookie.split("=")[1];
+        const token = userIDCookie.split(";")[0];
+
+        axios.get('http://localhost:5000/api/Users/get', {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
         })
         .then((response) => {
@@ -28,12 +32,14 @@ const Dashboard = () =>{
             businessName: response.data[0].businessName,
             email: response.data[0].email,
             businessLogo: response.data[0].businessLogo
-          }       
+          }
+
           setBusinessName(responseData.businessName);
           setUserEmail(responseData.email);
           setImageSrc(responseData.businessLogo);
           localStorage.setItem('businessName', responseData.businessName);
           localStorage.setItem('businessLogo', responseData.businessLogo);
+          
         })
         .catch((error) => {
           console.log(error);
