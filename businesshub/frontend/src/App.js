@@ -42,15 +42,14 @@ function App() {
   const containers = document.querySelectorAll('.bodyAnimation');
   containers.forEach((container) => {
     const randomTranslate = Math.floor(Math.random() * 500) + 1;
-    const randomDelay = Math.floor(Math.random() * 10) + 's';
-    container.style.transform = `translateY(${randomTranslate}%)`;
-    container.style.animationDelay = randomDelay;
+    container.style.transform = `top(${randomTranslate}%)`;
   });
   return (
     <>
       <Router>
         {authenticated ? (
         <Header authenticated={authenticated} onLogout={handleLogout}/>
+        
         ): 
         <div className="border bg-white h-20 shadow-md"></div>
         
@@ -72,54 +71,54 @@ function App() {
       <div className="animationContainer">
       </div>
       <div className='animationContainer'>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
-      <div className="bodyAnimation"> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
 
 
     </div>
