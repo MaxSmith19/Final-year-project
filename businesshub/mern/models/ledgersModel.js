@@ -6,7 +6,6 @@ const ledgerSchema = mongoose.Schema({
     ledgerData: {type:Object,required: false},
     //Object refers to an array of json objects.
     //it isnt strictly required, as it can be updated later.
-
 });
 
 module.exports = mongoose.model('Ledger',ledgerSchema)

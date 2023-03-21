@@ -2,10 +2,21 @@ const asyncHandler = require("express-async-handler")
 
 const Ledger = require("../models/LedgersModel")
 const {decodeJWT, generateJWT} = require("../middleware/authMiddleware")
+
 const getLedger = asyncHandler(async (req, res) => {
     const token = decodeJWT(req,res)
-
-    const Ledgers = await Ledger.find({userID: token.id});
+    const params = req.body.ledgerName
+    let Ledgers = {}
+    if(params !== undefined){
+      Ledgers = await Ledger.find({
+        userID: token.id,
+        ledgerName: req.body.ledgerName
+      });
+    }else{
+      Ledgers = await Ledger.find({
+        userID: token.id
+      });
+    }
     res.status(200).json(Ledgers)
     //differerent to how getUser works as we need all ledgers of one use
   })
