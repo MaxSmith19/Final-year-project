@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 
-const accountSchema = mongoose.Schema({
+const ledgerSchema = mongoose.Schema({
     userID: {type: String, required: true},
-    accountName: {type:String,required: true},
-    accountData: {type:Object,required: false},
+    ledgerName: {type:String,required: true},
+    ledgerData: {type:Object,required: false},
     //Object refers to an array of json objects.
     //it isnt strictly required, as it can be updated later.
 
 });
 
-module.exports = mongoose.model('Account',accountSchema)
+module.exports = mongoose.model('Ledger',ledgerSchema)

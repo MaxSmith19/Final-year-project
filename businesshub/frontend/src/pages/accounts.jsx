@@ -15,26 +15,34 @@ export default class Accounts extends Component{
                 <p>Manage your accounts here</p>
                 
             </div>
-            <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2">
-            <table class="table-auto w-full">
+            <div className="bg-white h-80 w-full m-auto p-4 rounded-xl shadow-2xl">
+            <div className="w-auto mb-2 border p-1">
+                    <h1 className='float-left text-xl p-1'> Select ledger: </h1>
+                    <select className='ml-4 text-xl rounded-md p-1 w-1/4'>
+                        <option>Ledger</option>
+                        <option>Ledger</option>
+                    </select>
+                </div>
+            <table class="table-auto w-11/12">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Notes</th>
-                    <th>Notes</th>
+                    <th className="w-2/12 border-t border-l">Date</th>
+                    <th className="3/12 border-t border-l">Notes</th>
+                    <th className="1/12 border-t border-l">Debit</th>
+                    <th className="1/12 border-t border-l">Credit</th>
+                    <th className="1/12 border-t border-l border-r border-">Balance</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+                    <td className="border-2"><input type="date" className='w-full'/></td>
+                    <td className="border-2"><input className='w-full'/></td>
+                    <td className="border-2"><input className='w-full'/></td>
+                    <td className="border-2"><input className='w-full'/></td>
+                    <td className="border-2"><input className='w-full'/></td>
+                    <td className="border-2 text-green-800">+</td>
                 </tr>
-                <tr>
-                    <td>Witchy Woman</td>
-                </tr>
-                <tr>
-                    <td>Shining Star</td>
-                </tr>
+
             </tbody>
             </table>             
             </div>
