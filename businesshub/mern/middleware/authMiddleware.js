@@ -27,8 +27,22 @@ const protect = asyncHandler(async (req, res, next) => {
         res.status(401)
         throw new Error('No token, authorization denied')
     } 
-})
+    })
+
+const decodeJWT = (req, res) => {
+    const token = req.headers.authorization.split(" ")[1]
+    return decoded=jwt.verify(token, process.env.JWT_SECRET);
+}
+    //for generating jwt tokens for authentication
+const generateToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES,
+    })
+}
+
 
 module.exports={
-    protect
+    protect,
+    decodeJWT,
+    generateToken
 }
