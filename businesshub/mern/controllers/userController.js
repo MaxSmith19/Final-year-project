@@ -9,7 +9,6 @@ const { RiCreativeCommonsZeroLine } = require("react-icons/ri");
 const getUser = asyncHandler(async (req, res) => {
     const token=decodeJWT(req,res)
     const Users = await User.find({_id:token.id}).select("-password");
-    console.log(Users)
     res.status(200).json(Users)
   })
 

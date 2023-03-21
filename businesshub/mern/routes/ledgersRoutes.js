@@ -9,7 +9,7 @@ const {
     } = require('../controllers/ledgersController')
 
 router.route('/').get(protect,getLedger).post(createLedger)
-router.route('/:id').put(updateLedger).delete(deleteLedger)
+router.route('/:id').put(protect,updateLedger).delete(deleteLedger)
 
 
 module.exports = router

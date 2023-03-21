@@ -34,8 +34,10 @@ const createLedger = asyncHandler(async(req, res) =>{
 
 const updateLedger = asyncHandler(async( req, res) =>{
   
-  const Ledger = await Ledger.findByIdAndUpdate(req.params.id, req.body, {new: true})
-  res.status(201).json(Ledger)
+  const ledgerData = req.body.ledgerData
+  const Ledgers = await Ledger.findByIdAndUpdate(req.params.id, req.body.ledgerData, {new: true})
+  res.status(201).json(Ledgers)
+
 })
  
 const deleteLedger = asyncHandler(async(req, res) =>{
