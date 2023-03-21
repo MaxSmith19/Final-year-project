@@ -69,8 +69,31 @@ function App() {
         </div>
       </Router>
       <div className="animationContainer">
-      </div>
-      <div className='animationContainer'>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
+      <div className=""> </div>
       <div className=""> </div>
       <div className=""> </div>
       <div className=""> </div>

@@ -48,7 +48,7 @@ const Dashboard = () =>{
       }
       
     return(
-            <div className="grid gap-6 h-full md:grid-rows-3 lg:grid-rows-3 xl:grid-cols-3">
+            <div className="grid gap-6 md:grid-rows-3 lg:grid-rows-3 xl:grid-cols-3">
                 <div className="bg-white h-full w-full m-auto rounded-xl shadow-2xl p-2">
                     <div>
                         {/* title */}
@@ -58,8 +58,6 @@ const Dashboard = () =>{
                     <div>
                         {/* topHalf */}
                         {/* todo image */}
-                        <img src={imageSrc} alt="jdja" />
-                        <hr/>
                     </div> 
                     
                     <div className="w-full h-auto mt-4">
@@ -74,6 +72,7 @@ const Dashboard = () =>{
                     <h1 className="text-5xl ">Marketing</h1>
                     <hr />
                 </div>
+                <div className="bg-white h-96 w-full m-auto rounded-xl shadow-2xl p-2 flex-1 col-span-3"> </div>
 
             </div>
         )
