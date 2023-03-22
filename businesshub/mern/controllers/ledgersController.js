@@ -32,7 +32,7 @@ const createLedger = asyncHandler(async(req, res) =>{
   res.status(201).json(ledger)
 })
 
-const updateLedger = asyncHandler(async( req, res) =>{
+const updateLedger = asyncHandler(async(req, res) =>{
   
   const ledgerData = req.body.ledgerData
   const Ledgers = await Ledger.findByIdAndUpdate(req.params.id, req.body.ledgerData, {new: true})

@@ -44,7 +44,7 @@ const Nav = (props) => {
                     <h1 className="text-gray-400 text-6xl text-center underline mb-10">Menu</h1>
 
                     <a onClick={()=>setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>
-                    <a onClick={()=>setNav(false)}><Link to="/accounts">Accounts</Link></a>
+                    <a onClick={()=>setNav(false)}><Link to="/Ledgers">Ledgers</Link></a>
 
 
                 </div>

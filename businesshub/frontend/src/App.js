@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Header from './Components/Header';
-import Accounts from './pages/accounts';
+import Ledgers from './pages/Ledgers';
 import Dashboard from './pages/dashboard'
 import { Navigate } from 'react-router-dom';
 import Footer from "./Components/Footer";
@@ -58,7 +58,7 @@ function App() {
           <Routes>
             {authenticated ? (
               <>
-                <Route path="/Accounts" element={<Accounts />} />
+                <Route path="/Ledgers" element={<Ledgers />} />
                 <Route path="/Dashboard" element={<Dashboard />} />
                 <Route path="/UserSettings" element={<UserSettings />} />
               </>
