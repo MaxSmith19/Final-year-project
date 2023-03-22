@@ -16,20 +16,7 @@ const UserSettings = () => {
     let data = qs.stringify({
       'businessName': businessName,
       'businessLogo': businessLogo
-    });
-
-    // if(businessLogo === ''){
-    //   data.businessLogo = localStorage.getItem('businessLogo')
-    // }else{
-    //   data.businessLogo = businessLogo
-    // }
-    // if(businessName === ''){
-    //   data.businessName = localStorage.getItem('businessName')
-    // }else{
-    //   data.businessName = businessName
-    // }
-
-    
+    });    
   
   let config = {
       method: 'put',

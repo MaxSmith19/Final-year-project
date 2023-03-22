@@ -2,6 +2,8 @@ import react from 'react';
 import { Component } from 'react';
 import ReactTable from "react-table-6";  
 import "react-table-6/react-table.css"; 
+import axios from 'axios';
+const qs = require('qs');
 
 export default class Ledgers extends Component{
     constructor(props){
@@ -18,17 +20,41 @@ export default class Ledgers extends Component{
             }
             ]
         }
-
-        this.columns = [
-            {    Header: 'Date',    accessor: 'date'  },
-            {    Header: 'Notes',    accessor: 'notes'  },
-            {    Header: 'Debit',    accessor: 'debit'  },
-            {    Header: 'Credit',    accessor: 'credit'  },
-            {    Header: 'Balance',    accessor: 'balance'  }]
-
-        this.data = [  {    date: '',    notes: '',    debit: '',    credit: '',    balance: ''  }]
-
     }
+
+
+    getLedgers = () =>{
+        const userIDCookie = document.cookie.split("=")[1];
+        const token = userIDCookie.split(";")[0];
+        console.log(token)
+        const data =qs.stringify({
+            ledgerName: undefined
+        })
+        let config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:5000/api/Ledgers',
+                headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data : data
+        };
+
+        axios.request(config)
+        .then((response) => {
+                console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+                console.log(error);
+        });
+
+    };
+
+    useEffect(){
+        getLedgers();
+        //use effect runs the command on loading
+      }
 
     onSave =() =>{
         this.state.ledgerRows.forEach((row) => {
@@ -39,6 +65,7 @@ export default class Ledgers extends Component{
             const balance = row.balance;
         })
         console.log(this.state.ledgerRows)
+
     }
     addRow = () => {
         const { ledgerRows } = this.state;
@@ -50,7 +77,7 @@ export default class Ledgers extends Component{
           balance: ''
         };
         this.setState({ ledgerRows: [...ledgerRows, newRow] });
-      };
+    };
 
     onChangeCell = (event, index, key ) => {
         const newRows =[...this.state.ledgerRows];
@@ -74,6 +101,7 @@ export default class Ledgers extends Component{
                         <option>Ledger</option>
                         <option>Ledger</option>
                     </select>
+                    <button onClick={this.getLedgers} className='ml-4 text-xl rounded-md'>get</button>
                 </div>
                 <table class="table-auto w-11/12">
                 <thead>
@@ -92,16 +120,16 @@ export default class Ledgers extends Component{
                         <input value={row.date} onChange={(event)=>this.onChangeCell(event, index, "date")} type="date" className="w-full" />    
                     </td>
                     <td className="border-2">
-                        <input value={row.notes} onChange={(event)=>this.onChangeCell(event, index, "notes")}className="w-full" />
+                        <input value={row.notes} onChange={(event)=>this.onChangeCell(event, index, "notes")} className="w-full" />
                     </td>
                     <td className="border-2">  
-                        <input value={row.debit} onChange={(event)=>this.onChangeCell(event, index, "debit")}className="w-full" />
+                        <input value={row.debit} onChange={(event)=>this.onChangeCell(event, index, "debit")} className="w-full" />
                     </td>
                     <td className="border-2">
-                        <input value={row.credit} onChange={(event)=>this.onChangeCell(event, index, "credit")}className="w-full" />
+                        <input value={row.credit} onChange={(event)=>this.onChangeCell(event, index, "credit")} className="w-full" />
                     </td>
                     <td className="border-2">
-                        <input value={row.balance} onChange={(event)=>this.onChangeCell(event, index, "balance")}className="w-full" />
+                        <input value={row.balance} onChange={(event)=>this.onChangeCell(event, index, "balance")} className="w-full" />
                     </td>
                     <td className="border-2 text-green-800 text-3xl">
                         <button onClick={this.addRow}>+</button>
