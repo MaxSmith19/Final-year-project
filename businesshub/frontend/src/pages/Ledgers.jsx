@@ -45,6 +45,8 @@ function Ledgers() {
     };
 
     const onSave = () => {
+        const userIDCookie = document.cookie.split("=")[1];
+        const token = userIDCookie.split(";")[0];
         ledgerRows.forEach((row) => {
             const date = row.date;
             const notes = row.notes;
@@ -52,6 +54,27 @@ function Ledgers() {
             const credit = row.credit;
             const balance = row.balance;
         })
+        console.log(ledgerRows)
+        
+    
+        let config = {
+                method: 'put',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:5000/api/Ledgers/?',
+                headers: { 
+                        'Authorization': `Bearer ${token}`, 
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data : ledgerRows
+        };
+        
+        axios.request(config)
+        .then((response) => {
+                console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+                console.log(error);
+        });
     }
 
     const addRow = () => {

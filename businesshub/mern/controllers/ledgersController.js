@@ -33,9 +33,11 @@ const createLedger = asyncHandler(async(req, res) =>{
 })
 
 const updateLedger = asyncHandler(async(req, res) =>{
-  
+  const token = decodeJWT(req,res)
   const ledgerData = req.body.ledgerData
-  const Ledgers = await Ledger.findByIdAndUpdate(req.params.id, req.body.ledgerData, {new: true})
+  const ledgerID = req.body.ledgerID
+  console.log(ledgerData)
+  const Ledgers = await Ledger.findByIdAndUpdate(ledgerID, {ledgerData: req.body.ledgerData}, {new: true})
   res.status(201).json(Ledgers)
 
 })
