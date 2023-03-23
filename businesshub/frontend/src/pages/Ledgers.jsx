@@ -9,7 +9,8 @@ function Ledgers() {
 
     useEffect(() => {
         getLedgers();
-    }, []);
+    }, [] //having the empty array as an initial value will cause the effect to run only once
+    );
 
     const getLedgers = () => {
         const userIDCookie = document.cookie.split("=")[1];
@@ -30,8 +31,13 @@ function Ledgers() {
 
         axios.request(config)
             .then((response) => {
-                console.log(response.data);
-                setLedgerNames(ledgerNames =>response.data[0].ledgerName)
+                const newLedgerNames = [];
+                for(let i =0; i < response.data.length; i++) {
+                    let ledgerName = response.data[i].ledgerName;
+                    newLedgerNames.push(ledgerName);
+                }
+                setLedgerNames(newLedgerNames);
+                console.log(ledgerNames)
             })
             .catch((error) => {
                 console.log(error);
@@ -76,9 +82,10 @@ function Ledgers() {
             <div className="w-auto h-auto mb-2 border p-1">
                     <h1 className='float-left text-xl p-1'> Select ledger: </h1>
                     <select className='ml-4 text-xl rounded-md p-1 w-1/4'>
-
+                        { ledgerNames.map((ledgerName, index) => (
+                            <option key={index} value={ledgerName}>{ledgerName}</option>
+                            ))}
                     </select>
-                    <button onClick={getLedgers} className='ml-4 text-xl rounded-md'>get</button>
                 </div>
                 <table class="table-auto w-11/12">
                 <thead>
