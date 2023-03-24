@@ -4,8 +4,8 @@ const qs = require('qs');
 
 function Ledgers() {
     const [ledgerRows, setLedgerRows] = useState([{date: '',notes: '',debit: '',credit: '',balance: ''}]);
-
     const [ledgerNames, setLedgerNames] = useState([]);
+    const [currentLedgerID, setCurrentLedgerID] = useState("");
 
     useEffect(() => {
         getLedgers();
@@ -37,7 +37,9 @@ function Ledgers() {
                     newLedgerNames.push(ledgerName);
                 }
                 setLedgerNames(newLedgerNames);
-                console.log(ledgerNames)
+                setCurrentLedgerID(response.data[0]._id);
+                //set current ledger to the first ledger as this
+                //will be first by default
             })
             .catch((error) => {
                 console.log(error);
@@ -54,23 +56,26 @@ function Ledgers() {
             const credit = row.credit;
             const balance = row.balance;
         })
+        console.log(currentLedgerID)
         console.log(ledgerRows)
-        
     
         let config = {
                 method: 'put',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:5000/api/Ledgers/?',
+                url: 'http://localhost:5000/api/Ledgers/update',
                 headers: { 
                         'Authorization': `Bearer ${token}`, 
                         'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                data : ledgerRows
+                data : {
+                    _id: currentLedgerID,
+                    ledgerData: ledgerRows
+                }
         };
         
         axios.request(config)
         .then((response) => {
-                console.log(JSON.stringify(response.data));
+            console.log(JSON.stringify(response.data));
         })
         .catch((error) => {
                 console.log(error);
