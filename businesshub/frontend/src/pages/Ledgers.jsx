@@ -6,6 +6,7 @@ function Ledgers() {
     const [ledgerRows, setLedgerRows] = useState([{date: '',notes: '',debit: '',credit: '',balance: ''}]);
     const [ledgerNames, setLedgerNames] = useState([]);
     const [currentLedgerID, setCurrentLedgerID] = useState("");
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
         getLedgers();
@@ -32,14 +33,34 @@ function Ledgers() {
         axios.request(config)
             .then((response) => {
                 const newLedgerNames = [];
-                for(let i =0; i < response.data.length; i++) {
+                const newLedgerData = [];
+                let ledgerData ="";
+                for (let i = 0; i < response.data.length; i++) {
                     let ledgerName = response.data[i].ledgerName;
-                    newLedgerNames.push(ledgerName);
+                    ledgerData = response.data[i].ledgerData;
+                    if(response.data[i].ledgerData.length !== 0) {
+                        response.data[i].ledgerData.forEach(element => {
+                            console.log(element)
+                        setLedgerRows(LedgerRows => [...LedgerRows, {            
+                            date: element.date,
+                            notes: element.notes,
+                            debit: element.debit,
+                            credit: element.credit,
+                            balance: element.balance
+                        }]);
+                    })
+                    }
                 }
+
+                if(ledgerData!=null){
+                    setLedgerRows(ledgerRows => [...ledgerRows,...ledgerData]);
+                }
+                
                 setLedgerNames(newLedgerNames);
                 setCurrentLedgerID(response.data[0]._id);
                 //set current ledger to the first ledger as this
                 //will be first by default
+
             })
             .catch((error) => {
                 console.log(error);
@@ -56,8 +77,6 @@ function Ledgers() {
             const credit = row.credit;
             const balance = row.balance;
         })
-        console.log(currentLedgerID)
-        console.log(ledgerRows)
     
         let config = {
                 method: 'put',
@@ -84,14 +103,15 @@ function Ledgers() {
 
     const addRow = () => {
         const newRow = {
-            date: '',
-            notes: '',
-            debit: '',
-            credit: '',
-            balance: ''
+          date: '',
+          notes: '',
+          debit: '',
+          credit: '',
+          balance: ''
         };
         setLedgerRows([...ledgerRows, newRow]);
-    };
+      };
+      
 
     const onChangeCell = (event, index, key) => {
         const newRows = [...ledgerRows];
@@ -127,7 +147,7 @@ function Ledgers() {
                 </thead>
                 <tbody >
                 {ledgerRows.map((row, index) => (
-                <tr key={index} className="h-10" ref={el => row[index] =el}>
+                <tr key={index} className="h-10" ref={el => (row[index] =el)}>
                     <td className="border-2">
                         <input value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" className="w-full" />    
                     </td>
