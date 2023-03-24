@@ -10,6 +10,7 @@ function Ledgers() {
 
     useEffect(() => {
         getLedgers();
+        console.log("i fire once")
     }, [] //having the empty array as an initial value will cause the effect to run only once
     );
 
