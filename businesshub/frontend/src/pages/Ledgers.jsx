@@ -106,7 +106,7 @@ function Ledgers() {
             .then((response) => {
                 setCurrentLedgerID(response.data._id);
                 setCurrentLedgerName(response.data.ledgerName);
-                getLedgers()
+                setCacheResponse([...cacheResponse, response.data]);
                 return
             })
             .catch((error) => {
@@ -139,6 +139,7 @@ function Ledgers() {
             //adds a new blank row to the table as nothing exists for the ledger
         }
     }
+
     const onSave = () => {
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
@@ -177,7 +178,12 @@ function Ledgers() {
         axios.request(config)
         .then((response) => {
             console.log(response)
-            getLedgers()
+            cacheResponse.forEach(element => {
+                if(element.ledgerData===currentLedgerName){
+                    setCacheResponse([...cacheResponse, cacheResponse.splice(cacheResponse.indexOf(element), 1)])
+                }
+            })
+            setCacheResponse([...cacheResponse, response.data]);
             setEditedLedgerName("");
         })
         .catch((error) => {
