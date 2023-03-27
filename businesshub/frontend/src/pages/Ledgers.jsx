@@ -6,19 +6,25 @@ const qs = require('qs');
 
 function Ledgers() {
     const [ledgerRows, setLedgerRows] = useState([]);
+    //These are the rows of the current ledger being shown
     const [ledgerNames, setLedgerNames] = useState([]);
+    //This contains all of the ledger names to be displayed in the <Select>
     const [currentLedgerID, setCurrentLedgerID] = useState("");
+    //This is used for axios to update the coorect ledger
     const [currentLedgerName, setCurrentLedgerName] = useState("");
-    const [count, setCount] = useState(0);
+    //Ease the program for the developer
     const [cacheResponse, setCacheResponse] = useState([]);
-    const [editName, setEditName] = useState(0);
+    //Cache the entire response so that it doesn't have to be requested every time
     const [editedLedgerName, setEditedLedgerName] = useState("");
-    const [ledgerColumns, setLedgerColumns] = useState([]);
+    //This will be used when the user is edting the name of a ledger
     const [inSettings, setInSettings] = useState(0);
+    //If they are in the settings mode or not.
+
     useEffect(() => {
         setLedgerRows([])
         getLedgers();
     }, [] //having the empty array as an initial value will cause the effect to run only once
+          //CHANGING THIS WILL CAUSE IT TO CRASH BECAUSE OF ALL THE RENDERING
     );
 
     const getLedgers = () => {
@@ -51,7 +57,6 @@ function Ledgers() {
                     if(response.data.ledgerData!=null && response.data[i].ledgerData.length !== 0) {
                         response.data[i].ledgerData.forEach(element => {
                             setLedgerRows(LedgerRows => [...LedgerRows, {
-                                index: count,
                                 date: element.date,
                                 notes: element.notes,
                                 debit: element.debit,
@@ -81,7 +86,34 @@ function Ledgers() {
     };
     const changeLedger = (event) => {
         let ledgerData = ""
-
+        if(event.target.value === "New") {
+            const userIDCookie = document.cookie.split("=")[1];
+            const token = userIDCookie.split(";")[0];
+            console.log(token)
+            let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:5000/api/Ledgers',
+                headers: { 
+                        'Authorization': `Bearer ${token}`,
+                },
+                data: {
+                    ledgerName: "New Ledger"
+                }
+            };
+            
+            axios.request(config)
+            .then((response) => {
+                setCurrentLedgerID(response.data._id);
+                setCurrentLedgerName(response.data.ledgerName);
+                getLedgers()
+                return
+            })
+            .catch((error) => {
+                    console.log(error);
+            });
+            
+        }
         cacheResponse.forEach(element => {
             //Check the cached Response to get the data from the ledger
             if(element.ledgerName === event.target.value) {
@@ -91,12 +123,10 @@ function Ledgers() {
             }
         })
         setCurrentLedgerName(event.target.value);
-        console.log(currentLedgerName);
-        if(ledgerData!==undefined){
+        if(ledgerData!==undefined || ledgerData===""){
             setLedgerRows([])
             ledgerData.forEach(element => {
                 setLedgerRows(LedgerRows => [...LedgerRows, {
-                    index: count,
                     date: element.date,
                     notes: element.notes,
                     debit: element.debit,
@@ -112,38 +142,24 @@ function Ledgers() {
     const onSave = () => {
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
-        const ledgerName = editedLedgerName;
+        console.log(editedLedgerName)
 
-        if(editedLedgerName.length !==""){
-            setCurrentLedgerName(ledgerName);
-            setEditedLedgerName("");
-        }
-
-        console.log(currentLedgerName)
-        for(let i = 0; i < ledgerRows.length; i++){
-            if(ledgerRows[i].date == ""){
-                alert("Please enter a date");
-                return;
-            }
-            if(ledgerRows[i].notes == ""){
-                alert("Please enter a notes");
-                return;
-            }
-            if(ledgerRows[i].debit == ""){
-                alert("Please enter a debit");
-                return;
-            }
-            if(ledgerRows[i].credit == ""){
-                alert("Please enter a credit");
-                return;
-            }
-            if(ledgerRows[i].balance == ""){
-                alert("Please enter a balance");
-                return;
-            }
-        }
-    
         let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:5000/api/Ledgers/update',
+            headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data : {
+                _id: currentLedgerID,
+                ledgerData: ledgerRows,
+            }
+        };
+        //Not editing the name of the ledger
+        if(editedLedgerName !==currentLedgerName){
+            let config = {
                 method: 'put',
                 maxBodyLength: Infinity,
                 url: 'http://localhost:5000/api/Ledgers/update',
@@ -153,17 +169,23 @@ function Ledgers() {
                 },
                 data : {
                     _id: currentLedgerID,
-                    ledgerData: ledgerRows,
-                    ledgerName: currentLedgerName
+                    ledgerName: editedLedgerName
                 }
-        };
-        
+            };
+        }
+        //Changing the name of the ledger
         axios.request(config)
         .then((response) => {
+            console.log(response)
+            getLedgers()
+            setEditedLedgerName("");
         })
         .catch((error) => {
+            console.log(error)
         });
-    }
+    }    
+        
+
 
     const addRow = () => {
         const newRow = {
@@ -210,18 +232,18 @@ function Ledgers() {
                     <h1 className='float-left text-xl p-1'> Select ledger: </h1>
                     <select className='ml-4 text-xl rounded-md p-1 w-1/4' onChange={changeLedger}>
                         { ledgerNames.map((ledgerName, index) => (
-                            editName ? 
-                            <option key={index} value={ledgerName}><input type="text" value={ledgerName}/></option>:
                             <option key={index} value={ledgerName}>{ledgerName}</option> 
                             ))}
                     </select>
                     <button className = "ml-4 text-xl rounded-md p-1 w-1/4" onClick={()=>setInSettings(!inSettings)}><AiOutlineEdit size={30}/></button>
-                    <button className="bg-blue-500 hover:bg-blue-700 float-right"> New Ledger</button>
+                    <button className="bg-blue-500 hover:bg-blue-700 float-right" value={"New"} onClick={changeLedger}> New Ledger</button>
                 </div>
                 {inSettings ? 
                 <div className="">
-                    <div className=""> 
-                        <input type="text" placeholder={""} onChange={(event)=>setEditedLedgerName(event.target.value)}/><button className="bg-blue-500 hover:bg-blue-700" onClick={()=>onSave()}>Save</button>
+                    <div className="w-auto h-auto mb-2 p-10 border rounded m-auto flex justify-center align-middle bg-gray-200"> 
+                    <label className='float-left text-xl p-1'> Ledger Name: </label>
+                        <input className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 mb-3 " type="text" onChange={(event)=>setEditedLedgerName(event.target.value)}/>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-10" onClick={()=>onSave()}>Save</button>
                     </div>
                 </div>
                  : 

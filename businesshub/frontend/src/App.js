@@ -40,12 +40,10 @@ function App() {
   }
   const containers = document.querySelectorAll('.animationContainer li');
   containers.forEach((container) => {
-    const randomTranslate = Math.floor(Math.random() * 500) + 1;
     const randomDelay = Math.floor(Math.random() * 25) + 1;
     const randomLeft = Math.floor(Math.random() * 100) + 1;
     const randomHeight = Math.floor(Math.random() * 100) + 1
     const randomDuration = Math.floor(Math.random() * 30) + 1;
-    container.style.transform = `top(${randomTranslate}%)`;
     container.style.animationDelay = `${randomDelay}s`;
     container.style.left = `${randomLeft}%`;
     container.style.height = `${randomHeight}px`;

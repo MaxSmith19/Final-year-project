@@ -74,7 +74,7 @@ const Login = (props) => {
           <h1 className="mb-5">Don't have an account? Sign up <Link className="text-blue-600" to="/Register">here</Link></h1>
         </div>
         <div className="flex items-center justify-between">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded " type="submit" >Log in</button>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit" >Log in</button>
         </div>
       </form>
     </div>
