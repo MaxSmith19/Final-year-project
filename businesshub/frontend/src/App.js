@@ -78,43 +78,40 @@ function App() {
         </div>
       </Router>
       <ul className="animationContainer">
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-      <li className=""> </li>
-
-
-
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
+        <li className=""> </li>
     </ul>
     </>
   );
