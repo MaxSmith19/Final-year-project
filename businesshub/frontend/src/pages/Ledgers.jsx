@@ -1,5 +1,7 @@
 import react, {useState, useEffect} from 'react';
 import axios from 'axios';
+import { imBin } from 'react-icons/im';
+
 const qs = require('qs');
 
 function Ledgers() {
@@ -10,6 +12,7 @@ function Ledgers() {
     const [cacheResponse, setCacheResponse] = useState([]);
 
     useEffect(() => {
+        setLedgerRows([])
         getLedgers();
     }, [] //having the empty array as an initial value will cause the effect to run only once
     );
@@ -140,10 +143,8 @@ function Ledgers() {
         
         axios.request(config)
         .then((response) => {
-            console.log(JSON.stringify(response.data));
         })
         .catch((error) => {
-                console.log(error);
         });
     }
 
@@ -157,7 +158,13 @@ function Ledgers() {
         };
 
         setLedgerRows([...ledgerRows, newRow]);
-      };
+    };
+    
+    const deleteRow = (index) => {
+        const updatedLedgerRows = [...ledgerRows];
+        updatedLedgerRows.splice(index, 1)
+        setLedgerRows(updatedLedgerRows)
+    }
 
     const onChangeCell = (event, index, key) => {
         const newRows = [...ledgerRows];
@@ -192,6 +199,8 @@ function Ledgers() {
                         <th className="w-1/12 border-t border-l">Debit</th>
                         <th className="w-1/12 border-t border-l">Credit</th>
                         <th className="w-2/12 border-t border-l border-r border-">Balance</th>
+                        <button onClick={addRow}>+</button>
+
                     </tr>
                 </thead>
                 <tbody >
@@ -213,7 +222,7 @@ function Ledgers() {
                         <input value={row.balance} onChange={(event)=>onChangeCell(event, index, "balance")} type="number" className="w-full" required />
                     </td>
                     <td className="border-2 text-green-800 text-3xl">
-                        <button onClick={addRow}>+</button>
+                        <button onClick={deleteRow}>Delete</button>
                     </td>
                 </tr>
                 ))}
