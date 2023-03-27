@@ -20,10 +20,8 @@ function App() {
     const authCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
     if (authCookie !== undefined) {
       setAuthenticated(true);
-      console.log("Authenticated");
     } else {
       setAuthenticated(false);
-      console.log("Not Authenticated");
     }
   };
 
@@ -40,10 +38,19 @@ function App() {
     setAuthenticated(true);
     console.log(authenticated)
   }
-  const containers = document.querySelectorAll('.bodyAnimation');
+  const containers = document.querySelectorAll('.animationContainer li');
   containers.forEach((container) => {
     const randomTranslate = Math.floor(Math.random() * 500) + 1;
+    const randomDelay = Math.floor(Math.random() * 25) + 1;
+    const randomLeft = Math.floor(Math.random() * 100) + 1;
+    const randomHeight = Math.floor(Math.random() * 100) + 1
+    const randomDuration = Math.floor(Math.random() * 30) + 1;
     container.style.transform = `top(${randomTranslate}%)`;
+    container.style.animationDelay = `${randomDelay}s`;
+    container.style.left = `${randomLeft}%`;
+    container.style.height = `${randomHeight}px`;
+    container.style.width = `${randomHeight}px`;
+    container.style.animationDuration = `${randomDuration}s`;
   });
   return (
     <>
@@ -70,83 +77,45 @@ function App() {
           </Routes>
         </div>
       </Router>
-      <div className="animationContainer">
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
-      <div className=""> </div>
+      <ul className="animationContainer">
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
+      <li className=""> </li>
 
 
-    </div>
+
+    </ul>
     </>
   );
 }

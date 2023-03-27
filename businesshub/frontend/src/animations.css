@@ -1,46 +1,39 @@
-.animationContainer {
-  z-index: -1;
+
+.animationContainer{
   position: fixed;
-  display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-  grid-gap: 5em;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right:0;
   width: 100%;
   height: 100%;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  animation-fill-mode: forwards;
+  overflow: hidden;
+  z-index: -1;
 }
 
-.animationContainer div {
-  background-color: #65d3ff;
-  border-radius: 25%;
-  width: 5em;
-  height: 5em;
-  opacity: 1;
-  transform: translateY(-100%);
-  animation: bodyAnimation 5s ease-in-out infinite;
+.animationContainer li{
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: #5bb8e8;
+  animation: bodyAnimation 25s linear infinite;
+  bottom: -150px;
+  
 }
 
-.animationContainer div:nth-child(2n) {
-  animation-delay: 0.5s;
-  background-color: #5bb8e8;
-}
+@keyframes  bodyAnimation{
 
-.animationContainer div:nth-child(3n) {
-  animation-delay: 1s;
-  background-color: #53a6d8;
-}
-
-@keyframes bodyAnimation {
-  0% {
-    transform: translateY(-100%) rotate(0deg) scale(1);
+  0%{
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+      border-radius: 0;
   }
-  50% {
-    transform: translateY(-50%) rotate(180deg) scale(1.2);
+
+  100%{
+      transform: translateY(-1000px) rotate(720deg);
+      opacity: 0;
+      border-radius: 50%;
   }
-  100% {
-    transform: translateY(-100%) rotate(360deg) scale(1);
-  }
+
 }
