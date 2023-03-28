@@ -177,7 +177,7 @@ function Ledgers() {
                     newCacheResponse[index] = response.data;
                     setCacheResponse(newCacheResponse);
                     //get the cached response, replace the existing ledger and replace with the new one from the response
-                    //Cuts out the need for getLedgers and uneccessary API calls
+                    //Cuts out the need for getLedgers and uneccessary API calls to getLedgers
                 }
             })
             setEditedLedgerName("");
