@@ -75,7 +75,6 @@ function Ledgers() {
                 setCacheResponse(response.data)
                 setLedgerNames(newLedgerNames);
 
-                console.log(currentLedgerName)
                 //set current ledger to the first ledger as this
                 //will be first by default
 
@@ -159,8 +158,10 @@ function Ledgers() {
             }
         };
         //Not editing the name of the ledger
+        console.log(editedLedgerName); 
+        console.log(currentLedgerName);
         if(editedLedgerName !==currentLedgerName){
-            let config = {
+            config = {
                 method: 'put',
                 maxBodyLength: Infinity,
                 url: 'http://localhost:5000/api/Ledgers/update',
@@ -177,13 +178,14 @@ function Ledgers() {
         //Changing the name of the ledger
         axios.request(config)
         .then((response) => {
-            console.log(response)
             cacheResponse.forEach(element => {
-                if(element.ledgerData===currentLedgerName){
-                    setCacheResponse([...cacheResponse, cacheResponse.splice(cacheResponse.indexOf(element), 1)])
+                if(element.ledgerName===currentLedgerName){
+                    setCacheResponse([...cacheResponse, cacheResponse.splice(cacheResponse.indexOf(element), 1, response.data)])
+                    //get the cached response, replace the existing ledger and replace with the new one from the response
+                    //Cuts out the need for getLedgers and uneccessary API calls
                 }
             })
-            setCacheResponse([...cacheResponse, response.data]);
+            console.log(cacheResponse)
             setEditedLedgerName("");
         })
         .catch((error) => {
@@ -212,12 +214,29 @@ function Ledgers() {
         setLedgerRows(updatedLedgerRows)
     }
 
-    const changeLedgerName = (event) => {
-        console.log(editedLedgerName);
-        const updatedLedgerNames = [...ledgerNames];
-        updatedLedgerNames.splice()
+    const deleteLedger = () => {
+
+        let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:5000/api/Ledgers/delete',
+            headers: { },
+            data: {
+                _id: currentLedgerID
+            }
+        };
+        console.log(currentLedgerID);
+        axios.request(config)
+        .then((response) => {
+            alert("Ledger Deleted")
+            setCacheResponse([...cacheResponse, cacheResponse.splice(cacheResponse.indexOf(response.data), 1)])
+            
+        })
+        .catch((error) => {
+                console.log(error);
+        });
+        
     }
-    
     const onChangeCell = (event, index, key) => {
         const newRows = [...ledgerRows];
         newRows[index][key] = event.target.value;
@@ -247,10 +266,14 @@ function Ledgers() {
                 {inSettings ? 
                 <div className="">
                     <div className="w-auto h-auto mb-2 p-10 border rounded m-auto flex justify-center align-middle bg-gray-200"> 
-                    <label className='float-left text-xl p-1'> Ledger Name: </label>
-                        <input className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 mb-3 " type="text" onChange={(event)=>setEditedLedgerName(event.target.value)}/>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-10" onClick={()=>onSave()}>Save</button>
+                        <label className='float-left text-xl p-1'> Ledger Name: </label>
+                            <input className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 mb-3 " type="text" value={editedLedgerName} onChange={(event)=>setEditedLedgerName(event.target.value)}/>
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-10" onClick={()=>onSave()}>Save</button>
+                            <div className="justify-center align-middle">
+                                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded h-10" value={currentLedgerName} onClick={()=>deleteLedger()}>Delete Ledger</button>
+                            </div>
                     </div>
+
                 </div>
                  : 
                 <table class="table-auto w-11/12 h-auto">

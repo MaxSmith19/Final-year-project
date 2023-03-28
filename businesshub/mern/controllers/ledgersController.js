@@ -46,8 +46,9 @@ const updateLedger = asyncHandler(async(req, res) =>{
 })
  
 const deleteLedger = asyncHandler(async(req, res) =>{
-  const Ledger = await Ledger.findByIdAndDelete(req.params.id)
-  res.status(201).json({message: "Ledger deleted"})
+  const ledgerID = req.body._id
+  const Ledgers = await Ledger.findByIdAndDelete(ledgerID)  
+  res.status(201).json({message: ` ${Ledgers.ledgerName} deleted`})
 })
 
 module.exports ={

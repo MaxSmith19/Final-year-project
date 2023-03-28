@@ -10,7 +10,7 @@ const {
 
 router.route('/').get(protect,getLedger).post(createLedger)
 router.route('/update').put(protect,updateLedger)
-router.route('delete').delete(deleteLedger)
+router.route('/delete').delete(deleteLedger)
 
 
 module.exports = router
