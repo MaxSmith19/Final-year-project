@@ -85,34 +85,7 @@ function Ledgers() {
     };
     const changeLedger = (event) => {
         let ledgerData = ""
-        if(event.target.value === "New") {
-            const userIDCookie = document.cookie.split("=")[1];
-            const token = userIDCookie.split(";")[0];
-            console.log(token)
-            let config = {
-                method: 'post',
-                maxBodyLength: Infinity,
-                url: 'http://localhost:5000/api/Ledgers',
-                headers: { 
-                        'Authorization': `Bearer ${token}`,
-                },
-                data: {
-                    ledgerName: "New Ledger"
-                }
-            };
-            
-            axios.request(config)
-            .then((response) => {
-                setCurrentLedgerID(response.data._id);
-                setCurrentLedgerName(response.data.ledgerName);
-                setCacheResponse([...cacheResponse, response.data]);
-                return
-            })
-            .catch((error) => {
-                    console.log(error);
-            });
-            
-        }
+
         cacheResponse.forEach(element => {
             //Check the cached Response to get the data from the ledger
             if(element.ledgerName === event.target.value) {
@@ -138,11 +111,33 @@ function Ledgers() {
             //adds a new blank row to the table as nothing exists for the ledger
         }
     }
-
+    const createLedger = () =>{
+        const userIDCookie = document.cookie.split("=")[1];
+        const token = userIDCookie.split(";")[0];
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:5000/api/Ledgers',
+            headers: { 
+                    'Authorization': `Bearer ${token}`,
+            },
+            data: {
+                ledgerName: "New Ledger"
+            }
+        };
+        //Create a new ledger with the temporary name of "New Ledger"
+        axios.request(config)
+        .then((response) => {
+            window.location.reload();
+            return
+        })
+        .catch((error) => {
+                console.log(error);
+        });
+    }
     const onSave = () => {
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
-        console.log(editedLedgerName)
 
         let config = {
             method: 'put',
@@ -154,13 +149,11 @@ function Ledgers() {
             },
             data : {
                 _id: currentLedgerID,
-                ledgerData: ledgerRows,
+                ledgerData: ledgerRows
             }
         };
         //Not editing the name of the ledger
-        console.log(editedLedgerName); 
-        console.log(currentLedgerName);
-        if(editedLedgerName !==currentLedgerName){
+        if(editedLedgerName !==""){
             config = {
                 method: 'put',
                 maxBodyLength: Infinity,
@@ -178,14 +171,15 @@ function Ledgers() {
         //Changing the name of the ledger
         axios.request(config)
         .then((response) => {
-            cacheResponse.forEach(element => {
+            cacheResponse.forEach((element,index) => {
                 if(element.ledgerName===currentLedgerName){
-                    setCacheResponse([...cacheResponse, cacheResponse.splice(cacheResponse.indexOf(element), 1, response.data)])
+                    const newCacheResponse = [...cacheResponse];
+                    newCacheResponse[index] = response.data;
+                    setCacheResponse(newCacheResponse);
                     //get the cached response, replace the existing ledger and replace with the new one from the response
                     //Cuts out the need for getLedgers and uneccessary API calls
                 }
             })
-            console.log(cacheResponse)
             setEditedLedgerName("");
         })
         .catch((error) => {
@@ -193,8 +187,6 @@ function Ledgers() {
         });
     }    
         
-
-
     const addRow = () => {
         const newRow = {
           date: '',
@@ -261,7 +253,7 @@ function Ledgers() {
                             ))}
                     </select>
                     <button className = "ml-4 text-xl rounded-md p-1 w-1/4" onClick={()=>setInSettings(!inSettings)}><AiOutlineEdit size={30}/></button>
-                    <button className="bg-blue-500 hover:bg-blue-700 float-right" value={"New"} onClick={changeLedger}> New Ledger</button>
+                    <button className="bg-blue-500 hover:bg-blue-700 float-right" value={"New"} onClick={()=>createLedger()}> New Ledger</button>
                 </div>
                 {inSettings ? 
                 <div className="">
