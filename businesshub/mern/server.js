@@ -21,6 +21,7 @@ app.use(cors())
 app.use('/api/Users', require('./routes/userRoutes'))
 app.use('/api/Admin', require('./routes/adminRoutes'))
 app.use('/api/Ledgers', require('./routes/ledgersRoutes'))
+app.use('/api/Socials', require('./routes/socialMediaRoutes'))
 
 
 
