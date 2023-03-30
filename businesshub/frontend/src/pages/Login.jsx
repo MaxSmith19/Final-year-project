@@ -3,6 +3,7 @@ import axios from "axios"
 import { Link, useNavigate } from 'react-router-dom';
 import * as qs from 'qs'
 import {toast} from 'react-toastify'
+import { useEffect } from 'react';
 const Login = (props) => {
   
   const [email, setEmail] = useState('');
@@ -10,6 +11,15 @@ const Login = (props) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    //Check if the user is already logged in
+    const userIDCookie = document.cookie.split("=")[1];
+    const token = userIDCookie.split(";")[0];
+    if(token!== undefined){
+      navigate("/dashboard")
+    }
+  },[])
 
   const onSubmit = (e) => {
     e.preventDefault();
