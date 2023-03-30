@@ -2,6 +2,7 @@ import react, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { imBin } from 'react-icons/im';
 import { AiOutlineEdit } from 'react-icons/ai';
+import Chart from 'chart.js/auto'
 const qs = require('qs');
 
 function Ledgers() {
@@ -23,9 +24,39 @@ function Ledgers() {
     useEffect(() => {
         setLedgerRows([])
         getLedgers();
+
     }, [] //having the empty array as an initial value will cause the effect to run only once
           //CHANGING THIS WILL CAUSE IT TO CRASH BECAUSE OF ALL THE RENDERING
+          // if there is an item in the array, useEffect will run when that item is changed.
+          //Since it is blank, It will only run once.
     );
+    useEffect(() =>{
+        let labels=[]
+        let data=[]
+        const bchrt = document.getElementById('balanceChart').getContext('2d');
+        ledgerRows.forEach(elements =>{
+            labels.push(elements.date)
+            data.push(elements.balance)
+        })
+
+        const chart = new Chart(bchrt, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Balance over time',
+              backgroundColor: 'rgb(255, 99, 132)',
+              borderColor: 'rgb(255, 99, 132)',
+              data: data
+            }]
+          },
+          options: {}
+          });
+          return () =>{
+            chart.destroy()
+          }
+    },[ledgerRows])
+
 
     const getLedgers = () => {
         const userIDCookie = document.cookie.split("=")[1]; 
@@ -74,7 +105,6 @@ function Ledgers() {
                 }
                 setCacheResponse(response.data)
                 setLedgerNames(newLedgerNames);
-
                 //set current ledger to the first ledger as this
                 //will be first by default
 
@@ -220,12 +250,10 @@ function Ledgers() {
                 _id: currentLedgerID
             }
         };
-        console.log(currentLedgerID);
         axios.request(config)
         .then((response) => {
             alert("Ledger Deleted")
-            setCacheResponse([...cacheResponse, cacheResponse.splice(cacheResponse.indexOf(response.data), 1)])
-            
+            setCacheResponse([...cacheResponse, cacheResponse.splice(cacheResponse.indexOf(response.data), "")])
         })
         .catch((error) => {
                 console.log(error);
@@ -240,11 +268,11 @@ function Ledgers() {
     }
     return(
             <div>
-            <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2 mb-5">
-                <h1 className="text-5xl ">Your Accounts</h1>
-                <hr />
-                <p>Manage your accounts here</p>
-                
+            <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2 mb-5 grid grid-cols-3">
+                <div className="w-full h-full">
+                    <canvas id="balanceChart"></canvas>
+                </div>
+
             </div>
             
             <div className="bg-white pb-10 w-full m-auto p-4 rounded-xl shadow-2xl">
@@ -271,7 +299,7 @@ function Ledgers() {
 
                 </div>
                  : 
-                <table class="table-auto w-11/12 h-auto">
+                <table className="table-auto w-11/12 h-auto">
                 <thead>
                     <tr>
                         <th className="w-2/12 border-t border-l">Date</th>
