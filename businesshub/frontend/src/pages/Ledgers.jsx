@@ -176,6 +176,9 @@ function Ledgers() {
                     const newCacheResponse = [...cacheResponse];
                     newCacheResponse[index] = response.data;
                     setCacheResponse(newCacheResponse);
+                    const newLedgerNames =  [...ledgerNames];
+                    newLedgerNames[index] = response.data.ledgerName;
+                    setLedgerNames(newLedgerNames)
                     //get the cached response, replace the existing ledger and replace with the new one from the response
                     //Cuts out the need for getLedgers and uneccessary API calls to getLedgers
                 }
