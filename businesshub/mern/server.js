@@ -10,6 +10,7 @@ const connectDB = require("./config/db")
 const allowedOrigins = ["http://localhost:5000"]
 const skipOriginCheck = true;
 
+
 connectDB()
 
 const app=express()
