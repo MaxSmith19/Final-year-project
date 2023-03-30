@@ -12,7 +12,7 @@ const { protect} = require("../middleware/authMiddleware")
 router.route('/get').get( protect, getSocials)
 router.route('/register').post(protect,registerSocials)
 router.route("/ping").get(pingEtsy)
-router.route("/etsy/oAuth").post(oAuthEtsy)
+// router.route("/etsy/oAuth").post(oAuthEtsy)
 //Each of these show the associated subdirectory for the function.
 //So, if we want to register a user, we add a / at the end of the url 
 
