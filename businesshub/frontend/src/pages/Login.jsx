@@ -14,10 +14,14 @@ const Login = (props) => {
   
   useEffect(() => {
     //Check if the user is already logged in
+    try{
     const userIDCookie = document.cookie.split("=")[1];
     const token = userIDCookie.split(";")[0];
     if(token!== undefined){
       navigate("/dashboard")
+    }
+    }catch(e){
+      navigate("/Login")
     }
   },[])
 
