@@ -56,12 +56,10 @@ function App() {
       <Router>
         {authenticated ? (
         <Header authenticated={authenticated} onLogout={handleLogout}/>
-        
         ): 
         <div className="border bg-white h-20 shadow-md"></div>
-        
         }
-        <div className="m-12">
+        <div className="m-8">
           <Routes>
             {authenticated ? (
               <>
