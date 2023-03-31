@@ -4,6 +4,7 @@ import { imBin } from 'react-icons/im';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { MdPostAdd } from 'react-icons/md'
 import Chart from 'chart.js/auto'
+import { FiSave } from 'react-icons/fi'
 const qs = require('qs');
 
 function Ledgers() {
@@ -280,14 +281,14 @@ function Ledgers() {
         setLedgerRows(newRows);
     }
     return(
-            <div className='transition-all ease-in delay-300'>
+            <div className='transition-all ease-in delay-300 '>
             <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2 mb-5 grid grid-cols-3">
                 <div className="w-full h-full">
                     <canvas id="balanceChart"></canvas>
                 </div>
             </div>
             
-            <div className="bg-white pb-10 w-full m-auto p-4 rounded-xl shadow-2xl">
+            <div className="bg-white pb-16 w-full m-auto p-4 rounded-xl shadow-2xl">
                 <div className="border grid grid-cols-9 grid-flow-col col-span-1 gap-0 p-2">
                         <h1 className='text-xl col-span-1 w-full'> Select ledger: </h1>
                         <select className='ml-4 text-xl rounded-md col-span-2' onChange={changeLedger}>
@@ -303,18 +304,19 @@ function Ledgers() {
 
                 {inSettings ? 
                 <div className="">
-                    <div className="w-auto h-auto mb-2 p-10 border rounded m-auto flex justify-center align-middle bg-gray-200"> 
-                        <label className='float-left text-xl p-1'> Ledger Name: </label>
-                            <input className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 mb-3 " type="text" value={editedLedgerName} onChange={(event)=>setEditedLedgerName(event.target.value)}/>
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-10" onClick={()=>onSave()}>Save</button>
-                            <div className="justify-center align-middle">
-                                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded h-10" value={currentLedgerName} onClick={()=>deleteLedger()}>Delete Ledger</button>
+                    <div className="w-full mb-2 p-10 border rounded m-auto grid grid-row-2 align-middle justify-center bg-gray-200"> 
+                            <div className="shadow border rounded py-2 px-3 text-gray-700 mb-3 w-full">
+                                <label className='text-xl p-1'> Ledger Name: </label>
+                                <input className="" type="text" value={editedLedgerName} onChange={(event)=>setEditedLedgerName(event.target.value)}/>
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-3" onClick={()=>onSave()}>Save</button>
+                            </div>
+                            <div className="shadow border rounded py-2 px-3 text-gray-700 mb-3 align-middle justify-center m-auto">
+                                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" value={currentLedgerName} onClick={()=>deleteLedger()}>Delete Ledger</button>
                             </div>
                     </div>
-
                 </div>
                  : 
-                <table className="table-auto w-11/12 h-auto">
+                <table className="table-auto w-11/12 h-auto md:table-fixed sm:table-fixed">
                 <thead>
                     <tr>
                         <th className="w-2/12 border-t border-l">Date</th>
@@ -328,8 +330,8 @@ function Ledgers() {
                 </thead>
                 <tbody >
                 {ledgerRows.map((row, index) => (
-                <tr key={index} className="h-10" ref={event => (row[index] =event)}>
-                    <td className="border-2">
+                <tr key={index} className="h-10 sm:text-left" ref={event => (row[index] =event)}>
+                    <td className="border-2 ">
                         <input value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" className="w-full" required />    
                     </td>
                     <td className="border-2">
@@ -352,7 +354,7 @@ function Ledgers() {
                 </tbody>
                 </table>   
             }
-            <button onClick={onSave} className="bg-green-800 hover:bg-green-900 float-right rounded w-1/12">Save</button>          
+            <button onClick={onSave} className="float-right rounded"><FiSave size={50}/></button>          
                 
             </div>
         </div>
