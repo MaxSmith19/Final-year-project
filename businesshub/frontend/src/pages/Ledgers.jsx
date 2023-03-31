@@ -2,6 +2,7 @@ import react, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { imBin } from 'react-icons/im';
 import { AiOutlineEdit } from 'react-icons/ai';
+import { MdPostAdd } from 'react-icons/md'
 import Chart from 'chart.js/auto'
 const qs = require('qs');
 
@@ -168,7 +169,6 @@ function Ledgers() {
     const onSave = () => {
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
-
         let config = {
             method: 'put',
             maxBodyLength: Infinity,
@@ -183,6 +183,13 @@ function Ledgers() {
             }
         };
         //Not editing the name of the ledger
+        cacheResponse.forEach(element => {
+            if(element.ledgerName === editedLedgerName){
+                alert("You already have a ledger called " + element.ledgerName)
+                setEditedLedgerName("")
+                window.location.reload()
+            }
+        })
         if(editedLedgerName !==""){
             config = {
                 method: 'put',
@@ -267,25 +274,27 @@ function Ledgers() {
         setLedgerRows(newRows);
     }
     return(
-            <div>
+            <div className='transition-all ease-in delay-300'>
             <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2 mb-5 grid grid-cols-3">
                 <div className="w-full h-full">
                     <canvas id="balanceChart"></canvas>
                 </div>
-
             </div>
             
             <div className="bg-white pb-10 w-full m-auto p-4 rounded-xl shadow-2xl">
-            <div className="w-auto h-auto mb-2 border p-1">
-                    <h1 className='float-left text-xl p-1'> Select ledger: </h1>
-                    <select className='ml-4 text-xl rounded-md p-1 w-1/4' onChange={changeLedger}>
-                        { ledgerNames.map((ledgerName, index) => (
-                            <option key={index} value={ledgerName}>{ledgerName}</option> 
-                            ))}
-                    </select>
-                    <button className = "ml-4 text-xl rounded-md p-1 w-1/4" onClick={()=>setInSettings(!inSettings)}><AiOutlineEdit size={30}/></button>
-                    <button className="bg-blue-500 hover:bg-blue-700 float-right" value={"New"} onClick={()=>createLedger()}> New Ledger</button>
-                </div>
+                <div className="border grid grid-cols-9 grid-flow-col col-span-1 gap-0 p-2">
+                        <h1 className='text-xl col-span-1 w-full'> Select ledger: </h1>
+                        <select className='ml-4 text-xl rounded-md col-span-2' onChange={changeLedger}>
+                            { ledgerNames.map((ledgerName, index) => (
+                                <option key={index} value={ledgerName}>{ledgerName}</option> 
+                                ))}
+                        </select>
+                        <div className="">
+                            <button className="ml-4 mr-4 text-xl rounded-md p-1 w-1/12" value={"New"} onClick={()=>createLedger()}><MdPostAdd size={30}/></button>
+                            <button className="ml-4 text-xl rounded-md p-1 w-1/12" onClick={()=>setInSettings(!inSettings)}><AiOutlineEdit size={30}/></button>
+                        </div>
+                    </div>
+
                 {inSettings ? 
                 <div className="">
                     <div className="w-auto h-auto mb-2 p-10 border rounded m-auto flex justify-center align-middle bg-gray-200"> 
