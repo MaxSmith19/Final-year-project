@@ -1,0 +1,10 @@
+@media only screen and (max-width: 600px) {
+    /* Bigger phones */
+
+}
+@media only screen and (max-width: 425px){
+    /* Smaller phones */
+}
+@media only screen and (max-width: 1200px){
+    /*Tablets [601px -> 1200px]*/
+}
