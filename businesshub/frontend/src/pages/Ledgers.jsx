@@ -45,13 +45,19 @@ function Ledgers() {
           data: {
             labels: labels,
             datasets: [{
-              label: 'Balance over time',
+              label: 'Balance',
               backgroundColor: 'rgb(255, 99, 132)',
               borderColor: 'rgb(255, 99, 132)',
               data: data
             }]
           },
-          options: {}
+          options: {
+            legend : {display: false},
+            title: {
+                display: true,
+                text: "World Wine Production 2018"
+              }
+          }
           });
           return () =>{
             chart.destroy()
@@ -242,7 +248,7 @@ function Ledgers() {
     
     const deleteRow = (index) => {
         const updatedLedgerRows = [...ledgerRows];
-        updatedLedgerRows.splice(index, 1)
+        updatedLedgerRows.splice(index.target.value, 1)
         setLedgerRows(updatedLedgerRows)
     }
 
@@ -339,7 +345,7 @@ function Ledgers() {
                         <input value={row.balance} onChange={(event)=>onChangeCell(event, index, "balance")} type="number" className="w-full" required />
                     </td>
                     <td className="border-2 text-green-800 text-3xl">
-                        <button onClick={deleteRow}>Delete</button>
+                        <button value={index} onClick={deleteRow}>Delete</button>
                     </td>
                 </tr>
                 ))}
