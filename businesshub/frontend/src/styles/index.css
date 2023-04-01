@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 
-
+.darkMode{
+    background-color: black !important;
+}
 .container {
     display: flex;
     position: relative;
@@ -30,7 +32,6 @@ html{
     z-index: 1;
     left: 0;
     top: 0;
-    background-color: rgb(255, 0, 0); 
     background-color: rgba(0, 0, 0, 0.9);
     overflow-x: hidden; 
     transition: 0.5s;
@@ -41,10 +42,10 @@ html{
     top: 5%; /* 25% from the top */
     width: 100%;
     text-align: center;
-    margin-top: 30px; 
+    margin-top: 30px;
 }
 .overlay-content a:hover{
-    animation: increaseTextSize 1s ease-in-out 1;
+    animation: increaseTextSize 1s ease-in-out infinite;
 }
 .overlay a {
     padding: 8px;

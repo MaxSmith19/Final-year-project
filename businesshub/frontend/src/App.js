@@ -16,6 +16,7 @@ import UserSettings from './pages/userSettings';
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [isDarkMode, setDarkMode] = useState(Boolean(localStorage.getItem("isDarkMode")))
 
   const unpackCookie = () => {
     const authCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
@@ -26,9 +27,20 @@ function App() {
     }
   };
 
+  const assignTheme = () => {
+
+  }
+
   useEffect(() => {
     unpackCookie();
+    console.log(isDarkMode)
+    if(isDarkMode){
+      document.body.classList.add('darkMode');
+    }else{
+      document.body.classList.remove('darkMode');
+    }
   }, []);
+
 
   const handleLogout = () => {
     setAuthenticated(false);

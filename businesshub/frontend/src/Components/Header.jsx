@@ -5,12 +5,16 @@ import {RiAccountCircleFill, RiAccountCircleLine} from 'react-icons/ri'
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast} from 'react-toastify'
-
+import  Switch  from 'react-switch'
 const Nav = (props) => {
     var [isNavOpen,setNav] = useState(false);
     var [isAccountOpen,setIsAccountOpen] = useState(true);
+    var [isDarkmode,setIsDarkMode] = useState(localStorage.getItem("darkMode"))
     const navigate = useNavigate()
-
+    const changeMode =() =>{
+        setIsDarkMode(!isDarkmode)
+        localStorage.setItem("isDarkMode",!isDarkmode)
+    }
     const logOut =() =>{
         document.cookie = "token=; expires=Thu, 01 Jan 1970";  
         //immediately deletes the cookie as the expiry date was a couple years ago
@@ -41,8 +45,9 @@ const Nav = (props) => {
         <div className={isNavOpen? "overlay":"h-0"}>
         <button className={isNavOpen? "transition -rotate-180 duration-300 text-white mt-3 ml-3" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="mt-3 ml-2" size={isNavOpen? "50":"0"} /></button>
                 <div className={isNavOpen? "overlay-content":"hidden"}> 
-                    <h1 className="text-gray-400 text-6xl text-center underline mb-10">Menu</h1>
-
+                    <label className='text-white'>Dark Mode:
+                    <Switch onChange={()=>changeMode()} checked={isDarkmode}/>
+                    </label>
                     <a onClick={()=>setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>
                     <a onClick={()=>setNav(false)}><Link to="/Ledgers">Ledgers</Link></a>
                     <a onClick={()=>setNav(false)}><Link to="/Legislation">Legislation</Link></a>
