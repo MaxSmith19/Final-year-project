@@ -52,6 +52,7 @@ const Nav = (props) => {
                     <a onClick={()=>setNav(false)}><Link to="/Ledgers">Ledgers</Link></a>
                     <a onClick={()=>setNav(false)}><Link to="/Legislation">Legislation</Link></a>
                     <a onClick={()=>setNav(false)}><Link to="/Marketing">Marketing</Link></a>
+                    <a onClick={()=>setNav(false)}><Link to="/Inventory">Inventory</Link></a>
 
 
                 </div>

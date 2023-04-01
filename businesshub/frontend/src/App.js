@@ -6,6 +6,7 @@ import Ledgers from './pages/Ledgers';
 import Dashboard from './pages/dashboard'
 import Legislation from './pages/legislation';
 import Marketing from './pages/marketing'
+import Inventory from './pages/inventory'
 import { Navigate } from 'react-router-dom';
 import Footer from "./Components/Footer";
 import { useEffect, useState } from 'react';
@@ -80,6 +81,7 @@ function App() {
                 <Route path="/UserSettings" element={<UserSettings />} />
                 <Route path="/Legislation" element={<Legislation />} />
                 <Route path="/Marketing" element={<Marketing />} />
+                <Route path="/Inventory" element={<Inventory />} />
               </>
             ) : (<Route path="/" exact element={<Navigate replace to="/Login"></Navigate>} />)}
             <Route path="/Login" element={<Login onLogin={handleLogin}/>} />

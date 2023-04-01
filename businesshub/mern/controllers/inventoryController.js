@@ -19,7 +19,8 @@ const createInventory = asyncHandler(async(req, res) =>{
   }else{
     const inv = await Inventory.create({
       userID: token.id,
-      inventoryData: [{Item:"",Description:"", Quantity:"", SellingPrice:""}]
+      inventoryData: [{Item:"",Description:"", Quantity:"", SellingPrice:""}],
+      ingredientsData: [{Item:"", Description:"", Quantity: "", SellingPrice: ""}]
     })
     res.status(201).json(inv)
   }
@@ -27,7 +28,12 @@ const createInventory = asyncHandler(async(req, res) =>{
 
 const updateInventory = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
-  const inv = await Inventory.findByIdAndUpdate(token.id, {InventoryData: req.body.InventoryData}, {new: true})
+  const id = await Inventory.findOne({token})
+  console.log(req.inventoryData)
+  const inv = await Inventory.findByIdAndUpdate(id._id, {
+    inventoryData: req.body.inventoryData,
+    ingredientsData: req.body.ingredientsData
+  }, {new: true})
   res.status(201).json(inv)
 })
  
