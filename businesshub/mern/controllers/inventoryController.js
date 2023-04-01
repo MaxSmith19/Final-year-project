@@ -13,11 +13,16 @@ const getInventory = asyncHandler(async (req, res) => {
 
 const createInventory = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
-  const inv = await Inventory.create({
-    userID: token.id,
-    inventoryData: {}
-  })
-  res.status(201).json(inv)
+  const check = await Inventory.find({userID: token.id})
+  if(check.length!=0){
+    res.status(409).json("Inventory already exists")
+  }else{
+    const inv = await Inventory.create({
+      userID: token.id,
+      inventoryData: [{Item:"",Description:"", Quantity:"", SellingPrice:""}]
+    })
+    res.status(201).json(inv)
+  }
 })
 
 const updateInventory = asyncHandler(async(req, res) =>{
