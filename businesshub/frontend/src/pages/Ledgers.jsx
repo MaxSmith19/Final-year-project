@@ -289,7 +289,7 @@ function Ledgers() {
             </div>
             
             <div className="bg-white pb-16 w-full m-auto p-4 rounded-xl shadow-2xl">
-                <div className="border grid grid-cols-9 grid-flow-col col-span-1 gap-0 p-2">
+                <div className="border grid grid-cols-9 grid-flow-col col-span-1 gap-0 p-2 ledgerOptions">
                         <h1 className='text-xl col-span-1 w-full'> Select ledger: </h1>
                         <select className='ml-4 text-xl rounded-md col-span-2' onChange={changeLedger}>
                             { ledgerNames.map((ledgerName, index) => (
@@ -316,43 +316,51 @@ function Ledgers() {
                     </div>
                 </div>
                  : 
-                <table className="table-auto w-11/12 h-auto md:table-fixed sm:table-fixed">
+                <table class="table-auto w-11/12 h-auto md:table-fixed sm:table-fixed">
                 <thead>
                     <tr>
-                        <th className="w-2/12 border-t border-l">Date</th>
-                        <th className="w-5/12 border-t border-l">Notes</th>
-                        <th className="w-1/12 border-t border-l">Debit</th>
-                        <th className="w-1/12 border-t border-l">Credit</th>
-                        <th className="w-2/12 border-t border-l border-r border-">Balance</th>
-                        <button onClick={addRow}>+</button>
-
+                    <th class="w-2/12 border-t border-l">Date</th>
+                    <th class="w-5/12 border-t border-l">Notes</th>
+                    <th class="w-1/12 border-t border-l">Debit</th>
+                    <th class="w-1/12 border-t border-l">Credit</th>
+                    <th class="w-2/12 border-t border-l border-r">Balance</th>
+                    <button onClick={addRow}>+</button>
                     </tr>
                 </thead>
-                <tbody >
-                {ledgerRows.map((row, index) => (
-                <tr key={index} className="h-10 sm:text-left" ref={event => (row[index] =event)}>
-                    <td className="border-2 ">
-                        <input value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" className="w-full" required />    
-                    </td>
-                    <td className="border-2">
-                        <input value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" className="w-full" required />
-                    </td>
-                    <td className="border-2">  
-                        <input value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" className="w-full" required />
-                    </td>
-                    <td className="border-2">
-                        <input value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" className="w-full" required />
-                    </td>
-                    <td className="border-2">
-                        <input value={row.balance} onChange={(event)=>onChangeCell(event, index, "balance")} type="number" className="w-full" required />
-                    </td>
-                    <td className="border-2 text-green-800 text-3xl">
-                        <button value={index} onClick={deleteRow}>Delete</button>
-                    </td>
-                </tr>
-                ))}
+                <tbody>
+                    {ledgerRows.map((row, index) => (
+                    <tr key={index} class="h-10 sm:text-left" ref={event => (row[index] =event)}>
+                        <td class="border-2">
+                            <label class="block sm:hidden">Date</label>
+                            <input value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" class="w-full" required />
+                        </td>
+                        <td class="border-2">
+                            <label class="block sm:hidden">Notes</label>
+
+                            <input value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" class="w-full" required />
+                        </td>
+                        <td class="border-2">  
+                            <label class="block sm:hidden">Debit</label>
+
+                            <input value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" class="w-full" required />
+                        </td>
+                        <td class="border-2">
+                            <label class="block sm:hidden">Credit</label>
+
+                            <input value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" class="w-full" required />
+                        </td>
+                        <td class="border-2">
+                            <label class="block sm:hidden">Balance</label>
+
+                            <input value={row.balance} onChange={(event)=>onChangeCell(event, index, "balance")} type="number" class="w-full" required />
+                        </td>
+                        <td class="border-2 text-green-800 text-3xl"></td>
+                    </tr>
+                    ))}
                 </tbody>
-                </table>   
+                </table>
+
+ 
             }
             <button onClick={onSave} className="float-right rounded"><FiSave size={50}/></button>          
                 

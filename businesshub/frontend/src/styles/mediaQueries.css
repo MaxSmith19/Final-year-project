@@ -1,6 +1,43 @@
 @media only screen and (max-width: 600px) {
     /* Bigger phones */
 
+    table{
+        width: 100%;
+        border-collapse: collapse;
+        overflow-x: auto;
+    }
+    table thead {
+        display: none;
+    } 
+    table tr {
+        margin-bottom: 10px;
+      }
+    table td {
+        display: flex;
+    }
+    table td label {
+        display: block;
+        font-weight: bold;
+        margin-right: 15px;
+        background-color: grey;
+        width: 40%;
+        color: white;
+    }
+    canvas{
+        height: 100%;
+        width: 100%;
+    }
+    .ledgerOptions select{
+        width: fit-content
+    }
+    .ledgerOptions h1{
+        white-space: no-wrap;
+        width: fit-content;
+    }
+    .ledgerOptions div{
+        width:fit-content
+    }
+
 }
 @media only screen and (max-width: 425px){
     /* Smaller phones */
