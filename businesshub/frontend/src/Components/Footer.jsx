@@ -9,11 +9,21 @@ var {navOpen,navClosed} = useState;
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 px-4 py-8">
-      <div className="container mx-auto">
-        
+    <div className="bg-gray-800 px-4 py-24">
+      <div className="mx-auto grid grid-cols-3">
+        <div>
+          <h1>test</h1>
+        </div>
+        <div>
+        <h1>test</h1>
+
+        </div>
+        <div>
+        <h1>test</h1>
+
+        </div>
       </div>
-    </footer>
+    </div>
   );
 };
 

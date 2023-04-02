@@ -89,6 +89,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <Footer />
       <ul className="animationContainer">
         <li className=""> </li>
         <li className=""> </li>
