@@ -65,15 +65,13 @@ const Dashboard = () =>{
                         <RiAccountBoxFill className='float-left' size="32"/><h2 className="text-2xl">Welcome {businessName}</h2>
                     </div>
                 </div>
-                <div className="bg-white h-96 w-10/12 m-auto rounded-xl shadow-2xl p-2">
-                    <h1 className="text-5xl ">Accounts</h1>
+                <div className="bg-white h-96 w-full m-auto rounded-xl shadow-2xl p-2">
+                    <h1 className="text-5xl ">Ledgers</h1>
                     <hr />
-                </div><div className="bg-white h-96 w-10/12 m-auto rounded-xl shadow-2xl p-2">
+                </div><div className="bg-white h-96 w-full m-auto rounded-xl shadow-2xl p-2">
                     <h1 className="text-5xl ">Marketing</h1>
                     <hr />
                 </div>
-                <div className="bg-white h-96 w-full m-auto rounded-xl shadow-2xl p-2 flex-1 col-span-3"> </div>
-
             </div>
         )
 }

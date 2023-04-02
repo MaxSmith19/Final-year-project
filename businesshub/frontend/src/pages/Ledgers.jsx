@@ -282,8 +282,8 @@ function Ledgers() {
     }
     return(
             <div className='transition-all ease-in delay-300 '>
-            <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2 mb-5 grid grid-cols-3">
-                <div className="w-full h-full">
+            <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2 mb-5 grid grid-cols-3 sm:grid-cols-1">
+                <div className="">
                     <canvas id="balanceChart"></canvas>
                 </div>
             </div>

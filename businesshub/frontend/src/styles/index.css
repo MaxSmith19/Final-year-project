@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.chartGrid{
+    display: grid;
+    grid-template-columns: 3fr 3fr;
+}
 .darkMode{
 }
 .container {
