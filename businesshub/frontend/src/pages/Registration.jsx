@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import axios from "axios"
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import * as qs from 'qs'
-
+import { useNavigate } from 'react-router-dom';
 
 export default class Registration extends Component {
   constructor(props){
@@ -21,10 +21,9 @@ export default class Registration extends Component {
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-  
-
+    
+    const navigate = useNavigate.bind(this)
   }
-
   onChangeBusinessName(e){
     this.setState({
       businessName: e.target.value
@@ -78,7 +77,11 @@ export default class Registration extends Component {
       
       axios(config)
       .then(function (response) {
-        console.log("User Created");
+        const token = response.data.token;
+        document.cookie = "token=" + token +"; SameSite=Strict";
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+        toast.success("Successfully Logged In");
+        navigate("/Dashboard")
       })
       .catch(function (error) {
         console.log(error.statusCode);

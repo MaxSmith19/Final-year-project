@@ -31,7 +31,6 @@ function App() {
   const assignTheme = () => {
 
   }
-  const notify = () => toast("Wow so easy!");
   useEffect(() => {
     unpackCookie();
     console.log(isDarkMode)
@@ -66,7 +65,18 @@ function App() {
   });
   return (
     <>
-        <ToastContainer />
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={true}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          />
       <Router>
         {authenticated ? (
         <Header authenticated={authenticated} onLogout={handleLogout}/>

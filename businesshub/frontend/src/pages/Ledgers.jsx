@@ -5,6 +5,7 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { MdPostAdd } from 'react-icons/md'
 import Chart from 'chart.js/auto'
 import { FiSave } from 'react-icons/fi'
+import { toast } from 'react-toastify';
 const qs = require('qs');
 
 function Ledgers() {
@@ -168,6 +169,7 @@ function Ledgers() {
         //Create a new ledger with the temporary name of "New Ledger"
         axios.request(config)
         .then((response) => {
+            toast.success("New ledger created successfully")
             window.location.reload();
             return
         })
@@ -194,7 +196,7 @@ function Ledgers() {
         //Not editing the name of the ledger
         cacheResponse.forEach(element => {
             if(element.ledgerName === editedLedgerName){
-                alert("You already have a ledger called " + element.ledgerName)
+                toast.error("You already have a ledger called " + element.ledgerName)
                 setEditedLedgerName("")
                 window.location.reload()
             }
@@ -225,6 +227,7 @@ function Ledgers() {
                     const newLedgerNames =  [...ledgerNames];
                     newLedgerNames[index] = response.data.ledgerName;
                     setLedgerNames(newLedgerNames)
+                    toast.success("Ledger updated successfully")
                     //get the cached response, replace the existing ledger and replace with the new one from the response
                     //Cuts out the need for getLedgers and uneccessary API calls to getLedgers
                 }
@@ -268,7 +271,7 @@ function Ledgers() {
         };
         axios.request(config)
         .then((response) => {
-            alert("Ledger Deleted")
+            toast.warn("Ledger Deleted")
             setCacheResponse([...cacheResponse, cacheResponse.splice(cacheResponse.indexOf(response.data), "")])
         })
         .catch((error) => {

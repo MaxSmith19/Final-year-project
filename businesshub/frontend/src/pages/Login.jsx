@@ -19,6 +19,7 @@ const Login = (props) => {
     const token = userIDCookie.split(";")[0];
     if(token!== undefined){
       navigate("/dashboard")
+      toast.error("You are already logged in")
     }
     }catch(e){
       navigate("/Login")
@@ -48,7 +49,7 @@ const Login = (props) => {
         const token = response.data.token;
         document.cookie = "token=" + token +"; SameSite=Strict";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
-        toast("Successfully Logged In");
+        toast.success("Successfully Logged In");
         
         navigate("/Dashboard");
       }
