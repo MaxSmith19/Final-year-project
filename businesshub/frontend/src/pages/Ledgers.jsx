@@ -169,7 +169,6 @@ function Ledgers() {
         //Create a new ledger with the temporary name of "New Ledger"
         axios.request(config)
         .then((response) => {
-            toast.success("New ledger created successfully")
             window.location.reload();
             return
         })
@@ -342,15 +341,15 @@ function Ledgers() {
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Notes</label>
 
-                            <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" required />
+                            <input className="rounded pl-2 bg-slate-50 w-full shadow-sm gbp" value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" required />
                         </td>
                         <td className="p-1">  
                             <label className="block bg-slate-50 sm:hidden">Debit</label>
-                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required />
+                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm gbp" value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Credit</label>
-                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required />
+                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm gbp" value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Balance</label>

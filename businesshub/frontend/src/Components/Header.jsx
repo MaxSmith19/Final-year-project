@@ -41,7 +41,7 @@ const Nav = (props) => {
                 <h1 className='m-3 text-5xl text-center'>{(localStorage.getItem("businessName"))}</h1>
                 <div className="mt-3 relative">
                         <a className="float-right bg-white mr-2 transition-all ease-in-out duration-75 " onClick={()=>setIsAccountOpen(!isAccountOpen)} >{isAccountOpen? <RiAccountCircleLine size="50"/>:<RiAccountCircleFill size="50"/>}</a>
-                        <div className={isAccountOpen? 'invisible':'transition ease-in-out duration-300 absolute top-0 right-0 float-right text-right mt-16 w-6/12 border-gray-500 shadow-xl p-1 bg-white '}>
+                        <div className={isAccountOpen? 'invisible':'transition ease-in-out duration-300 absolute top-0 right-0 float-right text-right mt-16 w-full md:pl-24 border-gray-500 shadow-xl p-1 bg-white z-50'}>
                             <a href="#" className="block text-2xl bg-white border shadow-2xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300"><Link to="/UserSettings">Account settings</Link></a>
                             <a href="#" className="block text-2xl bg-white border shadow-2xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300">Preferences</a>
                             <a href="#" className="block text-2xl bg-white border shadow-xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300" onClick={()=>logOut()}>Log out</a>

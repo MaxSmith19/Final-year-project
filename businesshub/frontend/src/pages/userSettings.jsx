@@ -28,6 +28,7 @@ const UserSettings = () => {
         console.log(response.data)
         localStorage.setItem('businessName', response.data.businessName)
         localStorage.setItem('businessLogo', response.data.businessLogo)
+        toast.success("User updated successfully")
       })
       .catch((error) => {
         console.log(error)

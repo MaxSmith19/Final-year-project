@@ -35,7 +35,7 @@
         margin-right: 15px;
         background-color: grey;
         width: 40%;
-        color: white;
+        padding-left: 5px;
     }
 
     .ledgerOptions select{
@@ -48,8 +48,7 @@
     .ledgerOptions div{
         width:fit-content
     }
-    .chartContainer{
-    }
+
 
 }
 @media only screen and (max-width: 425px){
