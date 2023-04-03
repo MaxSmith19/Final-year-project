@@ -57,7 +57,9 @@ function Ledgers() {
             title: {
                 display: true,
                 text: "World Wine Production 2018"
-              }
+              },
+              responsive: true,
+              maintainAspectRatio: false
           }
           });
           return () =>{
@@ -171,7 +173,7 @@ function Ledgers() {
         })
         .catch((error) => {
                 console.log(error);
-        });
+        }); 
     }
     const onSave = () => {
         const userIDCookie = document.cookie.split("=")[1];
@@ -282,16 +284,16 @@ function Ledgers() {
     }
     return(
             <div className='transition-all ease-in delay-300 '>
-            <div className="bg-white h-80 w-full m-auto rounded-xl shadow-2xl p-2 mb-5 grid grid-cols-3 sm:grid-cols-1">
-                <div className="">
+            <div className="chartContainer bg-white rounded-xl shadow-2xl p-2 mb-5">
+                <div className="chartItem" >
                     <canvas id="balanceChart"></canvas>
                 </div>
             </div>
             
             <div className="bg-white pb-16 w-full m-auto p-4 rounded-xl shadow-2xl">
-                <div className="border grid grid-cols-9 grid-flow-col col-span-1 gap-0 p-2 ledgerOptions">
-                        <h1 className='text-xl col-span-1 w-full'> Select ledger: </h1>
-                        <select className='ml-4 text-xl rounded-md col-span-2' onChange={changeLedger}>
+                <div className="border flex align-center p-2 ledgerOptions">
+                        <h1 className='text-xl mr-3'> Select ledger: </h1>
+                        <select className='ml-4 md:ml-0 text-xl text-center rounded-md col-span-4 w-1/2' onChange={changeLedger}>
                             { ledgerNames.map((ledgerName, index) => (
                                 <option key={index} value={ledgerName}>{ledgerName}</option> 
                                 ))}
@@ -316,45 +318,41 @@ function Ledgers() {
                     </div>
                 </div>
                  : 
-                <table class="table-auto w-11/12 h-auto md:table-fixed sm:table-fixed">
+                <table className="table-auto w-full h-auto md:table-fixed sm:table-fixed">
                 <thead>
                     <tr>
-                    <th class="w-2/12 border-t border-l">Date</th>
-                    <th class="w-5/12 border-t border-l">Notes</th>
-                    <th class="w-1/12 border-t border-l">Debit</th>
-                    <th class="w-1/12 border-t border-l">Credit</th>
-                    <th class="w-2/12 border-t border-l border-r">Balance</th>
-                    <button onClick={addRow}>+</button>
+                    <th className="w-2/12 border-t border-l">Date</th>
+                    <th className="w-5/12 border-t border-l">Notes</th>
+                    <th className="w-1/12 border-t border-l">Debit</th>
+                    <th className="w-1/12 border-t border-l">Credit</th>
+                    <th className="w-2/12 border-t border-l border-r">Balance</th>
+                    <button className="w-1/12"onClick={addRow}>+</button>
                     </tr>
                 </thead>
                 <tbody>
                     {ledgerRows.map((row, index) => (
-                    <tr key={index} class="h-10 sm:text-left" ref={event => (row[index] =event)}>
-                        <td class="border-2">
-                            <label class="block sm:hidden">Date</label>
-                            <input value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" class="w-full" required />
+                    <tr key={index} className="h-10 bg-slate-200 rounded shadow-sm sm:text-left" ref={event => (row[index] =event)}>
+                        <td className="p-1">
+                            <label className="block w-full bg-slate-50 sm:hidden">Date</label>
+                            <input className="outline" value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" className="w-full" required />
                         </td>
-                        <td class="border-2">
-                            <label class="block sm:hidden">Notes</label>
+                        <td className="p-1">
+                            <label className="block bg-slate-50 sm:hidden">Notes</label>
 
-                            <input value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" class="w-full" required />
+                            <input className="bg-slate-50 w-full shadow-sm" value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" required />
                         </td>
-                        <td class="border-2">  
-                            <label class="block sm:hidden">Debit</label>
-
-                            <input value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" class="w-full" required />
+                        <td className="p-1">  
+                            <label className="block bg-slate-50 sm:hidden">Debit</label>
+                            <input className="bg-slate-50 w-full shadow-sm" value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required />
                         </td>
-                        <td class="border-2">
-                            <label class="block sm:hidden">Credit</label>
-
-                            <input value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" class="w-full" required />
+                        <td className="p-1">
+                            <label className="block bg-slate-50 sm:hidden">Credit</label>
+                            <input className="bg-slate-50 w-full shadow-sm" value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required />
                         </td>
-                        <td class="border-2">
-                            <label class="block sm:hidden">Balance</label>
-
-                            <input value={row.balance} onChange={(event)=>onChangeCell(event, index, "balance")} type="number" class="w-full" required />
+                        <td className="p-1">
+                            <label className="block bg-slate-50 sm:hidden">Balance</label>
+                            <input className="bg-slate-50 w-full shadow-sm" value={row.balance} onChange={(event)=>onChangeCell(event, index, "balance")} type="number" required />
                         </td>
-                        <td class="border-2 text-green-800 text-3xl"></td>
                     </tr>
                     ))}
                 </tbody>

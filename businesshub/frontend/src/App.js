@@ -72,7 +72,7 @@ function App() {
         ): 
         <div className="border bg-white h-20 shadow-md"></div>
         }
-        <div className="m-8">
+        <div className="m-8 appMQ">
           <Routes>
             {authenticated ? (
               <>

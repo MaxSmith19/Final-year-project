@@ -1,20 +1,34 @@
 @media only screen and (max-width: 600px) {
     /* Bigger phones */
-
+    .ledgerOptions h1{
+        display: none;
+    }
+    .ledgerOptions{
+        flex-wrap: wrap
+    }
+    .ledgerOptions > select{
+        flex-grow: 1;
+        margin-left: 0;
+    }
+    .appMQ{
+        margin: 1rem;
+    }
     table{
         width: 100%;
-        border-collapse: collapse;
         overflow-x: auto;
+        border-collapse: seperate;
+        border-spacing: 0 8px;
     }
     table thead {
         display: none;
     } 
     table tr {
-        margin-bottom: 10px;
+        padding-bottom: 10px;
       }
     table td {
         display: flex;
     }
+
     table td label {
         display: block;
         font-weight: bold;
@@ -34,18 +48,7 @@
     .ledgerOptions div{
         width:fit-content
     }
-    grid canvas{
-        column-span:all;
-        width: 100%;
-        height: 100%;
-    }
-    .chartGrid{
-        grid-template-columns: 1fr ;
-        width: 100%;
-    }
-    .chartGrid div{
-        width: 100%;
-        height: 100%;
+    .chartContainer{
     }
 
 }

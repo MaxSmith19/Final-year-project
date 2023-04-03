@@ -1,12 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.chartGrid{
-    display: grid;
-    grid-template-columns: 3fr 3fr;
+table{
+    border-collapse: separate;
+    border-spacing: 0 20px;
 }
-.darkMode{
+table th{
+    border: 0;
+}
+.chartContainer{
+    height: 40vh;
+    position: relative;
+}
+.chartItem{
+    height: 100%;
 }
 .container {
     display: flex;
