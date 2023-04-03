@@ -48,7 +48,8 @@ const Login = (props) => {
         const token = response.data.token;
         document.cookie = "token=" + token +"; SameSite=Strict";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
-        toast.success("Successfully Logged In");
+        toast("Successfully Logged In");
+        
         navigate("/Dashboard");
       }
     })

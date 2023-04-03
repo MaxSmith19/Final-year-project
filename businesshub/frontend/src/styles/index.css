@@ -8,6 +8,10 @@ table{
 table th{
     border: 0;
 }
+gpb::before{
+    content: "£";
+
+}
 .chartContainer{
     height: 40vh;
     position: relative;

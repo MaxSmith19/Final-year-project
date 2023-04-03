@@ -321,37 +321,37 @@ function Ledgers() {
                 <table className="table-auto w-full h-auto md:table-fixed sm:table-fixed">
                 <thead>
                     <tr>
-                    <th className="w-2/12 border-t border-l">Date</th>
-                    <th className="w-5/12 border-t border-l">Notes</th>
-                    <th className="w-1/12 border-t border-l">Debit</th>
-                    <th className="w-1/12 border-t border-l">Credit</th>
-                    <th className="w-2/12 border-t border-l border-r">Balance</th>
-                    <button className="w-1/12"onClick={addRow}>+</button>
+                        <th className="w-2/12 border-t border-l">Date</th>
+                        <th className="w-5/12 border-t border-l">Notes</th>
+                        <th className="w-1/12 border-t border-l">Debit</th>
+                        <th className="w-1/12 border-t border-l">Credit</th>
+                        <th className="w-2/12 border-t border-l border-r">Balance</th>
+                        <button className="w-1/12"onClick={addRow}>+</button>
                     </tr>
                 </thead>
                 <tbody>
                     {ledgerRows.map((row, index) => (
-                    <tr key={index} className="h-10 bg-slate-200 rounded shadow-sm sm:text-left" ref={event => (row[index] =event)}>
+                    <tr key={index} className="h-10 bg-slate-200 rounded shadow-sm sm:text-left hover:bg-slate-300 transition-all ease-in-out duration-300" ref={event => (row[index] =event)}>
                         <td className="p-1">
                             <label className="block w-full bg-slate-50 sm:hidden">Date</label>
-                            <input className="outline" value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" className="w-full" required />
+                            <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" required />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Notes</label>
 
-                            <input className="bg-slate-50 w-full shadow-sm" value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" required />
+                            <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" required />
                         </td>
                         <td className="p-1">  
                             <label className="block bg-slate-50 sm:hidden">Debit</label>
-                            <input className="bg-slate-50 w-full shadow-sm" value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required />
+                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Credit</label>
-                            <input className="bg-slate-50 w-full shadow-sm" value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required />
+                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Balance</label>
-                            <input className="bg-slate-50 w-full shadow-sm" value={row.balance} onChange={(event)=>onChangeCell(event, index, "balance")} type="number" required />
+                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.balance} onChange={(event)=>onChangeCell(event, index, "balance")} type="number" required />
                         </td>
                     </tr>
                     ))}
