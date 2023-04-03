@@ -1,6 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.darkMode{
+    background-color: rgba(0, 0, 0, 0.911);
+}
+.darkMode li{
+    background-color: rgb(255, 192, 74);
+}
+.darkMode .bg-white{
+    background-color: rgba(53, 53, 53, 0.945);
+    color: grey !important;
+    border: 1px solid rgba(0, 0, 0, 0)
+}
+.darkMode tr{
+    background-color: rgba(53, 53, 53, 0.945);
+
+}
+.darkMode tr input{
+    background-color: rgba(61, 61, 61, 0.945);
+
+}
 table{
     border-collapse: separate;
     border-spacing: 0 20px;

@@ -28,31 +28,39 @@ function App() {
     }
   };
 
-  const assignTheme = () => {
-
-  }
+  
   useEffect(() => {
     unpackCookie();
     console.log(isDarkMode)
-    if(isDarkMode){
-      document.body.classList.add('darkMode');
-    }else{
-      document.body.classList.remove('darkMode');
-    }
   }, []);
+  const animationContainer = document.querySelectorAll('.animationContainer li');
+  const contentContainers = document.querySelectorAll('div')
+  useEffect(() => {
+    const body = document.querySelector('body');
+    if (isDarkMode) {
+      body.classList.add('darkMode');
+      animationContainer.forEach(container => container.classList.add('darkMode'))
+      contentContainers.forEach(container => container.classList.add("darkmode"))
+    } else {
+      body.classList.remove('darkMode');
+      animationContainer.forEach(container => container.classList.remove('darkMode'))
+      contentContainers.forEach(container => container.classList.remove("darkmode"))
+    }
+  }, [isDarkMode]);
+  //When isDarkMode is changed in any way, the above useEffect takes place.
 
+  const toggleDarkMode = () => {
+    setDarkMode(!isDarkMode);
+  };
 
   const handleLogout = () => {
     setAuthenticated(false);
-    console.log(authenticated)
   }
 
   const handleLogin = () => {
     setAuthenticated(true);
-    console.log(authenticated)
   }
-  const containers = document.querySelectorAll('.animationContainer li');
-  containers.forEach((container) => {
+  animationContainer.forEach((container) => {
     const randomDelay = Math.floor(Math.random() * 25) + 1;
     const randomLeft = Math.floor(Math.random() * 100) + 1;
     const randomHeight = Math.floor(Math.random() * 100) + 1
@@ -79,7 +87,7 @@ function App() {
           />
       <Router>
         {authenticated ? (
-        <Header authenticated={authenticated} onLogout={handleLogout}/>
+        <Header authenticated={authenticated} onLogout={handleLogout} onToggleDarkMode={toggleDarkMode}/>
         ): 
         <div className="border bg-white h-20 shadow-md"></div>
         }
@@ -99,8 +107,8 @@ function App() {
             <Route path="/Register" element={<Registration />} />
           </Routes>
         </div>
+        <Footer />
       </Router>
-      <Footer />
       <ul className="animationContainer">
         <li className=""> </li>
         <li className=""> </li>

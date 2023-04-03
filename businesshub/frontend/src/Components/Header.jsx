@@ -20,6 +20,7 @@ const Nav = (props) => {
     const changeMode =() =>{
         setIsDarkMode(!isDarkMode)
         localStorage.setItem("isDarkMode",!isDarkMode)
+        props.onToggleDarkMode();
     }
 
     const logOut =() =>{
@@ -29,10 +30,9 @@ const Nav = (props) => {
         navigate("/login");
         props.onLogout();
     }
-
     return (
-    <>
-    <div>
+        <>
+        <div>
             <div className="border bg-white h-20 shadow-md">
             <div className='grid grid-cols-3 grid-rows-1 gap-5'>
             <div className="mt-3 ml-2">
