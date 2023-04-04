@@ -55,7 +55,7 @@ const Nav = (props) => {
                 <div className={isNavOpen? "overlay-content":"hidden"}> 
                     <label className=''>Dark Mode:  
                         <Switch className='ml-4 text-center' onChange={()=>changeMode()} checked={isDarkMode}/>
-                    </label>
+                    </label>    
                     <a onClick={()=>setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>
                     <a onClick={()=>setNav(false)}><Link to="/Ledgers">Ledgers</Link></a>
                     <a onClick={()=>setNav(false)}><Link to="/Inventory">Inventory</Link></a>

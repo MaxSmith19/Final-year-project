@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 const Footer = () => {
 
   return (
-    <div className="bg-gray-800 px-4 py-4 footer">
+    <div className="bg-gray-800 px-4 py-4 footer bottom-0 right-0 w-full">
       <div className="mx-auto grid grid-cols-3">
         <div>
           <h1>test</h1>

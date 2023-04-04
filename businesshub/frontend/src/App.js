@@ -36,6 +36,7 @@ function App() {
   const animationContainer = document.querySelectorAll('.animationContainer li');
   const contentContainers = document.querySelectorAll('div')
   useEffect(() => {
+    const html = document.querySelector('html');
     const body = document.querySelector('body');
     if (isDarkMode) {
       body.classList.add('darkMode');
@@ -83,7 +84,7 @@ function App() {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="light"
+          theme={isDarkMode ? "light" : "dark"}
           />
       <Router>
         {authenticated ? (

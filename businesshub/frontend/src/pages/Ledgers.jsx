@@ -34,6 +34,7 @@ function Ledgers() {
           //Since it is blank, It will only run once.
     );
     useEffect(() =>{
+
         let labels=[]
         let data=[]
         const bchrt = document.getElementById('balanceChart').getContext('2d');
@@ -232,10 +233,13 @@ function Ledgers() {
                 }
             })
             setEditedLedgerName("");
+
         })
         .catch((error) => {
             console.log(error)
         });
+        document.getElementById("saveButton").classList.add("hidden")
+
     }    
         
     const addRow = () => {
@@ -283,6 +287,13 @@ function Ledgers() {
         newRows[index][key] = event.target.value;
         
         setLedgerRows(newRows);
+        const button = document.getElementById("saveButton")
+        if(cacheResponse===ledgerRows){
+            button.classList.add("hidden")
+            
+        }else{
+            button.classList.remove("hidden")
+        }
     }
     return(
             <div className='transition-all ease-in delay-300 '>
@@ -362,10 +373,12 @@ function Ledgers() {
 
  
             }
-            <button onClick={onSave} className="float-right rounded"><FiSave size={50}/></button>          
                 
             </div>
+            <button onClick={onSave} id="saveButton"className="transition-all ease-in-out duration-75 rounded-full fixed bottom-10 right-10 bg-green-700 p-3 hidden"><FiSave size={50}/></button>          
+
         </div>
+        
         )
     }
 
