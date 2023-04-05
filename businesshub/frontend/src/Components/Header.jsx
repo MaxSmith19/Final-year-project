@@ -5,18 +5,24 @@ import {RiAccountCircleFill, RiAccountCircleLine} from 'react-icons/ri'
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast} from 'react-toastify'
-import { useEffect } from 'react'
+import { useEffect, CSSProperties } from 'react'
 import  Switch  from 'react-switch'
+import BarLoader from "react-spinners/BarLoader";
+
+
 const Nav = (props) => {
     var [isNavOpen,setNav] = useState(false);
     var [isAccountOpen,setIsAccountOpen] = useState(true);
     var [isDarkMode,setIsDarkMode] = useState(false)
+
     const navigate = useNavigate()
 
     useEffect(() => {
         setIsDarkMode(localStorage.getItem('isDarkMode'))    
     },[])
-
+    useEffect(() => {
+        console.log(props.isLoading)
+    },[props.isLoading])
     const changeMode =() =>{
         setIsDarkMode(!isDarkMode)
         localStorage.setItem("isDarkMode",!isDarkMode)
@@ -32,7 +38,7 @@ const Nav = (props) => {
     }
     return (
         <>
-        <div>
+        <div className="fixed top-0 w-full z-50">
             <div className="border bg-white h-20 shadow-md">
             <div className='grid grid-cols-3 grid-rows-1 gap-5'>
             <div className="mt-3 ml-2">
@@ -49,6 +55,11 @@ const Nav = (props) => {
                     </div>
                 </div>
             </div>
+            <BarLoader
+                color="#36d7b7"
+                width={1600}
+                loading={props.isLoading}
+                />
 
         <div className={isNavOpen? "overlay":"h-0"}>
         <button className={isNavOpen? "transition -rotate-180 duration-300 text-white mt-3 ml-3" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="mt-3 ml-2" size={isNavOpen? "50":"0"} /></button>

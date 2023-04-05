@@ -9,7 +9,7 @@ import Marketing from './pages/marketing'
 import Inventory from './pages/inventory'
 import { Navigate } from 'react-router-dom';
 import Footer from "./Components/Footer";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, CSSProperties } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./styles/animations.css";
@@ -18,7 +18,7 @@ import UserSettings from './pages/userSettings';
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [isDarkMode, setDarkMode] = useState(Boolean(localStorage.getItem("isDarkMode")))
-
+  const [isLoading, setLoading] = useState(true)
   const unpackCookie = () => {
     const authCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
     if (authCookie !== undefined) {
@@ -31,10 +31,11 @@ function App() {
   
   useEffect(() => {
     unpackCookie();
-    console.log(isDarkMode)
   }, []);
+
   const animationContainer = document.querySelectorAll('.animationContainer li');
   const contentContainers = document.querySelectorAll('div')
+
   useEffect(() => {
     const html = document.querySelector('html');
     const body = document.querySelector('body');
@@ -61,6 +62,11 @@ function App() {
   const handleLogin = () => {
     setAuthenticated(true);
   }
+  const handleIsLoading = () => {
+    setLoading(isLoading)
+  }
+  
+
   animationContainer.forEach((container) => {
     const randomDelay = Math.floor(Math.random() * 25) + 1;
     const randomLeft = Math.floor(Math.random() * 100) + 1;
@@ -75,28 +81,28 @@ function App() {
   return (
     <>
         <ToastContainer
-          position="top-center"
-          autoClose={2000}
-          hideProgressBar={true}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme={isDarkMode ? "light" : "dark"}
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar={true}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme={isDarkMode ? "light" : "dark"}
           />
       <Router>
         {authenticated ? (
-        <Header authenticated={authenticated} onLogout={handleLogout} onToggleDarkMode={toggleDarkMode}/>
+        <Header authenticated={authenticated} onLogout={handleLogout} onToggleDarkMode={toggleDarkMode} isLoading={isLoading}/>
         ): 
         <div className="border bg-white h-20 shadow-md"></div>
         }
-        <div className="m-8 appMQ">
+        <div className="m-8 mt-32 appMQ">
           <Routes>
             {authenticated ? (
               <>
-                <Route path="/Ledgers" element={<Ledgers />} />
+                <Route path="/Ledgers" element={<Ledgers isLoading={handleIsLoading}/>} />
                 <Route path="/Dashboard" element={<Dashboard />} />
                 <Route path="/UserSettings" element={<UserSettings />} />
                 <Route path="/Legislation" element={<Legislation />} />
@@ -107,6 +113,7 @@ function App() {
             <Route path="/Login" element={<Login onLogin={handleLogin}/>} />
             <Route path="/Register" element={<Registration />} />
           </Routes>
+             
         </div>
         <Footer />
       </Router>

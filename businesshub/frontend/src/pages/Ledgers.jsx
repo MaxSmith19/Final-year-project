@@ -8,7 +8,7 @@ import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
 const qs = require('qs');
 
-function Ledgers() {
+function Ledgers(props) {
     const [ledgerRows, setLedgerRows] = useState([]);
     //These are the rows of the current ledger being shown
     const [ledgerNames, setLedgerNames] = useState([]);
@@ -27,14 +27,13 @@ function Ledgers() {
     useEffect(() => {
         setLedgerRows([])
         getLedgers();
-
+        props.isLoading(true)
     }, [] //having the empty array as an initial value will cause the effect to run only once
           //CHANGING THIS WILL CAUSE IT TO CRASH BECAUSE OF ALL THE RENDERING
           // if there is an item in the array, useEffect will run when that item is changed.
           //Since it is blank, It will only run once.
     );
     useEffect(() =>{
-
         let labels=[]
         let data=[]
         const bchrt = document.getElementById('balanceChart').getContext('2d');
@@ -66,6 +65,8 @@ function Ledgers() {
           });
           return () =>{
             chart.destroy()
+          props.isLoading(true)
+
           }
     },[ledgerRows])
 
