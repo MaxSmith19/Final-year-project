@@ -13,13 +13,13 @@ import BarLoader from "react-spinners/BarLoader";
 const Nav = (props) => {
     var [isNavOpen,setNav] = useState(false);
     var [isAccountOpen,setIsAccountOpen] = useState(true);
-    var [isDarkMode,setIsDarkMode] = useState(false)
+    var [isDarkMode, setIsDarkMode] = useState(() => {
+        const storedValue = localStorage.getItem("isDarkMode");
+        return storedValue !== null ? JSON.parse(storedValue) : false;
+      });
 
     const navigate = useNavigate()
 
-    useEffect(() => {
-        setIsDarkMode(localStorage.getItem('isDarkMode'))    
-    },[])
     useEffect(() => {
         console.log(props.isLoading)
     },[props.isLoading])

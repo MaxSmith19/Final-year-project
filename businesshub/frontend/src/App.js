@@ -17,7 +17,12 @@ import UserSettings from './pages/userSettings';
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
-  const [isDarkMode, setDarkMode] = useState(Boolean(localStorage.getItem("isDarkMode")))
+  const [isDarkMode, setDarkMode] = useState(() => {
+    const storedValue = localStorage.getItem("isDarkMode");
+    return storedValue !== null ? JSON.parse(storedValue) : false;
+  });
+  
+
   const [isLoading, setLoading] = useState(true)
   const unpackCookie = () => {
     const authCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
