@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as qs from 'qs'
 import {toast} from 'react-toastify'
 import { useEffect } from 'react';
+import Cookies from 'js-cookie';
+
 const Login = (props) => {
   
   const [email, setEmail] = useState('');
@@ -15,9 +17,9 @@ const Login = (props) => {
   useEffect(() => {
     //Check if the user is already logged in
     try{
-    const userIDCookie = document.cookie.split("=")[1];
-    const token = userIDCookie.split(";")[0];
-    if(token!== undefined){
+    const userIDCookie = Cookies.get("token")
+    console.log(userIDCookie)
+    if(userIDCookie!== undefined){
       navigate("/dashboard")
       toast.error("You are already logged in")
     }
@@ -47,7 +49,7 @@ const Login = (props) => {
     .then((response) => {
       if (response.status === 200) {
         const token = response.data.token;
-        document.cookie = "token=" + token +"; SameSite=Strict";
+        document.cookie = "token=" + token +"; SameSite=None";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
         toast.success("Successfully Logged In");
         

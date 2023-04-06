@@ -3,6 +3,7 @@ import axios from "axios"
 import { Link, Navigate } from 'react-router-dom';
 import * as qs from 'qs'
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify'
 
 export default class Registration extends Component {
   constructor(props){

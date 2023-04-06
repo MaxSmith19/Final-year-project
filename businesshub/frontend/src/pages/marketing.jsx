@@ -7,7 +7,41 @@ import { useEffect } from 'react';
 import { RiAccountBoxFill } from 'react-icons/ri';
 
 const Marketing = () =>{
-    const url = `https://www.etsy.com/oauth/connect?response_type=code&redirect_uri=http://localhost:3000/marketing&scope=email_r&client_id=${"uapiuzi36a2v2pdub362s2sn"}&state=superstring&code_challenge=DSWlW2Abh-cf8CeLL8-g3hQ2WQyYdKyiu83u_s7nRhI&code_challenge_method=S256`
+    const [challenge, setChallenge] = useState("")
+    const [verifier, setVerifier] = useState("")
+    const [state, setState] = useState("")
+    useEffect(()=>{
+        generatePKCE()
+    },[])
+    const verifierCookie = (verifier) =>{
+        document.cookie = `code_verifier=${verifier}; path=/; max-age=600`
+    }
+    const generatePKCE = ()=>{
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:5000/api/Socials/PKCE',
+        };
+
+        axios.request(config)
+        .then((response) => {
+            setChallenge(response.data.challenge);
+            verifierCookie(response.data.verifier)
+            setState(response.data.state);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    const url = `https://www.etsy.com/oauth/connect?` +
+        `response_type=code&` +
+        `client_id=${process.env.REACT_APP_ETSY_KEYSTRING}&` +
+        `redirect_uri=http://localhost:5000/api/Socials/etsyCallback&` +
+        `scope=feedback_r%20shops_r&` +
+        `code_challenge=${challenge}&` +
+        `code_challenge_method=S256&` +
+        `state=${state}`
     return(
             <div className="grid gap-6 md:grid-rows-3 lg:grid-rows-3 xl:grid-cols-3">
                 <a href={url}>

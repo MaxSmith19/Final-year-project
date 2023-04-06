@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import * as qs from 'qs'
+import {toast} from 'react-toastify'
 
 const UserSettings = () => {
   const [businessName, setBusinessName] = useState('')

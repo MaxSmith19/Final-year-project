@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 
 const socialsSchema = mongoose.Schema({
     userID: {type:String,required: true},
-    etsyOAUTH: {type:String,required: false}
+    etsyAccessToken: {type:String,required:false},
+    etsyRefreshToken: {type:String,required:false}
 
 });
  
