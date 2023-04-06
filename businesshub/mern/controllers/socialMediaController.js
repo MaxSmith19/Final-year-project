@@ -44,7 +44,7 @@ const etsyCallback = asyncHandler(async(req, res) => {
 
         const tokenData = response.data;
         const data=writeToSocials(tokenData,req.cookies.token)
-        res.send(data);
+        res.redirect("http://localhost:3000/marketing")
     })
     .catch((error) => {
         console.log(error);
@@ -55,7 +55,9 @@ const etsyCallback = asyncHandler(async(req, res) => {
 const writeToSocials = asyncHandler(async(tokenData,userToken)=>{
     const userID = jwt.verify(userToken, process.env.JWT_SECRET)
     const socialsToChange = await Social.findOne({userID:userID.id})
-    if(socialsToChange!==undefined){
+    console.log("afhsdf")
+    console.log(socialsToChange)
+    if(socialsToChange===undefined){
         const social = await Social.create(
             {userID:userID.id,
             etsyAccessToken: tokenData.access_token,
@@ -78,27 +80,6 @@ const generatePKCE = asyncHandler(async (req, res) =>{
 
 })
 
-
-const pingEtsy = asyncHandler(async (req, res) => {
-    const requestOptions = {
-        'method': 'GET',
-        'headers': {
-            'x-api-key': process.env.ETSY_KEYSTRING,
-        },
-    };
-
-    const response = await fetch(
-        'https://api.etsy.com/v3/application/openapi-ping',
-        requestOptions
-    );
-
-    if (response.ok) {
-        const data = await response.json();
-        res.send(data);
-    } else {
-        res.send("API KEY INVALID OR UNDEFINED");
-    }
-})
 const getSocials = asyncHandler(async (req, res) => {
     const token=decodeJWT(req,res)
 
@@ -119,9 +100,7 @@ const updateSocials = asyncHandler(async (req, res) => {
 
 })
 module.exports ={
-    pingEtsy,
     getSocials,
-    registerSocials,
     generatePKCE,
     etsyCallback
 

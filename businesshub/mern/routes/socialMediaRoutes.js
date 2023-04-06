@@ -1,9 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const {
-    pingEtsy,
     getSocials,
-    registerSocials,
     generatePKCE,
     etsyCallback
 } = require("../controllers/socialMediaController")
@@ -12,8 +10,6 @@ const {
 const { protect} = require("../middleware/authMiddleware")
 //Get the JWT protect function from the auth middleware file
 router.route('/get').get( protect, getSocials)
-router.route('/register').post(protect,registerSocials)
-router.route("/ping").get(pingEtsy)
 router.route("/PKCE").get(generatePKCE)
 router.route("/etsyCallback").get(etsyCallback)
 // router.route("/etsy/oAuth").post(oAuthEtsy)

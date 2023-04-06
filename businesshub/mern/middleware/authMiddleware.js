@@ -4,7 +4,6 @@ const User = require("../models/UserModel");
 
 const protect = asyncHandler(async (req, res, next) => {
     let token
-
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         // Bearer <token> is the format, so we must check that the header starts with "Bearer"
         try{
@@ -30,7 +29,11 @@ const protect = asyncHandler(async (req, res, next) => {
     })
 
 const decodeJWT = (req, res) => {
-    const token = req.headers.authorization.split(" ")[1]
+    let token = req.headers.authorization.split(" ")[1]
+    if(token===null){
+       token= req.cookies.token
+    }
+    console.log(token)
     return decoded=jwt.verify(token, process.env.JWT_SECRET);
 }
     //for generating jwt tokens for authentication

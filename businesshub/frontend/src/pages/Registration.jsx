@@ -81,8 +81,6 @@ export default class Registration extends Component {
         const token = response.data.token;
         document.cookie = "token=" + token +"; SameSite=Strict";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
-        toast.success("Successfully Logged In");
-        navigate("/Dashboard")
       })
       .catch(function (error) {
         console.log(error.statusCode);
