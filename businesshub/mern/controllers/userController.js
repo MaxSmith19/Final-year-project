@@ -79,6 +79,13 @@ const updateUser = asyncHandler(async( req, res) =>{
         res.status(400)
         throw new Error("User not found")
     }
+    if(req.file){
+        req.body.businessLogo = req.file.path
+    }
+    if(req.body.businessName===""){
+        console.log(Users)
+        req.body.businessName = Users.businessName
+    }
     const updatedUser = await User.findByIdAndUpdate(token.id,req.body,{new: true,})
     //using the given data, update the user in the database with the content in the request body
     res.status(200).json(updatedUser)

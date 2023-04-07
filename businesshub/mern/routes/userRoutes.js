@@ -1,22 +1,20 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 const {
-    getUser,
-    registerUser,
-    loginUser,
-    updateUser,
-    deleteUser,
-    } = require('../controllers/UserController')
-    //import all functions from the controllers file
+  getUser,
+  registerUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+} = require('../controllers/UserController');
+const { protect } = require("../middleware/authMiddleware");
+const { upload } = require('../middleware/imageUploadMiddleware');
 
-const { protect} = require("../middleware/authMiddleware")
-//Get the JWT protect function from the auth middleware file
-router.route('/').post(registerUser)
-router.get('/get', protect, getUser)
+
+router.route('/').post(registerUser);
+router.get('/get', protect, getUser);
 router.route('/login/').post(loginUser);
-router.route('/update').put(protect,updateUser)
-router.route("/del").delete(protect,deleteUser)
-//Each of these show the associated subdirectory for the function.
-//if we want to register a user, we add a '/' at the end of the url 
+router.route('/update').put(protect, upload.single('businessLogo'), updateUser);
+router.route("/del").delete(protect, deleteUser);
 
-module.exports = router
+module.exports = router;
