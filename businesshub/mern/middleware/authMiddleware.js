@@ -33,7 +33,6 @@ const decodeJWT = (req, res) => {
     if(token===null){
        token= req.cookies.token
     }
-    console.log(token)
     return decoded=jwt.verify(token, process.env.JWT_SECRET);
 }
     //for generating jwt tokens for authentication
