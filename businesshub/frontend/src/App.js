@@ -68,9 +68,9 @@ function App() {
   const handleLogin = () => {
     setAuthenticated(true);
   }
-  const handleIsLoading = () => {
-    setLoading(isLoading)
-  }
+  const handleIsLoading = (value) => {
+    setLoading(value);
+  };
   
 
   animationContainer.forEach((container) => {
@@ -108,7 +108,7 @@ function App() {
           <Routes>
             {authenticated ? (
               <>
-                <Route path="/Ledgers" element={<Ledgers isLoading={handleIsLoading}/>} />
+                <Route path="/Ledgers" element={<Ledgers handleIsLoading={handleIsLoading}/>} />
                 <Route path="/Dashboard" element={<Dashboard />} />
                 <Route path="/UserSettings" element={<UserSettings />} />
                 <Route path="/Legislation" element={<Legislation />} />
