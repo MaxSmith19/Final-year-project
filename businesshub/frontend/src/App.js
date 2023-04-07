@@ -9,8 +9,8 @@ import Marketing from './pages/marketing'
 import Inventory from './pages/inventory'
 import { Navigate } from 'react-router-dom';
 import Footer from "./Components/Footer";
-import { useEffect, useState, CSSProperties } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./styles/animations.css";
 import UserSettings from './pages/userSettings';
@@ -43,7 +43,6 @@ function App() {
   const contentContainers = document.querySelectorAll('div')
 
   useEffect(() => {
-    const html = document.querySelector('html');
     const body = document.querySelector('body');
     if (isDarkMode) {
       body.classList.add('darkMode');
@@ -109,14 +108,14 @@ function App() {
             {authenticated ? (
               <>
                 <Route path="/Ledgers" element={<Ledgers handleIsLoading={handleIsLoading}/>} />
-                <Route path="/Dashboard" element={<Dashboard />} />
-                <Route path="/UserSettings" element={<UserSettings />} />
-                <Route path="/Legislation" element={<Legislation />} />
-                <Route path="/Marketing" element={<Marketing />} />
-                <Route path="/Inventory" element={<Inventory />} />
+                <Route path="/Dashboard" element={<Dashboard handleIsLoading={handleIsLoading} />} />
+                <Route path="/UserSettings" element={<UserSettings handleIsLoading={handleIsLoading} />} />
+                <Route path="/Legislation" element={<Legislation handleIsLoading={handleIsLoading} />} />
+                <Route path="/Marketing" element={<Marketing handleIsLoading={handleIsLoading} />} />
+                <Route path="/Inventory" element={<Inventory handleIsLoading={handleIsLoading} />} />
               </>
             ) : (<Route path="/" exact element={<Navigate replace to="/Login"></Navigate>} />)}
-            <Route path="/Login" element={<Login onLogin={handleLogin}/>} />
+            <Route path="/Login" element={<Login onLogin={handleLogin} handleIsLoading={handleIsLoading}/>} />
             <Route path="/Register" element={<Registration />} />
           </Routes>
              

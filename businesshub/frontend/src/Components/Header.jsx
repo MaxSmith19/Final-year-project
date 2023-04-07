@@ -1,11 +1,10 @@
-import {React, useContext} from 'react'
 import {Link} from 'react-router-dom'
-import {VscThreeBars, VscChevronRight, VscChevronLeft, VscAccount}from 'react-icons/vsc'
+import {VscThreeBars, VscChevronLeft}from 'react-icons/vsc'
 import {RiAccountCircleFill, RiAccountCircleLine} from 'react-icons/ri'
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast} from 'react-toastify'
-import { useEffect, CSSProperties } from 'react'
+import { toast} from 'react-toastify'
+import { useEffect } from 'react'
 import  Switch  from 'react-switch'
 import BarLoader from "react-spinners/BarLoader";
 

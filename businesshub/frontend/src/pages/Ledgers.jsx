@@ -1,6 +1,5 @@
-import react, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
-import { imBin } from 'react-icons/im';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { MdPostAdd } from 'react-icons/md'
 import Chart from 'chart.js/auto'

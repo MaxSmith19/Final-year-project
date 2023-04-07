@@ -1,8 +1,7 @@
-import react, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
 import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
-const qs = require('qs');
 
 function Inventory() {
     const [inventoryRows, setInventoryRows] = useState([]);
@@ -10,7 +9,6 @@ function Inventory() {
     //These are the rows of the current inventory being shown
     const [cacheResponse, setCacheResponse] = useState([]);
     //Cache the entire response so that it doesn't have to be requested every time
-    const [inSettings, setInSettings] = useState(0);
     //If they are in the settings mode or not.
     useEffect(() => {
         setInventoryRows([])

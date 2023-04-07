@@ -1,5 +1,3 @@
-import react from 'react'
-import { Component } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -8,12 +6,13 @@ import Cookies from 'js-cookie';
 
 const Marketing = () =>{
     const [challenge, setChallenge] = useState("")
-    const [verifier, setVerifier] = useState("")
     const [state, setState] = useState("")
+
     useEffect(()=>{
         checkUserSocials()
         generatePKCE()
     },[])
+
     const checkUserSocials = ()=>{
         let config = {
             method: 'get',

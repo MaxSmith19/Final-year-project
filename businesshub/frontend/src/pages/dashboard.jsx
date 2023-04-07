@@ -1,17 +1,12 @@
-import react from 'react'
-import { Component } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import qs from 'qs';
 import { useEffect } from 'react';
 import { RiAccountBoxFill } from 'react-icons/ri';
 import { MdEmail } from 'react-icons/md';
 const Dashboard = () =>{
-    const [userInfo, setUserInfo] = useState(null);
     const [userEmail, setUserEmail] = useState("");
     const [businessName, setBusinessName] = useState("");
     const [imageSrc, setImageSrc] = useState("");
-    const [userID, setUserID] = useState('');
 
     useEffect(() => {
         getUserInfo();
