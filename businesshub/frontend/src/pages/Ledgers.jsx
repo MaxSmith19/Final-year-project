@@ -270,6 +270,7 @@ function Ledgers({handleIsLoading}) {
         const updatedLedgerRows = [...ledgerRows];
         updatedLedgerRows.splice(index, 1)
         setLedgerRows(updatedLedgerRows)
+        document.getElementById("saveButton").classList.remove("hidden")
     }
     const calculateBalance = () => {
         let balance = 0;
@@ -371,21 +372,23 @@ function Ledgers({handleIsLoading}) {
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Notes</label>
-                            <input className="rounded pl-2 bg-slate-50 w-full shadow-sm gbp" value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" required />
+                            <input className="rounded pl-2 bg-slate-50 w-full shadow-sm " value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" required />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Debit</label>
-                            <span className="absolute pl-1">£</span>
-                            <input className="rounded pl-4 bg-slate-50 w-full shadow-sm gbp text-green-500" value={row.debit || 0} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required min={0}/>
+                            <span className="absolute pl-1 sm:hidden md:hidden gbp">£</span>
+                            <input className="rounded pl-4 bg-slate-50 w-full shadow-sm text-green-500" value={row.debit || 0} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required min={0}/>
                         </td>
 
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Credit</label>
-                            <span className="absolute pl-1">£ -</span>
-                            <input className="rounded pl-5 bg-slate-50 w-full shadow-sm gbp text-red-500" value={row.credit || 0} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required max={0} />
+                            <span className="absolute pl-1 sm:hidden md:hidden gbp">£ -</span>
+                            <input className="rounded pl-5 bg-slate-50 w-full shadow-sm text-red-500" value={row.credit || 0} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required max={0} />
                         </td>
                         <td className="p-1">
-                            <button onClick={()=>deleteRow(index)}> <BsDash /></button>
+                            <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={()=>deleteRow(index)}>Delete row</label>
+
+                            <button className=""onClick={()=>deleteRow(index)}> <BsDash /></button>
                         </td>
                     </tr>
                     ))}

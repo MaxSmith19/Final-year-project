@@ -1,5 +1,8 @@
 @media only screen and (max-width: 600px) {
     /* Bigger phones */
+    .gbp{
+        visibility: hidden;
+    }
     .ledgerOptions h1{
         display: none;
     }
