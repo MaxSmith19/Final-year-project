@@ -83,7 +83,6 @@ const updateUser = asyncHandler(async( req, res) =>{
         req.body.businessLogo = req.file.path
     }
     if(req.body.businessName===""){
-        console.log(Users)
         req.body.businessName = Users.businessName
     }
     const updatedUser = await User.findByIdAndUpdate(token.id,req.body,{new: true,})
