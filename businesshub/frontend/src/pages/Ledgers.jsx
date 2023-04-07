@@ -8,7 +8,7 @@ import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
 const qs = require('qs');
 
-function Ledgers(props) {
+function Ledgers({handleIsLoading}) {
     const [ledgerRows, setLedgerRows] = useState([]);
     //These are the rows of the current ledger being shown
     const [ledgerNames, setLedgerNames] = useState([]);
@@ -27,7 +27,6 @@ function Ledgers(props) {
     useEffect(() => {
         setLedgerRows([])
         getLedgers();
-        props.isLoading(true)
     }, [] //having the empty array as an initial value will cause the effect to run only once
           //CHANGING THIS WILL CAUSE IT TO CRASH BECAUSE OF ALL THE RENDERING
           // if there is an item in the array, useEffect will run when that item is changed.
@@ -65,67 +64,67 @@ function Ledgers(props) {
           });
           return () =>{
             chart.destroy()
-          props.isLoading(true)
 
           }
     },[ledgerRows])
+    useEffect(() =>{
+        console.log(handleIsLoading)
+    },[handleIsLoading])
 
-
-    const getLedgers = () => {
-        const userIDCookie = document.cookie.split("=")[1]; 
-        const token = userIDCookie.split(";")[0];
-        const data = qs.stringify({
-            ledgerName: undefined
-        })
-        let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Ledgers',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: data
-        };
-
-        axios.request(config)
-            .then((response) => {
-                const newLedgerNames = [];
-                let ledgerData ="";
-                
-                for (let i = 0; i < response.data.length; i++) {
-                    let ledgerName = response.data[i].ledgerName;
-                    newLedgerNames.push(ledgerName);
-                    ledgerData = response.data[0].ledgerData;
-                    // response.data[0] is the first created ledger
-                    if(response.data.ledgerData!=null && response.data[i].ledgerData.length !== 0) {
-                        response.data[i].ledgerData.forEach(element => {
-                            setLedgerRows(LedgerRows => [...LedgerRows, {
-                                date: element.date,
-                                notes: element.notes,
-                                debit: element.debit,
-                                credit: element.credit,
-                                balance: element.balance
-                            }]);
-                        })
-                        }
-                        setCurrentLedgerID(response.data[0]._id);
-                        setCurrentLedgerName(response.data[0].ledgerName);
-                    }
-
-                if(ledgerData!=null){
-                    setLedgerRows(ledgerRows => [...ledgerRows,...ledgerData]);
-                }
-                setCacheResponse(response.data)
-                setLedgerNames(newLedgerNames);
-                //set current ledger to the first ledger as this
-                //will be first by default
-
-            })
-            .catch((error) => {
-                console.log(error);
+    const getLedgers = async () => {
+        handleIsLoading(true);
+        try {
+            const userIDCookie = document.cookie.split("=")[1]; 
+            const token = userIDCookie.split(";")[0];
+            const data = qs.stringify({
+                ledgerName: undefined
             });
+            let config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:5000/api/Ledgers',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: data
+            };
+            const response = await axios.request(config);
+            const newLedgerNames = [];
+            let ledgerData ="";
+            for (let i = 0; i < response.data.length; i++) {
+                let ledgerName = response.data[i].ledgerName;
+                newLedgerNames.push(ledgerName);
+                ledgerData = response.data[0].ledgerData;
+                // response.data[0] is the first created ledger
+                if(response.data.ledgerData!=null && response.data[i].ledgerData.length !== 0) {
+                    response.data[i].ledgerData.forEach(element => {
+                        setLedgerRows(LedgerRows => [...LedgerRows, {
+                            date: element.date,
+                            notes: element.notes,
+                            debit: element.debit,
+                            credit: element.credit,
+                            balance: element.balance
+                        }]);
+                    })
+                }
+                setCurrentLedgerID(response.data[0]._id);
+                setCurrentLedgerName(response.data[0].ledgerName);
+            }
+            if(ledgerData!=null){
+                setLedgerRows(ledgerRows => [...ledgerRows,...ledgerData]);
+            }
+            setCacheResponse(response.data);
+            setLedgerNames(newLedgerNames);
+            //set current ledger to the first ledger as this
+            //will be first by default
+            handleIsLoading(false);
+        } catch (error) {
+            console.log(error);
+            handleIsLoading(false);
+        }
     };
+    
     const changeLedger = (event) => {
         let ledgerData = ""
 
@@ -154,7 +153,7 @@ function Ledgers(props) {
             //adds a new blank row to the table as nothing exists for the ledger
         }
     }
-    const createLedger = () =>{
+    const createLedger = async () =>{
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
         let config = {
@@ -168,64 +167,63 @@ function Ledgers(props) {
                 ledgerName: "New Ledger"
             }
         };
-        //Create a new ledger with the temporary name of "New Ledger"
-        axios.request(config)
-        .then((response) => {
+        try {
+            //Create a new ledger with the temporary name of "New Ledger"
+            const response = await axios.request(config);
             window.location.reload();
-            return
-        })
-        .catch((error) => {
-                console.log(error);
-        }); 
+        } catch (error) {
+            console.log(error);
+        } 
     }
-    const onSave = () => {
+    
+    const onSave = async () => {
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
         let config = {
             method: 'put',
             maxBodyLength: Infinity,
             url: 'http://localhost:5000/api/Ledgers/update',
-            headers: { 
-                    'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/x-www-form-urlencoded'
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data : {
+            data: {
                 _id: currentLedgerID,
                 ledgerData: ledgerRows
             }
         };
         //Not editing the name of the ledger
         cacheResponse.forEach(element => {
-            if(element.ledgerName === editedLedgerName){
+            if (element.ledgerName === editedLedgerName) {
                 toast.error("You already have a ledger called " + element.ledgerName)
                 setEditedLedgerName("")
                 window.location.reload()
             }
         })
-        if(editedLedgerName !==""){
+        if (editedLedgerName !== "") {
             config = {
                 method: 'put',
                 maxBodyLength: Infinity,
                 url: 'http://localhost:5000/api/Ledgers/update',
-                headers: { 
-                        'Authorization': `Bearer ${token}`, 
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                data : {
+                data: {
                     _id: currentLedgerID,
                     ledgerName: editedLedgerName
                 }
             };
         }
         //Changing the name of the ledger
-        axios.request(config)
-        .then((response) => {
-            cacheResponse.forEach((element,index) => {
-                if(element.ledgerName===currentLedgerName){
+        try {
+            const response = await axios.request(config);
+            cacheResponse.forEach((element, index) => {
+                if (element.ledgerName === currentLedgerName) {
                     const newCacheResponse = [...cacheResponse];
                     newCacheResponse[index] = response.data;
                     setCacheResponse(newCacheResponse);
-                    const newLedgerNames =  [...ledgerNames];
+                    const newLedgerNames = [...ledgerNames];
                     newLedgerNames[index] = response.data.ledgerName;
                     setLedgerNames(newLedgerNames)
                     toast.success("Ledger updated successfully")
@@ -234,14 +232,13 @@ function Ledgers(props) {
                 }
             })
             setEditedLedgerName("");
-
-        })
-        .catch((error) => {
+    
+        } catch (error) {
             console.log(error)
-        });
+        }
         document.getElementById("saveButton").classList.add("hidden")
-
-    }    
+    }
+    
         
     const addRow = () => {
         const newRow = {
@@ -262,27 +259,26 @@ function Ledgers(props) {
         setLedgerRows(updatedLedgerRows)
     }
 
-    const deleteLedger = () => {
-
+    const deleteLedger = async () => {
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
             url: 'http://localhost:5000/api/Ledgers/delete',
-            headers: { },
+            headers: {},
             data: {
                 _id: currentLedgerID
             }
         };
-        axios.request(config)
-        .then((response) => {
-            toast.warn("Ledger Deleted")
-            setCacheResponse([...cacheResponse, cacheResponse.splice(cacheResponse.indexOf(response.data), "")])
-        })
-        .catch((error) => {
-                console.log(error);
-        });
-        
-    }
+        try {
+            const response = await axios.request(config);
+            toast.warn("Ledger Deleted");
+            const newCacheResponse = [...cacheResponse];
+            newCacheResponse.splice(newCacheResponse.indexOf(response.data), 1);
+            setCacheResponse(newCacheResponse);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const onChangeCell = (event, index, key) => {
         const newRows = [...ledgerRows];
         newRows[index][key] = event.target.value;
