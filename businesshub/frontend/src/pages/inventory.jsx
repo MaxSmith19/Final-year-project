@@ -153,22 +153,22 @@ function Inventory() {
                 </thead>
                 <tbody >
                 {inventoryRows.map((row, index) => (
-                <tr key={index} className="h-10 sm:text-left" ref={event => (row[index] =event)}>
+                <tr key={index} className="h-10 bg-slate-200 rounded shadow-sm sm:text-left hover:bg-slate-300 transition-all ease-in-out duration-300" ref={event => (row[index] =event)}>
                     <td className="p-1">
                         <label className="block w-full bg-slate-50 sm:hidden">Item name</label>
-                        <input className="pl-2 bg-slate-50 w-full shadow-sm" value={row.Item} onChange={(event)=>onChangeInventoryCell(event, index, "Item")} type="text" required />    
+                        <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.Item} onChange={(event)=>onChangeInventoryCell(event, index, "Item")} type="text" required />    
                     </td>
                     <td className="p-1">
                         <label className="block w-full bg-slate-50 sm:hidden">Description</label>
-                        <input className="pl-2 bg-slate-50 w-full shadow-sm" value={row.Description} onChange={(event)=>onChangeInventoryCell(event, index, "Description")} type="text" required />
+                        <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.Description} onChange={(event)=>onChangeInventoryCell(event, index, "Description")} type="text" required />
                     </td>
                     <td className="p-1">  
                         <label className="block w-full bg-slate-50 sm:hidden">Quantity</label>
-                        <input className="pl-2 bg-slate-50 w-full shadow-sm" value={row.Quantity} onChange={(event)=>onChangeInventoryCell(event, index, "Quantity")} type="number" required />
+                        <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.Quantity} onChange={(event)=>onChangeInventoryCell(event, index, "Quantity")} type="number" required />
                     </td>
                     <td className="p-1">
                         <label className="block w-full bg-slate-50 sm:hidden">Selling Price</label>
-                        <input className="pl-2 bg-slate-50 w-full shadow-sm" value={row.SellingPrice} onChange={(event)=>onChangeInventoryCell(event, index, "SellingPrice")} type="number" required />
+                        <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.SellingPrice} onChange={(event)=>onChangeInventoryCell(event, index, "SellingPrice")} type="number" required />
                     </td>
                 </tr>
                 ))}
