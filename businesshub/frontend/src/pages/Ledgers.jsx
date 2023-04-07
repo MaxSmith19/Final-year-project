@@ -5,6 +5,7 @@ import { MdPostAdd } from 'react-icons/md'
 import Chart from 'chart.js/auto'
 import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
+import { BsDash} from 'react-icons/bs'
 const qs = require('qs');
 
 function Ledgers({handleIsLoading}) {
@@ -22,7 +23,7 @@ function Ledgers({handleIsLoading}) {
     //This will be used when the user is edting the name of a ledger
     const [inSettings, setInSettings] = useState(0);
     //If they are in the settings mode or not.
-
+    const [balance, setBalance] = useState(0);
     useEffect(() => {
         setLedgerRows([])
         getLedgers();
@@ -32,44 +33,57 @@ function Ledgers({handleIsLoading}) {
           //Since it is blank, It will only run once.
     );
     useEffect(() =>{
+        calculateBalance();
+
         let labels=[]
         let data=[]
+        let debitData =[]
+        let creditData =[]
         const bchrt = document.getElementById('balanceChart').getContext('2d');
         ledgerRows.forEach(elements =>{
             labels.push(elements.date)
             data.push(elements.balance)
+            debitData.push(elements.debit)
+            creditData.push(elements.credit)
         })
 
         const chart = new Chart(bchrt, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Balance',
-              backgroundColor: 'rgb(255, 99, 132)',
-              borderColor: 'rgb(255, 99, 132)',
-              data: data
-            }]
-          },
-          options: {
-            legend : {display: false},
-            title: {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: 'Debit',
+                  backgroundColor: 'rgb(54, 162, 235)',
+                  borderColor: 'rgb(54, 162, 235)',
+                  data: debitData
+                },
+                {
+                  label: 'Credit',
+                  backgroundColor: 'rgb(255, 99, 132)',
+                  borderColor: 'rgb(255, 99, 132)',
+                  data: creditData
+                }
+              ]
+            },
+            options: {
+              title: {
                 display: true,
-                text: "World Wine Production 2018"
+                text: "Debit and Credit over Dates"
               },
               responsive: true,
               maintainAspectRatio: false
-          }
+            }
           });
+          
+          
           return () =>{
             chart.destroy()
 
           }
     },[ledgerRows])
     useEffect(() =>{
-        console.log(handleIsLoading)
     },[handleIsLoading])
-
     const getLedgers = async () => {
         handleIsLoading(true);
         try {
@@ -254,10 +268,21 @@ function Ledgers({handleIsLoading}) {
     
     const deleteRow = (index) => {
         const updatedLedgerRows = [...ledgerRows];
-        updatedLedgerRows.splice(index.target.value, 1)
+        updatedLedgerRows.splice(index, 1)
         setLedgerRows(updatedLedgerRows)
     }
-
+    const calculateBalance = () => {
+        let balance = 0;
+        let data = [];
+        ledgerRows.forEach((element, index) => {
+          const debit = Number(element.debit);
+          const credit = Number(element.credit)*-1;
+          const newBalance = balance + debit - credit;
+          balance = newBalance;
+          data.push(newBalance);
+        });
+        setBalance(balance)
+    }
     const deleteLedger = async () => {
         let config = {
             method: 'delete',
@@ -332,9 +357,8 @@ function Ledgers({handleIsLoading}) {
                     <tr>
                         <th className="w-2/12 border-t border-l">Date</th>
                         <th className="w-5/12 border-t border-l">Notes</th>
-                        <th className="w-1/12 border-t border-l">Debit</th>
-                        <th className="w-1/12 border-t border-l">Credit</th>
-                        <th className="w-2/12 border-t border-l border-r">Balance</th>
+                        <th className="w-2/12 border-t border-l">Debit</th>
+                        <th className="w-2/12 border-t border-l">Credit</th>
                         <button className="w-1/12"onClick={addRow}>+</button>
                     </tr>
                 </thead>
@@ -347,29 +371,28 @@ function Ledgers({handleIsLoading}) {
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Notes</label>
-
                             <input className="rounded pl-2 bg-slate-50 w-full shadow-sm gbp" value={row.notes} onChange={(event)=>onChangeCell(event, index, "notes")} type="text" required />
                         </td>
-                        <td className="p-1">  
+                        <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Debit</label>
-                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm gbp" value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required />
+                            <span className="absolute pl-1">£</span>
+                            <input className="rounded pl-4 bg-slate-50 w-full shadow-sm gbp text-green-500" value={row.debit || 0} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required min={0}/>
                         </td>
+
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Credit</label>
-                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm gbp" value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required />
+                            <span className="absolute pl-1">£ -</span>
+                            <input className="rounded pl-5 bg-slate-50 w-full shadow-sm gbp text-red-500" value={row.credit || 0} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required max={0} />
                         </td>
                         <td className="p-1">
-                            <label className="block bg-slate-50 sm:hidden">Balance</label>
-                            <input className="gpb rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.balance} onChange={(event)=>onChangeCell(event, index, "balance")} type="number" required />
+                            <button onClick={()=>deleteRow(index)}> <BsDash /></button>
                         </td>
                     </tr>
                     ))}
                 </tbody>
                 </table>
-
- 
             }
-                
+                <input className="gpb rounded pl-4 bg-slate-300 w-2/12 shadow-sm float-right" value={balance } required />
             </div>
             <button onClick={onSave} id="saveButton"className="transition-all ease-in-out duration-75 rounded-full fixed bottom-10 right-10 bg-green-700 p-3 hidden"><FiSave size={50}/></button>          
 
