@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import axios from 'axios';
 import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
+import { BsDash} from 'react-icons/bs'
 
 function Inventory() {
     const [inventoryRows, setInventoryRows] = useState([]);
@@ -30,6 +31,7 @@ function Inventory() {
         
         axios.request(config)
         .then((response) => {
+            console.log(response.data[0])
             response.data[0].inventoryData.forEach(element => {
                 setInventoryRows(inventoryRows => [...inventoryRows, {
                     Item: element.Item,
@@ -43,7 +45,7 @@ function Inventory() {
                     Item: element.Item,
                     Description: element.Description,
                     Quantity: element.Quantity,
-                    SellingPrice: element.SellingPrice
+                    ppu: element.ppu
                 }])
             })
             setCacheResponse(response.data)
@@ -58,7 +60,7 @@ function Inventory() {
         newRows[index][key] = event.target.value;
         setInventoryRows(newRows);
         const button = document.getElementById("saveButton")
-        if(cacheResponse === ingredientsRows){
+        if(cacheResponse === inventoryRows){
             button.classList.add("hidden")
         }else{
             button.classList.remove("hidden")
@@ -70,7 +72,7 @@ function Inventory() {
         newRows[index][key] = event.target.value;
         setIngredientsRows(newRows);
         const button = document.getElementById("saveButton")
-        if(cacheResponse===inventoryRows){
+        if(cacheResponse===ingredientsRows){
             button.classList.add("hidden")
             
         }else{
@@ -80,6 +82,8 @@ function Inventory() {
     const onSave = ()=> {
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
+        console.log(inventoryRows)
+        console.log(ingredientsRows)
         
         let config = {
             method: 'put',
@@ -106,11 +110,10 @@ function Inventory() {
     }
     const addInventoryRow = () =>{
         const newRow = {
-            date: '',
+            Item: '',
             notes: '',
-            debit: '',
-            credit: '',
-            balance: ''
+            Quantity: '',
+            SellingPrice: '',
           };
    
           setInventoryRows([...inventoryRows, newRow]);
@@ -120,21 +123,31 @@ function Inventory() {
     
     const addIngredientsRow = () =>{
         const newRow = {
-            date: '',
+            Item: '',
             notes: '',
-            debit: '',
-            credit: '',
-            balance: ''
+            Quantity: '',
+            ppu: '',
           };
    
           setIngredientsRows([...ingredientsRows, newRow]);
           //adds a new blank row to the table
 
     }
-    const deleteRow = () =>{
+    const deleteIngredientsRow = (index) =>{
+        const updatedIngredientsRows = [...ingredientsRows];
+        updatedIngredientsRows.splice(index, 1)
+        console.log(updatedIngredientsRows)
+        setIngredientsRows(updatedIngredientsRows)
+        document.getElementById("saveButton").classList.remove("hidden")
+    }
+    
+    const deleteInventoryRow = (index) =>{
         const updatedInventoryRows = [...inventoryRows];
-        updatedInventoryRows.splice(index.target.value, 1)
+        updatedInventoryRows.splice(index,1)
+        console.log(updatedInventoryRows)
         setInventoryRows(updatedInventoryRows)
+        document.getElementById("saveButton").classList.remove("hidden")
+
     }
     return(
         <>
@@ -148,7 +161,6 @@ function Inventory() {
                         <th className="w-1/12 border-t border-l">Quantity</th>
                         <th className="w-1/12 border-t border-l">Selling price</th>
                         <button onClick={addInventoryRow}>+</button>
-
                     </tr>
                 </thead>
                 <tbody >
@@ -170,13 +182,17 @@ function Inventory() {
                         <label className="block w-full bg-slate-50 sm:hidden">Selling Price</label>
                         <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.SellingPrice} onChange={(event)=>onChangeInventoryCell(event, index, "SellingPrice")} type="number" required />
                     </td>
+                    <td>                    
+                        <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={()=>deleteRow(index)}>Delete row</label>
+                        <button className=""onClick={()=>deleteInventoryRow(index)}> <BsDash /></button>
+                    </td>
                 </tr>
                 ))}
                 </tbody>
                 </table>   
 
             </div>
-            <h1 className='text-center text-6xl mb-10'>Ingredients</h1>
+            <h1 className='text-center text-6xl mb-10'>Supplies</h1>
             <div className="bg-white pb-16 w-full m-auto p-4 rounded-xl shadow-2xl">
 
                 <table className="table-auto w-full h-auto md:table-fixed sm:table-fixed">
@@ -185,25 +201,33 @@ function Inventory() {
                         <th className="w-4/12 border-t border-l">Item</th>
                         <th className="w-5/12 border-t border-l">Description</th>
                         <th className="w-1/12 border-t border-l">Quantity</th>
-                        <th className="w-1/12 border-t border-l">Selling price</th>
+                        <th className="w-1/12 border-t border-l">Price per Unit</th>
                         <button onClick={addIngredientsRow}>+</button>
 
                     </tr>
                 </thead>
                 <tbody >
                 {ingredientsRows.map((row, index) => (
-                <tr key={index} className="h-10 sm:text-left" ref={event => (row[index] =event)}>
-                    <td className=" ">
-                        <input value={row.Item} onChange={(event)=>onChangeIngredientsCell(event, index, "date")} type="date" className="w-full" required />    
+                <tr key={index} className="h-10 bg-slate-200 rounded shadow-sm sm:text-left hover:bg-slate-300 transition-all ease-in-out duration-300" ref={event => (row[index] =event)}>
+                    <td className="p-1  ">
+                        <label className="block w-full bg-slate-50 sm:hidden">Item name</label>
+                        <input className=" rounded pl-2 bg-slate-50 w-full shadow-sm"value={row.Item} onChange={(event)=>onChangeIngredientsCell(event, index, "Item")} required />    
                     </td>
-                    <td className="">
-                        <input value={row.Description} onChange={(event)=>onChangeIngredientsCell(event, index, "Description")} type="text" className="w-full" required />
+                    <td className="p-1  ">
+                    <label className="block w-full bg-slate-50 sm:hidden">Description</label>
+                        <input className=" rounded pl-2 bg-slate-50 w-full shadow-sm"value={row.Description} onChange={(event)=>onChangeIngredientsCell(event, index, "Description")} type="text" required />
                     </td>
-                    <td className="">  
-                        <input value={row.Quantity} onChange={(event)=>onChangeIngredientsCell(event, index, "debit")} type="number" className="w-full" required />
+                    <td className="p-1  ">  
+                        <label className="block w-full bg-slate-50 sm:hidden">Quantity</label>
+                        <input className=" rounded pl-2 bg-slate-50 w-full shadow-sm"value={row.Quantity} onChange={(event)=>onChangeIngredientsCell(event, index, "Quantity")} type="number" required />
                     </td>
-                    <td className="">
-                        <input value={row.SellingPrice} onChange={(event)=>onChangeIngredientsCell(event, index, "credit")} type="number" className="w-full" required />
+                    <td className="p-1  ">
+                        <label className="block w-full bg-slate-50 sm:hidden">Item name</label>
+                        <input className=" rounded pl-2 bg-slate-50 w-full shadow-sm"value={row.ppu} onChange={(event)=>onChangeIngredientsCell(event, index, "ppu")} type="number" required />
+                    </td>
+                    <td>                    
+                        <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={()=>deleteRow(index)}>Delete row</label>
+                        <button className=""onClick={()=>deleteIngredientsRow(index)}> <BsDash /></button>
                     </td>
                 </tr>
                 ))}

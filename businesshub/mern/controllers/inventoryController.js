@@ -20,23 +20,23 @@ const createInventory = asyncHandler(async(req, res) =>{
     const inv = await Inventory.create({
       userID: token.id,
       inventoryData: [{Item:"",Description:"", Quantity:"", SellingPrice:""}],
-      ingredientsData: [{Item:"", Description:"", Quantity: "", SellingPrice: ""}]
-    })
+      ingredientsData: [{Item:"", Description:"", Quantity: "", ppu: ""}]
+    })  
     res.status(201).json(inv)
   }
 })
 
 const updateInventory = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
-  const id = await Inventory.findOne({token})
-  console.log(req.inventoryData)
-  const inv = await Inventory.findByIdAndUpdate(id._id, {
-    inventoryData: req.body.inventoryData,
-    ingredientsData: req.body.ingredientsData
-  }, {new: true})
+  const id = await Inventory.findOne({userID:token.id})
+  let inv=""
+    inv = await Inventory.findOneAndUpdate(id._id, {
+      inventoryData: req.body.inventoryData,
+      ingredientsData: req.body.ingredientsData
+    }, {new: true}) 
   res.status(201).json(inv)
 })
- 
+  
 const deleteInventory = asyncHandler(async(req, res) =>{
   const InventoryID = req.body._id
   const inv = await Inventory.findByIdAndDelete(InventoryID)  

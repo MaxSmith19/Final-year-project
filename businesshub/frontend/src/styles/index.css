@@ -99,6 +99,7 @@ html{
     animation: increaseTextSize 1s ease-in-out infinite;
 }
 .overlay a {
+    font-family: 'roboto';
     padding: 8px;
     text-decoration: none;
     font-size: 36px;
