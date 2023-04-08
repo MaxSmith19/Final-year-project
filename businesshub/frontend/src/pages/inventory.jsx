@@ -4,7 +4,7 @@ import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
 import { BsDash} from 'react-icons/bs'
 
-function Inventory() {
+function Inventory({handleIsLoading})  {
     const [inventoryRows, setInventoryRows] = useState([]);
     const [ingredientsRows, setIngredientsRows] = useState([])
     //These are the rows of the current inventory being shown
@@ -17,7 +17,8 @@ function Inventory() {
         getInventory()
     },[])
 
-    const getInventory = () =>{
+    const getInventory = async() =>{
+        handleIsLoading(true)
         const userIDCookie = document.cookie.split("=")[1]; 
         const token = userIDCookie.split(";")[0];
         let config = {
@@ -28,9 +29,8 @@ function Inventory() {
                     'Authorization': `Bearer ${token}`
             }
         };
-        
-        axios.request(config)
-        .then((response) => {
+        try{
+        const response = await axios.request(config)
             console.log(response.data[0])
             response.data[0].inventoryData.forEach(element => {
                 setInventoryRows(inventoryRows => [...inventoryRows, {
@@ -49,10 +49,11 @@ function Inventory() {
                 }])
             })
             setCacheResponse(response.data)
-        })
-        .catch((error) => {
+            handleIsLoading(false)
+        }
+        catch(error){
             console.log(error);
-        });
+        }
     }
 
     const onChangeInventoryCell = (event, index, key) => {
@@ -79,7 +80,7 @@ function Inventory() {
             button.classList.remove("hidden")
         }
     }
-    const onSave = ()=> {
+    const onSave = async()=> {
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
         console.log(inventoryRows)
@@ -98,15 +99,13 @@ function Inventory() {
                 ingredientsData : ingredientsRows
             }
         };
-        
-        axios.request(config)
-        .then((response) => {
+        try{
+            const response =await axios.request(config)
             toast.success("Inventory successfully updated")
             setCacheResponse(response.data)
-        })
-        .catch((error) => {
+        }catch(error) {
             toast.error("An error occured:" +error.message)
-        });
+        }
     }
     const addInventoryRow = () =>{
         const newRow = {
