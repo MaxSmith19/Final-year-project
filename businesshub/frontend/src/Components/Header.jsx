@@ -40,16 +40,18 @@ const Nav = (props) => {
         <div className="fixed top-0 w-full z-50">
             <div className="border bg-white h-20 shadow-md">
             <div className='grid grid-cols-3 grid-rows-1 gap-5'>
-            <div className="mt-3 ml-2">
-                        <button className={isNavOpen? "w-0 h-0" :"transition -rotate-180 duration-300"} onClick={()=>setNav(true)}> <VscThreeBars size={isNavOpen? "0":"50"}/></button>
+            <div className=" ml-2">
+                        <button className={isNavOpen? "w-0 h-0" :" mr-3 duration-150 focus:outline-none bg-white border-2 border-gray-300 p-1 mt-2 hover:bg-gray-700 hover:border-gray-700"} onClick={()=>setNav(true)}> <VscThreeBars size={isNavOpen? "0":"50"}/></button>
                     </div>
                 <h1 className='m-3 text-5xl text-center'>{(localStorage.getItem("businessName"))}</h1>
-                <div className="mt-3 relative">
-                        <a className="float-right bg-white mr-2 transition-all ease-in-out duration-75 " onClick={()=>setIsAccountOpen(!isAccountOpen)} >{isAccountOpen? <RiAccountCircleLine size="50"/>:<RiAccountCircleFill size="50"/>}</a>
-                        <div className={isAccountOpen? 'invisible':'transition ease-in-out duration-300 absolute top-0 right-0 float-right text-right mt-16 w-full md:pl-24 border-gray-500 shadow-xl p-1 bg-white z-50'}>
-                            <a href="#" className="block text-2xl bg-white border shadow-2xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300"><Link to="/UserSettings">Account settings</Link></a>
-                            <a href="#" className="block text-2xl bg-white border shadow-2xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300">Preferences</a>
-                            <a href="#" className="block text-2xl bg-white border shadow-xl hover:bg-gray-700 hover:text-white mb-0.5 rounded-md transition ease-in-out duration-300" onClick={()=>logOut()}>Log out</a>
+                <div className="relative">
+                        <button className="float-right mr-2 transition-all ease-in-out duration-150 focus:outline-none bg-white border-2 border-gray-300 rounded-full p-1 mt-2 hover:bg-gray-700 hover:border-gray-700" onClick={()=>setIsAccountOpen(!isAccountOpen)} >
+                            {isAccountOpen? <RiAccountCircleLine size="50" className="text-gray-800 hover:text-white"/>:
+                            <RiAccountCircleFill size="50"className="text-gray-800 hover:text-white"/>}</button>
+                            
+                        <div className={isAccountOpen? 'invisible':' grid grid-col-2 grid-row-2 focus:outline-none bg-white mt-1 mr-3 '}>
+                            <a href="#" className=" text-2xl text-right bg-white  hover:bg-gray-700 hover:text-white mb-0.5 transition ease-in-out duration-300 "><Link to="/UserSettings">Account settings</Link></a>
+                            <a href="#" className=" text-2xl text-right bg-white hover:bg-gray-700 hover:text-white mb-0.5 transition ease-in-out duration-300 border-t" onClick={()=>logOut()}>Log out</a>
                         </div>
                     </div>
                 </div>
@@ -61,7 +63,7 @@ const Nav = (props) => {
                 />
 
         <div className={isNavOpen? "overlay":"h-0"}>
-        <button className={isNavOpen? "transition -rotate-180 duration-300 text-white mt-3 ml-3" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="mt-3 ml-2" size={isNavOpen? "50":"0"} /></button>
+        <button className={isNavOpen? "transition -rotate-180 duration-300 text-white mt-3 ml-3 hover:bg-gray-700 hover:border-gray-700 rounded-full" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="mt-3 ml-2" size={isNavOpen? "50":"0"} /></button>
                 <div className={isNavOpen? "overlay-content":"hidden"}> 
                     <label className=''>Dark Mode:  
                         <Switch className='ml-4 text-center' onChange={()=>changeMode()} checked={isDarkMode}/>
