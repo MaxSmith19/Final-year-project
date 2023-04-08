@@ -3,11 +3,12 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { RiAccountBoxFill } from 'react-icons/ri';
 import { MdEmail } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 const Dashboard = () =>{
     const [userEmail, setUserEmail] = useState("");
     const [businessName, setBusinessName] = useState("");
     const [imageSrc, setImageSrc] = useState("");
-
+    const navigate = useNavigate()
     useEffect(() => {
         getUserInfo();
         //use effect runs the command on loading
@@ -51,10 +52,10 @@ const Dashboard = () =>{
                     <hr/>
                     <div>
                         {/* topHalf */}
-                        <img className="w-3/4 h-3/4 text-center m-auto mt-3 mb-3 shadow-md" src={`http://localhost:5000/${imageSrc}`} />
+                        <img onClick={()=>navigate("/userSettings")} alt="Your logo" className={imageSrc ? "w-full cursor-pointer h-full text-center m-auto mt-3 mb-3 shadow-md":"w-32 cursor-pointer h-32 text-center m-auto mt-3 mb-3 shadow-md"} src={imageSrc ? `http://localhost:5000/${imageSrc}` : "http://localhost:5000/uploads/uploadImage.png"} />
                     </div> 
                     <hr />
-                    <div className="w-full h-auto mt-4">
+                    <div className="w-full h-auto mt-4">  
                         {/* bottomHalf */}
                         <RiAccountBoxFill className='float-left' size="32"/><h2 className="text-2xl">Welcome {businessName}!</h2>
                         <MdEmail className="float-left" size="32"/><h2 className="text-2xl">{userEmail}</h2>

@@ -55,7 +55,7 @@ const Nav = (props) => {
                 </div>
             </div>
             <BarLoader
-                color="#36d7b7"
+                color={isDarkMode ? '#36d7b7':"#FFCC66"}
                 width={1600}
                 loading={props.isLoading}
                 />

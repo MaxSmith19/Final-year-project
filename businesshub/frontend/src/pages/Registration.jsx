@@ -3,14 +3,14 @@ import axios from "axios"
 import { Link } from 'react-router-dom';
 import * as qs from 'qs'
 import {toast} from 'react-toastify'
-
+import { useNavigate } from 'react-router-dom';
 const Registration = () => {
   const [businessName, setBusinessName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  const navigate = useNavigate();
   const onChangeBusinessName = (e) => {
     setBusinessName(e.target.value);
   }
@@ -61,6 +61,7 @@ const Registration = () => {
         document.cookie = "token=" + token +"; SameSite=Strict";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
         toast.success("Account successfully created")
+        navigate("/dashboard")
       })
       .catch(function (error) {
         console.log(error.statusCode);

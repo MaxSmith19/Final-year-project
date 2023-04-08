@@ -101,7 +101,7 @@ function App() {
         {authenticated ? (
         <Header authenticated={authenticated} onLogout={handleLogout} onToggleDarkMode={toggleDarkMode} isLoading={isLoading}/>
         ): 
-        <div className="border bg-white h-20 shadow-md"></div>
+        <div className="shadow-md"></div>
         }
         <div className="m-8 mt-32 appMQ">
           <Routes>
