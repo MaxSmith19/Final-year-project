@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
+import etsyLogo from "../images/etsy_logo.png"
 
 
 const Marketing = () =>{
@@ -22,7 +23,6 @@ const Marketing = () =>{
                 'Authorization': `Bearer ${Cookies.get("token")}`
             }
         };
-
         axios.request(config)
         .then((response) => {
             console.log(response)
@@ -61,10 +61,14 @@ const Marketing = () =>{
         `code_challenge_method=S256&` +
         `state=${state}`
     return(
-            <div className="grid gap-6 md:grid-rows-3 lg:grid-rows-3 xl:grid-cols-3">
-                <a className="bg-white" href={url}>
-                    Authenticate with Etsy
-                </a>
+            <div className="w-full h-96 bg-white rounded flex justify-center">
+                <div className="m-auto border rounded-sm grid grid-cols-2">
+                    <div className="border-r m-3"><img src={etsyLogo} />Etsy</div>
+                    <a className="justify-center text-center align-middle" href={url}>
+                        Authenticate with Etsy!
+                    </a>
+                </div>
+
             </div>
         )
 }

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { RiAccountBoxFill } from 'react-icons/ri';
 import { MdEmail } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-const Dashboard = () =>{
+const Dashboard = ({handleIsLoading}) =>{
     const [userEmail, setUserEmail] = useState("");
     const [businessName, setBusinessName] = useState("");
     const [imageSrc, setImageSrc] = useState("");
@@ -15,6 +15,7 @@ const Dashboard = () =>{
       }, []);
 
       const getUserInfo = () => {
+        handleIsLoading(true)
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
 
@@ -35,7 +36,9 @@ const Dashboard = () =>{
           setImageSrc(responseData.businessLogo);
           localStorage.setItem('businessName', responseData.businessName);
           localStorage.setItem('businessLogo', responseData.businessLogo);
-          
+          //local storage is not used often, but contains the name and logo to be used by the header 
+          //the image is used to show in the frontend design in some areas.
+          handleIsLoading(false)
         })
         .catch((error) => {
           console.log(error);

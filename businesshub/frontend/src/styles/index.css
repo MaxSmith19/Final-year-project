@@ -82,7 +82,7 @@ html{
     z-index: 1000000;
     left: 0;
     top: 0;
-    background-color: rgba(0, 0, 0, 0.983);
+    background-color: rgba(0, 0, 0, 0.96);
     overflow-x: hidden; 
     transition: 0.5s;
 }

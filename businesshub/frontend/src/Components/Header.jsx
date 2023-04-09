@@ -63,7 +63,7 @@ const Nav = (props) => {
                 />
 
         <div className={isNavOpen? "overlay":"h-0"}>
-        <button className={isNavOpen? "transition -rotate-180 duration-300 text-white mt-3 ml-3 hover:bg-gray-700 hover:border-gray-700 rounded-full" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="mt-3 ml-2" size={isNavOpen? "50":"0"} /></button>
+        <button className={isNavOpen? "transition -rotate-180 duration-300 text-white mt-3 ml-3 hover:text-gray-500" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="mt-3 ml-2" size={isNavOpen? "50":"0"} /></button>
                 <div className={isNavOpen? "overlay-content":"hidden"}> 
                     <label className=''>Dark Mode:  
                         <Switch className='ml-4 text-center' onChange={()=>changeMode()} checked={isDarkMode}/>

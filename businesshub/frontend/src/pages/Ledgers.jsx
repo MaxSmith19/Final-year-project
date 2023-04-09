@@ -82,16 +82,17 @@ function Ledgers({handleIsLoading}) {
 
           }
     },[ledgerRows])
-    useEffect(() =>{
-    },[handleIsLoading])
+
     const getLedgers = async () => {
         handleIsLoading(true);
         try {
             const userIDCookie = document.cookie.split("=")[1]; 
             const token = userIDCookie.split(";")[0];
+            //get the token from the cookie
             const data = qs.stringify({
                 ledgerName: undefined
             });
+            //as it is undefined, it will not get a specific ledger, as made in the controller
             let config = {
                 method: 'get',
                 maxBodyLength: Infinity,
@@ -102,15 +103,21 @@ function Ledgers({handleIsLoading}) {
                 },
                 data: data
             };
-            const response = await axios.request(config);
+            //make a request with the bearer token, data and other headers
+            const response = await axios.request(config); // an asynchronous call to our api
+            //they were made asynchronous so that the server can handle promises much better
+            //promises are very necessary for website applications like this were a lot of calls could be made simultaneously
             const newLedgerNames = [];
             let ledgerData ="";
             for (let i = 0; i < response.data.length; i++) {
+                //for each piece of data in the response data (all data in all ledgers)
                 let ledgerName = response.data[i].ledgerName;
                 newLedgerNames.push(ledgerName);
+                //push teh ledger names to the <select> so that the user can select their ledger
                 ledgerData = response.data[0].ledgerData;
                 // response.data[0] is the first created ledger
                 if(response.data.ledgerData!=null && response.data[i].ledgerData.length !== 0) {
+                    //if it is not null, set the ledgerData (current ledger) to have all the rows equal the saved data
                     response.data[i].ledgerData.forEach(element => {
                         setLedgerRows(LedgerRows => [...LedgerRows, {
                             date: element.date,
@@ -123,9 +130,11 @@ function Ledgers({handleIsLoading}) {
                 }
                 setCurrentLedgerID(response.data[0]._id);
                 setCurrentLedgerName(response.data[0].ledgerName);
+                //set these usestates for easier usage later on for other calls
             }
             if(ledgerData!=null){
                 setLedgerRows(ledgerRows => [...ledgerRows,...ledgerData]);
+                //If there is nothing in ledgerData, add a blank row
             }
             setCacheResponse(response.data);
             setLedgerNames(newLedgerNames);
@@ -146,7 +155,6 @@ function Ledgers({handleIsLoading}) {
             if(element.ledgerName === event.target.value) {
                 ledgerData = element.ledgerData;
                 setCurrentLedgerID(element._id);
-
             }
         })
         setCurrentLedgerName(event.target.value);
@@ -161,6 +169,7 @@ function Ledgers({handleIsLoading}) {
                     balance: element.balance
                 }]);
             })
+            //if there is data, set the data to be displayed in the ledger
         }else{
             setLedgerRows(LedgerRows => [{date: "", notes: "", debit: 0, credit: 0, balance: 0}])
             //adds a new blank row to the table as nothing exists for the ledger
@@ -169,6 +178,7 @@ function Ledgers({handleIsLoading}) {
     const createLedger = async () =>{
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
+        //get the token
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -183,9 +193,11 @@ function Ledgers({handleIsLoading}) {
         try {
             //Create a new ledger with the temporary name of "New Ledger"
             const response = await axios.request(config);
+            //we dont need any response necessarily, just whether it was successful (where it is reloaded)
             window.location.reload();
         } catch (error) {
             console.log(error);
+            //else an error is shown to the user
         } 
     }
     
@@ -211,6 +223,7 @@ function Ledgers({handleIsLoading}) {
                 toast.error("You already have a ledger called " + element.ledgerName)
                 setEditedLedgerName("")
                 window.location.reload()
+                //a ledger name cannot be the same as another, otherwise loss of data integrity
             }
         })
         if (editedLedgerName !== "") {
@@ -277,8 +290,11 @@ function Ledgers({handleIsLoading}) {
         let data = [];
         ledgerRows.forEach((element, index) => {
           const debit = Number(element.debit);
-          const credit = Number(element.credit)*-1;
+          const credit = Number(element.credit)*-1; //negative
           const newBalance = balance + debit - credit;
+          //calculates the balance in accordance to double entry bookkeeping
+          //debit being positive
+          //credit being negative
           balance = newBalance;
           data.push(newBalance);
         });
@@ -307,12 +323,12 @@ function Ledgers({handleIsLoading}) {
     const onChangeCell = (event, index, key) => {
         const newRows = [...ledgerRows];
         newRows[index][key] = event.target.value;
-        
+        //get the index (row) and the actual cell being changed
         setLedgerRows(newRows);
+        //set the ledgerRows to contain the data from the new row
         const button = document.getElementById("saveButton")
         if(cacheResponse===ledgerRows){
             button.classList.add("hidden")
-            
         }else{
             button.classList.remove("hidden")
         }
