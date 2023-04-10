@@ -36,7 +36,7 @@ const loginUser = asyncHandler(async(req,res) =>{
         })
         //send the token back to the client to be formed into a cookie
     }else{
-        res.status(401).json("Password not correct")
+        res.status(400).json("Password not correct")
         throw new Error("Wrong password")
     }
 })
@@ -46,13 +46,15 @@ const registerUser = asyncHandler(async(req, res) =>{
     const email = req.body.email
     const userExists = await User.findOne({email})
     if(userExists){
-        res.status(401).json("User already exists")
+        res.status(400).json("User already exists")
         throw new Error("User already exists")
     }
-    if(validEmail.test(req.body.email)){
+    if(!validEmail.test(req.body.email)){
+        res.status(400).json("Email does not meet the requirements")
         throw new Error("email does not meet requirements!")
     }
     if(!validPassword.test(req.body.password)){
+        res.status(400).json("Password does not meet the requirements")
         throw new Error("Password does not meet requirements!")
     }
 
@@ -65,7 +67,6 @@ const registerUser = asyncHandler(async(req, res) =>{
         email:req.body.email,
     })
     //create a new user with the hashed password
-    
     res.status(200).json({
         token: generateToken(users._id)
         //send the token back to the client to be formed into a cookie
