@@ -18,7 +18,6 @@ const Login = (props) => {
     //Check if the user is already logged in
     try{
     const userIDCookie = Cookies.get("token")
-    console.log(userIDCookie)
     if(userIDCookie!== undefined){
       navigate("/dashboard")
       toast.error("You are already logged in")
@@ -53,18 +52,16 @@ const Login = (props) => {
         document.cookie = "token=" + token +"; SameSite=None; Secure";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
         toast.success("Successfully Logged In");
+        props.onLogin();
         
         navigate("/Dashboard");
       }
     })
     .catch((error) => {
-      if (error.status === 401) {
+        toast.error(error.response.data)
         setErrorMessage("Email or password is incorrect");
         console.log(errorMessage);
-      }
-
     });
-    props.onLogin();
 
   }
 
@@ -85,7 +82,7 @@ const Login = (props) => {
           <label className="block text-gray-700 text-xl font-bold mb-2" htmlFor="password">
             Password
           </label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="password" onChange={(e) => setPassword(e.target.value)} value={password} required/>
+          <input id="pword" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="password" onChange={(e) => setPassword(e.target.value)} value={password} required/>
         </div>
         <div>
           {errorMessage && <div className="text-red-500">{errorMessage}</div>}
