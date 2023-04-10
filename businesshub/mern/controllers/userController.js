@@ -44,11 +44,7 @@ const loginUser = asyncHandler(async(req,res) =>{
 //REGISTERS USER, ADDS DATA INTO MONGO
 const registerUser = asyncHandler(async(req, res) =>{
     const email = req.body.email
-    const userExists = await User.findOne({email})
-    if(userExists){
-        res.status(400).json("User already exists")
-        throw new Error("User already exists")
-    }
+
     if(!validEmail.test(req.body.email)){
         res.status(400).json("Email does not meet the requirements")
         throw new Error("email does not meet requirements!")
@@ -57,7 +53,11 @@ const registerUser = asyncHandler(async(req, res) =>{
         res.status(400).json("Password does not meet the requirements")
         throw new Error("Password does not meet requirements!")
     }
-
+    const userExists = await User.findOne({email})
+    if(userExists){
+        res.status(400).json("User already exists")
+        throw new Error("User already exists")
+    }
     const hashedPassword= await bcrypt.hash(req.body.password,10)
     //hash the password using the blowfish encryption algorithm, 
     //"10", forms the salt that is added to the end of the password for additional security

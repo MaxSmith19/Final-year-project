@@ -62,7 +62,7 @@ const Registration = (props) => {
         props.onLogin()
         navigate("/dashboard")
     }catch(error) {
-        toast.error("Error creating account: " + error.message);
+        toast.error(error.response.data);
       };
       
     }
