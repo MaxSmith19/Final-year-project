@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import * as qs from 'qs'
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
-const Registration = () => {
+const Registration = (props) => {
   const [businessName, setBusinessName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -59,9 +59,10 @@ const Registration = () => {
         document.cookie = "token=" + token +"; SameSite=Strict";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
         toast.success("Account successfully created")
+        props.onLogin()
         navigate("/dashboard")
     }catch(error) {
-        console.log(error.statusCode);
+        toast.error("Error creating account: " + error.message);
       };
       
     }

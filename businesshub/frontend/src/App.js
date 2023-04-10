@@ -116,7 +116,7 @@ function App() {
               </>
             ) : (<Route path="/" exact element={<Navigate replace to="/Login"></Navigate>} />)}
             <Route path="/Login" element={<Login onLogin={handleLogin} handleIsLoading={handleIsLoading}/>} />
-            <Route path="/Register" element={<Registration />} />
+            <Route path="/Register" element={<Registration onLogin={handleLogin} handleIsLoading={handleIsLoading}/>} />
           </Routes>
              
         </div>

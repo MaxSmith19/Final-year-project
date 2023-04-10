@@ -32,6 +32,7 @@ const Nav = (props) => {
         document.cookie = "token=; expires=Thu, 01 Jan 1970";  
         //immediately deletes the cookie as the expiry date is out of date.
         toast.warn("You have been logged out");
+        localStorage.clear()
         navigate("/login");
         props.onLogout();
     }

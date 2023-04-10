@@ -52,6 +52,7 @@ const Login = (props) => {
         document.cookie = "token=" + token +"; SameSite=None";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
         toast.success("Successfully Logged In");
+        props.onLogin();
         
         navigate("/Dashboard");
       }
@@ -64,7 +65,6 @@ const Login = (props) => {
       }
 
     });
-    props.onLogin();
 
   }
 
