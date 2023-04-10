@@ -48,23 +48,23 @@ const Login = (props) => {
     axios(config)
     .then((response) => {
       if (response.status === 200) {
+        console.log(response.data)
         const token = response.data.token;
-        document.cookie = "token=" + token +"; SameSite=None";
+        document.cookie = "token=" + token +"; SameSite=None; Secure";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
         toast.success("Successfully Logged In");
-        props.onLogin();
         
         navigate("/Dashboard");
       }
     })
     .catch((error) => {
-      console.log(error);
       if (error.status === 401) {
         setErrorMessage("Email or password is incorrect");
         console.log(errorMessage);
       }
 
     });
+    props.onLogin();
 
   }
 

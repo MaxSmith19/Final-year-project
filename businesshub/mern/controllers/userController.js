@@ -27,12 +27,12 @@ const loginUser = asyncHandler(async(req,res) =>{
         throw new Error("User not found")
         //Throw an error using the errorMiddleware 
     }
-
+    const token = generateToken(user._id)
     if(await(bcrypt.compare(req.body.password, user.password))){
         //if the hashed password matches the hashed password in the database
         res.status(200).json({
             _id : user._id,
-            token: generateToken(user._id)
+            token: token
         })
         //send the token back to the client to be formed into a cookie
     }else{
