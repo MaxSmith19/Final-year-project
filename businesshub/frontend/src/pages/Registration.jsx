@@ -27,7 +27,7 @@ const Registration = () => {
     setConfirmPassword(e.target.value);
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const dataArray = [email, businessName, password, confirmPassword];
     let nullFlag = false;
@@ -41,7 +41,6 @@ const Registration = () => {
     dataArray.forEach(function(item){
       if(item===""){
         nullFlag=true;
-        console.log("item is empty");
       }
     });
 
@@ -54,18 +53,16 @@ const Registration = () => {
         },
         data : data
       };
-      
-      axios(config)
-      .then(function (response) {
+    try{      
+      const response = await axios(config)
         const token = response.data.token;
         document.cookie = "token=" + token +"; SameSite=Strict";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
         toast.success("Account successfully created")
         navigate("/dashboard")
-      })
-      .catch(function (error) {
+    }catch(error) {
         console.log(error.statusCode);
-      });
+      };
       
     }
   }

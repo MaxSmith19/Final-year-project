@@ -3,8 +3,7 @@ const bcrypt = require("bcrypt")
 const User = require("../models/UserModel");
 const { validEmail,validPassword } = require("../regex");
 const jwt = require("jsonwebtoken");
-const {decodeJWT, generateToken} = require("../middleware/authMiddleware");
-const Regex = require("regex");
+const {decodeJWT, generateToken} = require("../middleware/authMiddleware")
 
 //Returns all data on user based on their given mongo _id
 const getUser = asyncHandler(async (req, res) => {
@@ -37,7 +36,7 @@ const loginUser = asyncHandler(async(req,res) =>{
         })
         //send the token back to the client to be formed into a cookie
     }else{
-        res.status(400).json("Password not correct")
+        res.status(401).json("Password not correct")
         throw new Error("Wrong password")
     }
 })
@@ -45,7 +44,7 @@ const loginUser = asyncHandler(async(req,res) =>{
 //REGISTERS USER, ADDS DATA INTO MONGO
 const registerUser = asyncHandler(async(req, res) =>{
     const email = req.body.email
-    const userExists = await User.findOne({email},null, {maxTimeMS:30000})
+    const userExists = await User.findOne({email})
     if(userExists){
         res.status(400).json("User already exists")
         throw new Error("User already exists")
