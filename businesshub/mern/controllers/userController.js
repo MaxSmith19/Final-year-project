@@ -37,7 +37,7 @@ const loginUser = asyncHandler(async(req,res) =>{
         })
         //send the token back to the client to be formed into a cookie
     }else{
-        res.status(401).json("Password not correct")
+        res.status(401).json("Password is incorrect")
         throw new Error("Wrong password")
     }
 })
@@ -45,20 +45,16 @@ const loginUser = asyncHandler(async(req,res) =>{
 const changePassword =asyncHandler(async(req, res) => {
     const Users = await User.findOne({email: req.body.email})
 
-    if(!Users || req.body.password===""|| req.body.oldPassword==""){
-        res.status(400).json("Password incorrect")
+    if(!Users || req.body.password===""){
+        res.status(400).json("Password is incorrect")
         throw new Error("Password incorrect")
     }
 
-    if(await(bcrypt.compare(req.body.oldPassword, Users.password)) ){
-        const hashedPassword= await bcrypt.hash(req.body.password,10)
-        const updatedUser = await User.findByIdAndUpdate(Users._id,{password: hashedPassword},{new: true,})
-        res.status(200).json(updatedUser)
-        
-    }else{
-        res.status(400).json("Password does not match")
-    }
-    //using the given data, update the user in the database with the content in the request body
+    const hashedPassword= await bcrypt.hash(req.body.password,10)
+    const updatedUser = await User.findByIdAndUpdate(Users._id,{password: hashedPassword},{new: true,})
+    res.status(200).json(updatedUser)
+
+
 })
 
 //REGISTERS USER, ADDS DATA INTO MONGO
