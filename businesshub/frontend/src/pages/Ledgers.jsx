@@ -6,6 +6,7 @@ import Chart from 'chart.js/auto'
 import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
 import { BsDash} from 'react-icons/bs'
+import Time from 'react-time'
 const qs = require('qs');
 
 function Ledgers({handleIsLoading}) {
@@ -312,10 +313,11 @@ function Ledgers({handleIsLoading}) {
         };
         try {
             const response = await axios.request(config);
-            toast.warn("Ledger Deleted");
             const newCacheResponse = [...cacheResponse];
             newCacheResponse.splice(newCacheResponse.indexOf(response.data), 1);
             setCacheResponse(newCacheResponse);
+            window.location.reload();
+            toast.warn("Ledger Deleted");
         } catch (error) {
             console.log(error);
         }
@@ -333,6 +335,12 @@ function Ledgers({handleIsLoading}) {
             button.classList.remove("hidden")
         }
     }
+    const todayDate = new Date()
+    const formattedDate = todayDate.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
     return(
             <div className='transition-all ease-in delay-300 '>
             <div className="chartContainer bg-white rounded-xl shadow-2xl p-2 mb-5">
@@ -350,8 +358,8 @@ function Ledgers({handleIsLoading}) {
                                 ))}
                         </select>
                         <div className="">
-                            <button className="ml-4 mr-4 text-xl rounded-md p-1 w-1/12" value={"New"} onClick={()=>createLedger()}><MdPostAdd size={30}/></button>
-                            <button className="ml-4 text-xl rounded-md p-1 w-1/12" onClick={()=>setInSettings(!inSettings)}><AiOutlineEdit size={30}/></button>
+                            <button id="new" className="ml-4 mr-4 text-xl rounded-md p-1 w-1/12" value={"New"} onClick={()=>createLedger()}><MdPostAdd size={30}/></button>
+                            <button id="settings" className="ml-4 text-xl rounded-md p-1 w-1/12" onClick={()=>setInSettings(!inSettings)}><AiOutlineEdit size={30}/></button>
                         </div>
                     </div>
 
@@ -384,7 +392,7 @@ function Ledgers({handleIsLoading}) {
                     <tr key={index} className="h-10 bg-slate-200 rounded shadow-sm sm:text-left hover:bg-slate-300 transition-all ease-in-out duration-300" ref={event => (row[index] =event)}>
                         <td className="p-1">
                             <label className="block w-full bg-slate-50 sm:hidden">Date</label>
-                            <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" required />
+                            <input defaultValue={formattedDate} className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" required />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Notes</label>
@@ -411,7 +419,10 @@ function Ledgers({handleIsLoading}) {
                 </tbody>
                 </table>
             }
-                <input className="gpb rounded pl-4 bg-slate-300 w-2/12 shadow-sm float-right" value={balance } required />
+                <div className="w-4/12 float-right text-lg">
+                    <label className="bg-slate-50">Balance</label>
+                    <input className="gpb rounded pl-4 bg-slate-300 shadow-sm float-right" value={balance } required />
+                </div>
             </div>
             <button onClick={onSave} id="saveButton"className="transition-all ease-in-out duration-75 rounded-full fixed bottom-10 right-10 bg-green-700 p-3 hidden"><FiSave size={50}/></button>          
 
