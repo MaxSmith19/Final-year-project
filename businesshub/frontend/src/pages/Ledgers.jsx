@@ -179,6 +179,10 @@ function Ledgers({handleIsLoading}) {
     const createLedger = async () =>{
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
+        if(ledgerNames.includes("New Ledger")){
+            toast.error("You already have a new Ledger, rename or delete it!")
+            return
+        }
         //get the token
         let config = {
             method: 'post',
@@ -195,7 +199,10 @@ function Ledgers({handleIsLoading}) {
             //Create a new ledger with the temporary name of "New Ledger"
             const response = await axios.request(config);
             //we dont need any response necessarily, just whether it was successful (where it is reloaded)
-            window.location.reload();
+            setLedgerNames([...ledgerNames, "New Ledger"])
+
+            console.log(ledgerNames)
+            console.log(cacheResponse)
         } catch (error) {
             console.log(error);
             //else an error is shown to the user
@@ -313,7 +320,6 @@ function Ledgers({handleIsLoading}) {
         };
         try {
             const response = await axios.request(config);
-            console.log(response.data)
             const newCacheResponse = [...cacheResponse];
             newCacheResponse.splice(newCacheResponse.indexOf(response.data), 1);
             const newLedgerNames = [...ledgerNames];
