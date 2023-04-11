@@ -13,37 +13,37 @@ const ChangePassword = (props) => {
 
   const navigate = useNavigate();
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        if(password !== confirmPassword) {
-            setErrorMessage("Passwords do not match")
-            return;
-        }
-    
-        const data =  qs.stringify({
-            'email': email,
-            'oldPassword': oldPassword,
-            'password': password
-            })
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if(password !== confirmPassword || password === "" || confirmPassword === "" ) {
+        setErrorMessage("Passwords do not match")
+        toast.error("Passwords do not match")
+        return;
+    }
 
-        var config = {
-          method: 'post',
-          url: 'http://localhost:5000/api/Users/changePassword',
-          headers: { 
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          data : data
-        };
-        
-        axios(config)
-        .then((response) => {
-            console.log(response.data)
-        })
-        .catch((error) => {
-            console.log(error)
-        });
+    const data =  qs.stringify({
+        'email': email,
+        'oldPassword': oldPassword,
+        'password': password
+    })
+
+    var config = {
+      method: 'post',
+      url: 'http://localhost:5000/api/Users/changePassword',
+      headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data : data
+    };
     
-      }
+    try {
+        const response = await axios(config);
+        toast.success("Password successfully changed");
+    } catch (error) {
+        toast.error(error.response.data);
+    }
+}
+
 
   return (
     <div class="flex justify-center">
@@ -64,7 +64,7 @@ const ChangePassword = (props) => {
           </div>
           <div class="mb-6">
             <label class="block text-gray-700 text-xl font-bold mb-2" for="password">
-              Password
+              New Password
             </label>
             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="password" onChange={(e)=>setPassword(e.target.value)} value={password}/>
           </div>
@@ -77,9 +77,7 @@ const ChangePassword = (props) => {
           <div>
             <h1 className="mb-5">{errorMessage}</h1>
           </div>
-          <div>
-            <h1 className="mb-5">Already have an account? Login <Link className="text-blue-600"to="/Login">here</Link></h1>
-          </div>
+
           <div class="flex items-center justify-between">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded " type="submit">
               Submit
