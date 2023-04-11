@@ -85,6 +85,9 @@ const Login = (props) => {
           <input id="pword" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="password" onChange={(e) => setPassword(e.target.value)} value={password} required/>
         </div>
         <div>
+          <h1 className="mb-5"><Link className="text-blue-600" to="/changePassword">Forgot your password?</Link></h1>
+        </div>
+        <div>
           {errorMessage && <div className="text-red-500">{errorMessage}</div>}
           <h1 className="mb-5">Don't have an account? Sign up <Link className="text-blue-600" to="/Register">here</Link></h1>
         </div>

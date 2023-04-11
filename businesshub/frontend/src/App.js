@@ -14,6 +14,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./styles/animations.css";
 import UserSettings from './pages/userSettings';
+import ChangePassword from './pages/changePassword';
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -117,6 +118,7 @@ function App() {
             ) : (<Route path="/" exact element={<Navigate replace to="/Login"></Navigate>} />)}
             <Route path="/Login" element={<Login onLogin={handleLogin} handleIsLoading={handleIsLoading}/>} />
             <Route path="/Register" element={<Registration onLogin={handleLogin} handleIsLoading={handleIsLoading}/>} />
+            <Route path="/changePassword" element={<ChangePassword />} />
           </Routes>
              
         </div>

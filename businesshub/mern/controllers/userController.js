@@ -41,6 +41,26 @@ const loginUser = asyncHandler(async(req,res) =>{
     }
 })
 
+const changePassword =asyncHandler(async(req, res) => {
+    const Users = await User.findOne({email: req.body.email})
+
+    console.log(Users)
+    if(!User){
+        res.status(400)
+        throw new Error("Password incorrect")
+    }
+
+    if(await(bcrypt.compare(req.body.oldPassword, Users.password)) ){
+        const hashedPassword= await bcrypt.hash(req.body.password,10)
+        const updatedUser = await User.findByIdAndUpdate(Users._id,{password: hashedPassword},{new: true,})
+        res.status(200).json(updatedUser)
+        
+    }else{
+        res.status(400).json("Password does not match")
+    }
+    //using the given data, update the user in the database with the content in the request body
+})
+
 //REGISTERS USER, ADDS DATA INTO MONGO
 const registerUser = asyncHandler(async(req, res) =>{
     const email = req.body.email
@@ -103,12 +123,12 @@ const deleteUser = asyncHandler(async(req, res) =>{
 
     res.status(200).json(deletedUser);
 
-    res.status(200).json({message: `deleting User ${token.id}`})
 })
 
 module.exports ={
     getUser,
     loginUser,
+    changePassword,
     registerUser,
     updateUser,
     deleteUser
