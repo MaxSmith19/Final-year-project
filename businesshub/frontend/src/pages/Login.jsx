@@ -145,7 +145,6 @@ const Login = (props) => {
             </div>
             <div>
               {errorMessage && <div className="text-red-500">{errorMessage}</div>}
-              <h1 className="mb-5">Don't have an account? Sign up <Link className="text-blue-600" to="/Register">here</Link></h1>
             </div>
             <div className="flex items-center justify-between">
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={onSubmitLogin}>Log in</button>
@@ -181,9 +180,6 @@ const Login = (props) => {
           </div>
           <div>
             <h1 className="mb-5">{errorMessage}</h1>
-          </div>
-          <div>
-            <h1 className="mb-5">Already have an account? Login <Link className="text-blue-600"to="/Login">here</Link></h1>
           </div>
           <div class="flex items-center justify-between">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded " type="submit">
