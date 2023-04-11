@@ -313,10 +313,13 @@ function Ledgers({handleIsLoading}) {
         };
         try {
             const response = await axios.request(config);
+            console.log(response.data)
             const newCacheResponse = [...cacheResponse];
             newCacheResponse.splice(newCacheResponse.indexOf(response.data), 1);
+            const newLedgerNames = [...ledgerNames];
+            newLedgerNames.splice(newLedgerNames.indexOf(response.data.ledgerName), 1);
+            setLedgerNames(newLedgerNames)
             setCacheResponse(newCacheResponse);
-            window.location.reload();
             toast.warn("Ledger Deleted");
         } catch (error) {
             console.log(error);
