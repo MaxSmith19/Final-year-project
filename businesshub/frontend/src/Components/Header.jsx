@@ -29,9 +29,10 @@ const Nav = (props) => {
     }
 
     const logOut =() =>{
-        document.cookie = "token=; expires=Thu, 01 Jan 1970";  
+        document.cookie = "token=; SameSite=None; Secure; expires=Thu, 01 Jan 1970 00:00:00 GMT";
         //immediately deletes the cookie as the expiry date is out of date.
         toast.warn("You have been logged out");
+        localStorage.clear()
         navigate("/login");
         props.onLogout();
     }

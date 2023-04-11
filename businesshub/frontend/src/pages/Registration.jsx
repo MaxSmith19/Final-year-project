@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import * as qs from 'qs'
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
-const Registration = () => {
+const Registration = (props) => {
   const [businessName, setBusinessName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,7 +27,7 @@ const Registration = () => {
     setConfirmPassword(e.target.value);
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const dataArray = [email, businessName, password, confirmPassword];
     let nullFlag = false;
@@ -41,7 +41,6 @@ const Registration = () => {
     dataArray.forEach(function(item){
       if(item===""){
         nullFlag=true;
-        console.log("item is empty");
       }
     });
 
@@ -54,18 +53,17 @@ const Registration = () => {
         },
         data : data
       };
-      
-      axios(config)
-      .then(function (response) {
+    try{      
+      const response = await axios(config)
         const token = response.data.token;
         document.cookie = "token=" + token +"; SameSite=Strict";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
         toast.success("Account successfully created")
+        props.onLogin()
         navigate("/dashboard")
-      })
-      .catch(function (error) {
-        console.log(error.statusCode);
-      });
+    }catch(error) {
+        toast.error(error.response.data);
+      };
       
     }
   }

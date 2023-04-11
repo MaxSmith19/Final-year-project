@@ -14,7 +14,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./styles/animations.css";
 import UserSettings from './pages/userSettings';
-
+import ChangePassword from './pages/changePassword';
+import Animation from './Components/Animation';
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [isDarkMode, setDarkMode] = useState(() => {
@@ -71,18 +72,6 @@ function App() {
     setLoading(value);
   };
   
-
-  animationContainer.forEach((container) => {
-    const randomDelay = Math.floor(Math.random() * 25) + 1;
-    const randomLeft = Math.floor(Math.random() * 100) + 1;
-    const randomHeight = Math.floor(Math.random() * 100) + 1
-    const randomDuration = Math.floor(Math.random() * 30) + 1;
-    container.style.animationDelay = `${randomDelay}s`;
-    container.style.left = `${randomLeft}%`;
-    container.style.height = `${randomHeight}px`;
-    container.style.width = `${randomHeight}px`;
-    container.style.animationDuration = `${randomDuration}s`;
-  });
   return (
     <>
         <ToastContainer
@@ -116,48 +105,13 @@ function App() {
               </>
             ) : (<Route path="/" exact element={<Navigate replace to="/Login"></Navigate>} />)}
             <Route path="/Login" element={<Login onLogin={handleLogin} handleIsLoading={handleIsLoading}/>} />
-            <Route path="/Register" element={<Registration />} />
+            <Route path="/changePassword" element={<ChangePassword />} />
           </Routes>
              
         </div>
         <Footer />
       </Router>
-      <ul className="animationContainer">
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-        <li className=""> </li>
-    </ul>
+    <Animation isDarkMode={isDarkMode}/>
     </>
   );
 }

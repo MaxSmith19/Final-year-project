@@ -8,7 +8,7 @@ const protect = asyncHandler(async (req, res, next) => {
         // Bearer <token> is the format, so we must check that the header starts with "Bearer"
         try{
             token = req.headers.authorization.split(' ')[1]
-            //split token into an array so it is easy to get the token/
+            //split token into an array so it is easy to get the token
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
             //verify the token
 
@@ -17,7 +17,6 @@ const protect = asyncHandler(async (req, res, next) => {
             next()
 
         }catch(err){
-            console.log(err)
             res.status(401)
             throw new Error('Invalid token')
         }
