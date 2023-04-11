@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt")
 const User = require("../models/UserModel");
 const { validEmail,validPassword } = require("../regex");
 const jwt = require("jsonwebtoken");
-const {decodeJWT, generateToken} = require("../middleware/authMiddleware")
+const {decodeJWT, generateToken} = require("../middleware/authMiddleware");
+const { useRowState } = require("react-table");
 
 //Returns all data on user based on their given mongo _id
 const getUser = asyncHandler(async (req, res) => {
@@ -44,9 +45,8 @@ const loginUser = asyncHandler(async(req,res) =>{
 const changePassword =asyncHandler(async(req, res) => {
     const Users = await User.findOne({email: req.body.email})
 
-    console.log(Users)
-    if(!User){
-        res.status(400)
+    if(!Users || req.body.password===""|| req.body.oldPassword==""){
+        res.status(400).json("Password incorrect")
         throw new Error("Password incorrect")
     }
 
