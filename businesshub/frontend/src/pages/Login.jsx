@@ -32,6 +32,10 @@ const Login = (props) => {
   const onSubmitRegistration = async (e) => {
     e.preventDefault();
     const dataArray = [email, businessName, password, confirmPassword];
+    if(password !== confirmPassword || password === "" || confirmPassword === ""){
+      toast.error("Please enter your passwords")
+      return 
+    }
     let nullFlag = false;
     const data =  qs.stringify({
       'email': email,
@@ -158,25 +162,25 @@ const Login = (props) => {
             <label class="block text-gray-700 text-xl font-bold mb-2" for="businessName">
               Name of business
             </label>
-            <input class="shadow border rounded w-full py-2 px-3 text-gray-700" type="text" onChange={(e)=> setBusinessName(e.target.value)} value={businessName}/>
+            <input id="businessName" class="shadow border rounded w-full py-2 px-3 text-gray-700" type="text" onChange={(e)=> setBusinessName(e.target.value)} value={businessName}/>
           </div>
           <div class="mb-6">
             <label class="block text-gray-700 text-xl font-bold mb-2" for="password">
               Email address
             </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3" type="text" onChange={(e)=> setEmail(e.target.value)} value={email}/>
+            <input id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3" type="text" onChange={(e)=> setEmail(e.target.value)} value={email}/>
           </div>
           <div class="mb-6">
             <label class="block text-gray-700 text-xl font-bold mb-2" for="password">
               Password
             </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="password" onChange={(e)=> setPassword(e.target.value)} value={password}/>
+            <input id="pword" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="password" onChange={(e)=> setPassword(e.target.value)} value={password}/>
           </div>
           <div class="mb-6">
             <label class="block text-gray-700 text-xl font-bold mb-2" for="password">
               Confirm password
             </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3" type="password" onChange={(e)=> setConfirmPassword(e.target.value)} value={confirmPassword}/>
+            <input id="cPword" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3" type="password" onChange={(e)=> setConfirmPassword(e.target.value)} value={confirmPassword}/>
           </div>
           <div>
             <h1 className="mb-5">{errorMessage}</h1>
