@@ -202,8 +202,9 @@ function Ledgers({handleIsLoading}) {
             setLedgerNames([...ledgerNames, "New Ledger"])
             setCurrentLedgerID(response.data._id)
             setCurrentLedgerName("New Ledger")
-            console.log(ledgerNames)
-            console.log(cacheResponse)
+            const newCacheResponse = [...cacheResponse];
+            newCacheResponse.push(response.data)
+            setCacheResponse(newCacheResponse)
         } catch (error) {
             console.log(error);
             //else an error is shown to the user
@@ -320,7 +321,7 @@ function Ledgers({handleIsLoading}) {
             newLedgerNames.splice(newLedgerNames.indexOf(response.data.ledgerName), 1);
             setLedgerNames(newLedgerNames)
             setCacheResponse(newCacheResponse);
-            setLedgerRows([])
+            getLedgers()
             toast.warn("Ledger Deleted");
         } catch (error) {
             console.log(error);
