@@ -26,6 +26,7 @@ const UserSettings = (props) => {
     //immediately deletes the cookie as the expiry date is out of date.
     toast.warn("You have deleted your account");
     localStorage.clear()
+    navigate("/login")
     props.onLogout();
   }catch(error){
     console.log(error)
