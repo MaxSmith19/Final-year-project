@@ -148,8 +148,8 @@ function Inventory({handleIsLoading})  {
    
           setIngredientsRows([...ingredientsRows, newRow]);
           //adds a new blank row to the table
-
     }
+    
     const deleteIngredientsRow = (index) =>{
         const updatedIngredientsRows = [...ingredientsRows];
         updatedIngredientsRows.splice(index, 1)

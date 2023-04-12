@@ -28,9 +28,10 @@ const updateInventory = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
   const id = await Inventory.findOne({userID:token.id})
   let inv=""
+  console.log(req.body.inventoryData)
     inv = await Inventory.findOneAndUpdate(id._id, {
-      inventoryData: req.body.inventoryData,
-      ingredientsData: req.body.ingredientsData
+      inventoryData: req.body.inventoryData || [{Item:"",Description:"", Quantity:"", SellingPrice:""}],
+      ingredientsData: req.body.ingredientsData || [{Item:"",Description:"", Quantity:"", SellingPrice:""}]
     }, {new: true}) 
   res.status(201).json(inv)
 })
