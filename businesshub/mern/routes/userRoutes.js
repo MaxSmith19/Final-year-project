@@ -17,6 +17,6 @@ router.get('/get', protect, getUser);
 router.route('/login/').post(loginUser);
 router.route("/changePassword").post(changePassword);
 router.route('/update').put(protect, upload.single('businessLogo'), updateUser);
-router.route("/del").delete(protect, deleteUser);
+router.route("/del").delete(deleteUser);
 
 module.exports = router;

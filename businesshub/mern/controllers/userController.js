@@ -110,6 +110,8 @@ const updateUser = asyncHandler(async( req, res) =>{
 const deleteUser = asyncHandler(async(req, res) =>{
     const token = decodeJWT(req,res)
     const Users = await User.findById({_id: token.id})
+    console.log(Users)
+    console.log(token)
     if(!Users){
         res.status(400)
         throw new Error("User not found")

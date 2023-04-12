@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 const UserSettings = (props) => {
   const [businessName, setBusinessName] = useState('')
@@ -9,8 +10,7 @@ const UserSettings = (props) => {
   const [deleteBtnPressed, setDeleteBtnPressed] = useState(false)
   const navigate = useNavigate()
   const deleteUser = () =>{
-    const userIDCookie = document.cookie.split('=')[1]
-    const token = userIDCookie.split(';')[0]
+    const token = Cookies.get('token')
     let config = {
       method: 'delete',
       maxBodyLength: Infinity,
@@ -26,7 +26,6 @@ const UserSettings = (props) => {
     //immediately deletes the cookie as the expiry date is out of date.
     toast.warn("You have deleted your account");
     localStorage.clear()
-    navigate("/login");
     props.onLogout();
   }catch(error){
     console.log(error)
