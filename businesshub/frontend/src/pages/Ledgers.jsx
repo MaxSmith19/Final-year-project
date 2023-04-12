@@ -200,7 +200,8 @@ function Ledgers({handleIsLoading}) {
             const response = await axios.request(config);
             //we dont need any response necessarily, just whether it was successful (where it is reloaded)
             setLedgerNames([...ledgerNames, "New Ledger"])
-
+            setCurrentLedgerID(response.data._id)
+            addRow()
             console.log(ledgerNames)
             console.log(cacheResponse)
         } catch (error) {
@@ -212,6 +213,7 @@ function Ledgers({handleIsLoading}) {
     const onSave = async () => {
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
+        console.log(currentLedgerID)
         let config = {
             method: 'put',
             maxBodyLength: Infinity,
@@ -326,6 +328,7 @@ function Ledgers({handleIsLoading}) {
             newLedgerNames.splice(newLedgerNames.indexOf(response.data.ledgerName), 1);
             setLedgerNames(newLedgerNames)
             setCacheResponse(newCacheResponse);
+            setLedgerRows([])
             toast.warn("Ledger Deleted");
         } catch (error) {
             console.log(error);
