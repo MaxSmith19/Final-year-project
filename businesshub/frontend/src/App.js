@@ -100,7 +100,7 @@ function App() {
                 <Route path="/Dashboard" element={<Dashboard handleIsLoading={handleIsLoading} />} />
                 <Route path="/UserSettings" element={<UserSettings handleIsLoading={handleIsLoading} onLogout={handleLogout}/>} />
                 <Route path="/Legislation" element={<Legislation />} />
-                <Route path="/Marketing" element={<Marketing handleIsLoading={handleIsLoading} />} />
+                <Route path="/Marketing" element={<Marketing />} />
                 <Route path="/Inventory" element={<Inventory handleIsLoading={handleIsLoading} />} />
               </>
             ) : (<Route path="/" exact element={<Navigate replace to="/Login"></Navigate>} />)}
