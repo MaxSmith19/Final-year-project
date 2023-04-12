@@ -27,7 +27,8 @@ const createLedger = asyncHandler(async(req, res) =>{
   const ledger = await Ledger.create({
     userID: token.id,
     ledgerName: req.body.ledgerName,
-    ledgerData: {}
+    ledgerData: [{date: "", notes: "", debit: 0, credit: 0, balance: 0}]
+    //start the ledger with a blank row
   })
   res.status(201).json(ledger)
 })
@@ -36,10 +37,16 @@ const updateLedger = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
   const ledgerID = req.body._id
   if(req.body.ledgerName!== undefined){
-    const Ledgers = await Ledger.findByIdAndUpdate(ledgerID, {ledgerName: req.body.ledgerName, ledgerData: req.body.ledgerData}, {new: true})
+    //if the ledger name is also changed
+    const Ledgers = await Ledger.findByIdAndUpdate(ledgerID, 
+      {ledgerName: req.body.ledgerName,
+         ledgerData: req.body.ledgerData
+        }, {new: true})
     res.status(201).json(Ledgers)
   }else{
-    const Ledgers = await Ledger.findByIdAndUpdate(ledgerID, {ledgerData: req.body.ledgerData}, {new: true})
+    const Ledgers = await Ledger.findByIdAndUpdate(ledgerID, 
+      {ledgerData: req.body.ledgerData
+      }, {new: true})
     res.status(201).json(Ledgers)
   }
   

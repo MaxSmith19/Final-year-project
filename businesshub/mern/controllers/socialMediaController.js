@@ -3,12 +3,8 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 const {decodeJWT, generateToken} = require("../middleware/authMiddleware")
 const Social = require("../models/socialMediaModel")
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const crypto = require("crypto")
 const axios = require("axios")
-const qs = require("qs");
-const { RiQuestionAnswerFill } = require("react-icons/ri");
-const e = require("express");
 
 const etsyRedirectUrl= "http://localhost:5000/api/Socials/etsyCallback"
 const base64URLEncode = (str) =>
@@ -75,7 +71,6 @@ const generatePKCE = asyncHandler(async (req, res) =>{
     const codeVerifier = base64URLEncode(crypto.randomBytes(32));
     const codeChallenge = base64URLEncode(sha256(codeVerifier));
     const state = Math.random().toString(36).substring(7);
-    console.log(codeVerifier)
     res.status(200).json({state: state, challenge:codeChallenge,verifier: codeVerifier});
 
 })
@@ -102,6 +97,7 @@ const updateSocials = asyncHandler(async (req, res) => {
 module.exports ={
     getSocials,
     generatePKCE,
-    etsyCallback
+    etsyCallback,
+    registerSocials,
 
 }
