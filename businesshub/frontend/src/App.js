@@ -16,16 +16,16 @@ import "./styles/animations.css";
 import UserSettings from './pages/userSettings';
 import ChangePassword from './pages/changePassword';
 import Animation from './Components/Animation';
-import { useNavigate } from 'react-router-dom';
-
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [isDarkMode, setDarkMode] = useState(() => {
     const storedValue = localStorage.getItem("isDarkMode");
     return storedValue !== null ? JSON.parse(storedValue) : false;
   });
+  
+
   const [isLoading, setLoading] = useState(true)
-    const unpackCookie = () => {
+  const unpackCookie = () => {
     const authCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
     if (authCookie !== undefined) {
       setAuthenticated(true);
@@ -34,6 +34,11 @@ function App() {
     }
   };
 
+  
+  useEffect(() => {
+    
+    unpackCookie();
+  }, []);
 
   const animationContainer = document.querySelectorAll('.animationContainer li');
   const contentContainers = document.querySelectorAll('div')
@@ -82,9 +87,11 @@ function App() {
             theme={isDarkMode ? "light" : "dark"}
           />
       <Router>
-        {authenticated && (
+        {authenticated ? (
         <Header authenticated={authenticated} onLogout={handleLogout} onToggleDarkMode={toggleDarkMode} isLoading={isLoading}/>
-        )}
+        ): 
+        <div className="shadow-md"></div>
+        }
         <div className="m-8 mt-32 appMQ">
           <Routes>
             {authenticated ? (
@@ -102,9 +109,7 @@ function App() {
           </Routes>
              
         </div>
-        {authenticated && (
-          <Footer />
-        )}
+        <Footer />
       </Router>
     <Animation isDarkMode={isDarkMode}/>
     </>
