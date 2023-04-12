@@ -16,12 +16,30 @@ function Inventory({handleIsLoading})  {
         setIngredientsRows([])
         getInventory()
     },[])
-
+    const createInventory = async()=>{
+        
+        const userIDCookie = document.cookie.split("=")[1]; 
+        const token = userIDCookie.split(";")[0];
+        const config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:5000/api/Inventory/',
+            headers: { 
+                    'Authorization': `Bearer ${token}`
+            }
+        };
+        try{
+            const response=await axios.request(config)
+            getInventory()
+        }catch(error){
+            console.log(error)
+        }
+    }
     const getInventory = async() =>{
         handleIsLoading(true)
         const userIDCookie = document.cookie.split("=")[1]; 
         const token = userIDCookie.split(";")[0];
-        let config = {
+        const config = {
             method: 'get',
             maxBodyLength: Infinity,
             url: 'http://localhost:5000/api/Inventory/',
@@ -30,8 +48,8 @@ function Inventory({handleIsLoading})  {
             }
         };
         try{
-        const response = await axios.request(config)
-            console.log(response.data[0])
+            const response = await axios.request(config)
+
             response.data[0].inventoryData.forEach(element => {
                 setInventoryRows(inventoryRows => [...inventoryRows, {
                     Item: element.Item,
@@ -52,7 +70,7 @@ function Inventory({handleIsLoading})  {
             handleIsLoading(false)
         }
         catch(error){
-            console.log(error);
+            createInventory()
         }
     }
 
