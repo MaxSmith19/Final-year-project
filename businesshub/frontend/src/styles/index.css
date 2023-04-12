@@ -3,6 +3,20 @@
 @tailwind utilities;
 
 
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}
+
 .darkMode .animationContainer {
     background-color: rgb(0, 0, 0);
 
@@ -71,9 +85,27 @@ table th{
 }
 html{
     background-color: #9ae2ff;
+}
+a{
+ color: blue ;
 
 }
+a:hover{
+    color: red
+}
+html, body {
+  height: 100%;
+  min-height: 100vh;
+}
 
+.footer-bottom{
+    bottom: 100vh;
+}
+footer {
+      margin-top: auto;
+  border: 1px solid red;    
+  margin-top: auto !important;
+}
 
 .overlay {
     height: 100%;
