@@ -148,18 +148,18 @@ function Ledgers({handleIsLoading}) {
         }
     };
     
-    const changeLedger = (event) => {
+    const changeLedger = (name) => {
         let ledgerData = ""
-
         cacheResponse.forEach(element => {
             //Check the cached Response to get the data from the ledger
-            if(element.ledgerName === event.target.value) {
+            if(element.ledgerName === name) {
                 ledgerData = element.ledgerData;
                 setCurrentLedgerID(element._id);
             }
         })
-        setCurrentLedgerName(event.target.value);
-        if(ledgerData!==undefined || ledgerData===""){
+        setCurrentLedgerName(name);
+        if(ledgerData!==""){
+            console.log(ledgerData);
             setLedgerRows([])
             ledgerData.forEach(element => {
                 setLedgerRows(LedgerRows => [...LedgerRows, {
@@ -201,7 +201,7 @@ function Ledgers({handleIsLoading}) {
             //we dont need any response necessarily, just whether it was successful (where it is reloaded)
             setLedgerNames([...ledgerNames, "New Ledger"])
             setCurrentLedgerID(response.data._id)
-            addRow()
+            setCurrentLedgerName("New Ledger")
             console.log(ledgerNames)
             console.log(cacheResponse)
         } catch (error) {
@@ -210,70 +210,62 @@ function Ledgers({handleIsLoading}) {
         } 
     }
     
-    const onSave = async () => {
-        const userIDCookie = document.cookie.split("=")[1];
-        const token = userIDCookie.split(";")[0];
-        console.log(currentLedgerID)
-        let config = {
-            method: 'put',
-            maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Ledgers/update',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: {
-                _id: currentLedgerID,
-                ledgerData: ledgerRows
-            }
-        };
-        //Not editing the name of the ledger
-        cacheResponse.forEach(element => {
-            if (element.ledgerName === editedLedgerName) {
-                toast.error("You already have a ledger called " + element.ledgerName)
-                setEditedLedgerName("")
-                window.location.reload()
-                //a ledger name cannot be the same as another, otherwise loss of data integrity
-            }
-        })
-        if (editedLedgerName !== "") {
-            config = {
-                method: 'put',
-                maxBodyLength: Infinity,
-                url: 'http://localhost:5000/api/Ledgers/update',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data: {
-                    _id: currentLedgerID,
-                    ledgerName: editedLedgerName
-                }
-            };
-        }
-        //Changing the name of the ledger
+    const updateLedger = async (config) => {
         try {
-            const response = await axios.request(config);
-            cacheResponse.forEach((element, index) => {
-                if (element.ledgerName === currentLedgerName) {
-                    const newCacheResponse = [...cacheResponse];
-                    newCacheResponse[index] = response.data;
-                    setCacheResponse(newCacheResponse);
-                    const newLedgerNames = [...ledgerNames];
-                    newLedgerNames[index] = response.data.ledgerName;
-                    setLedgerNames(newLedgerNames)
-                    toast.success("Ledger updated successfully")
-                    //get the cached response, replace the existing ledger and replace with the new one from the response
-                    //Cuts out the need for getLedgers and uneccessary API calls to getLedgers
-                }
-            })
-            setEditedLedgerName("");
-    
+          const response = await axios.request(config);
+          cacheResponse.forEach((element, index) => {
+            if (element.ledgerName === currentLedgerName) {
+              const newCacheResponse = [...cacheResponse];
+              newCacheResponse[index] = response.data;
+              setCacheResponse(newCacheResponse);
+              const newLedgerNames = [...ledgerNames];
+              newLedgerNames[index] = response.data.ledgerName;
+              setLedgerNames(newLedgerNames);
+              toast.success("Ledger updated successfully");
+            }
+          });
+          setEditedLedgerName("");
         } catch (error) {
-            console.log(error)
+          console.error(error);
+          toast.error("Ledger update failed");
         }
-        document.getElementById("saveButton").classList.add("hidden")
-    }
+      };
+      
+      const onSave = async () => {
+        const [, userIDCookie] = document.cookie.split("=");
+        const token = userIDCookie.split(";")[0];
+        const config = {
+          method: 'put',
+          maxBodyLength: Infinity,
+          url: 'http://localhost:5000/api/Ledgers/update',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: {
+            _id: currentLedgerID,
+            ledgerData: ledgerRows
+          }
+        };
+        cacheResponse.forEach((element) => {
+          if (element.ledgerName === editedLedgerName) {
+            toast.error(`You already have a ledger called ${element.ledgerName}`);
+            setEditedLedgerName("");
+            return;
+          }
+        });
+        if (editedLedgerName !== "") {
+          config.data.ledgerName = editedLedgerName;
+        }
+        try {
+          await updateLedger(config);
+          toast.success("Ledger updated successfully");
+        } catch (error) {
+          console.error(error);
+          toast.error("Ledger update failed");
+        }
+        document.getElementById("saveButton").classList.add("hidden");
+      };
     
         
     const addRow = () => {
@@ -334,6 +326,7 @@ function Ledgers({handleIsLoading}) {
             console.log(error);
         }
     };
+
     const onChangeCell = (event, index, key) => {
         const newRows = [...ledgerRows];
         newRows[index][key] = event.target.value;
@@ -364,7 +357,7 @@ function Ledgers({handleIsLoading}) {
             <div className="bg-white pb-16 w-full m-auto p-4 rounded-xl shadow-2xl">
                 <div className="border flex align-center p-2 ledgerOptions">
                         <h1 className='text-xl mr-3'> Select ledger: </h1>
-                        <select className='ml-4 md:ml-0 text-xl text-center rounded-md col-span-4 w-1/2' onChange={changeLedger}>
+                        <select className='ml-4 md:ml-0 text-xl text-center rounded-md col-span-4 w-1/2' onChange={(event) =>changeLedger(event.target.value)}>
                             { ledgerNames.map((ledgerName, index) => (
                                 <option key={index} value={ledgerName}>{ledgerName}</option> 
                                 ))}
