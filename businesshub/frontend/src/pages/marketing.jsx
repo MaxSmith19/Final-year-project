@@ -8,13 +8,31 @@ import etsyLogo from "../images/etsy_logo.png"
 const Marketing = () =>{
     const [challenge, setChallenge] = useState("")
     const [state, setState] = useState("")
-
+    const [etsyOAuth, setEtsyOAuth] = useState(false)
+    const [etsyID, setEtsyID] = useState(null)
     useEffect(()=>{
         checkUserSocials()
         generatePKCE()
     },[])
 
-    const checkUserSocials = ()=>{
+    const getEtsyUserID = async (accessToken) => {
+        try {
+          const response = await axios.get('https://api.etsy.com/v3/oauth/scopes', {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          });
+      
+          if (response.data.results && response.data.results.length > 0) {
+            return response.data.results[0].user_id;
+          }
+        } catch (error) {
+          console.error('Error fetching user ID:', error);
+        }
+      };
+
+    const checkUserSocials = async()=>{
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
@@ -23,13 +41,15 @@ const Marketing = () =>{
                 'Authorization': `Bearer ${Cookies.get("token")}`
             }
         };
-        axios.request(config)
-        .then((response) => {
-            console.log(response)
-        })
-        .catch((error) => {
+        try{
+            const response = await axios.request(config)
+            setEtsyID(getEtsyUserID(response.data.accessToken))
+            setEtsyOAuth(true)
+            console.log(etsyID)
+        
+        }catch(error) {
             console.log(error);
-        });
+        };
     }
     const verifierCookie = (verifier) =>{
         document.cookie = `code_verifier=${verifier}; path=/; max-age=600`
@@ -59,19 +79,29 @@ const Marketing = () =>{
         `scope=feedback_r%20shops_r&` +
         `code_challenge=${challenge}&` +
         `code_challenge_method=S256&` +
-        `state=${state}`
-    return(
-        <div className="h-auto">
-            <div className="w-full h-96 bg-white rounded flex justify-center">
-                <div className="m-auto border rounded-sm grid grid-cols-2">
-                    <div className="border-r m-3"><img src={etsyLogo} />Etsy</div>
-                    <a className="justify-center text-center align-middle" href={url}>
-                        Authenticate with Etsy!
-                    </a>
-                </div>
+        `state=${state}`;
 
-            </div>
+return (
+  <div className="h-auto mb-80">
+    <div className="w-full h-96 bg-white rounded flex justify-center items-center">
+      <div className="m-auto border rounded-sm grid grid-cols-2 gap-4 p-4">
+        <div className="flex justify-center items-start border-r">
+          <img src={etsyLogo} alt="Etsy Logo" className="w-24 h-12 mr-2" />
         </div>
-        )
+        {etsyOAuth ?(
+            <p>Authenticated!</p>
+            
+        ):(
+            <a className="flex justify-center items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            href={url}>
+            Authenticate with Etsy
+          </a>
+        )}
+        
+      </div>
+    </div>
+  </div>
+);
+
 }
 export default Marketing

@@ -40,10 +40,10 @@ const etsyCallback = asyncHandler(async(req, res) => {
 
         const tokenData = response.data;
         const data=writeToSocials(tokenData,req.cookies.token)
+        console.log(data)
         res.redirect("http://localhost:3000/marketing")
     })
     .catch((error) => {
-        console.log(error);
         res.send(error.message)
     })
     })
@@ -51,15 +51,14 @@ const etsyCallback = asyncHandler(async(req, res) => {
 const writeToSocials = asyncHandler(async(tokenData,userToken)=>{
     const userID = jwt.verify(userToken, process.env.JWT_SECRET)
     const socialsToChange = await Social.findOne({userID:userID.id})
-    console.log("afhsdf")
-    console.log(socialsToChange)
-    if(socialsToChange===undefined){
-        const social = await Social.create(
+    let social = ""
+    if(socialsToChange===null){
+        social = await Social.create(
             {userID:userID.id,
             etsyAccessToken: tokenData.access_token,
             etsyRefreshToken: tokenData.refresh_token});
     }else{
-        const social = await Social.findByIdAndUpdate(socialsToChange,
+        social = await Social.findByIdAndUpdate(socialsToChange,
             {etsyAccessToken: tokenData.access_token,
             etsyRefreshToken: tokenData.refresh_token});
     }
