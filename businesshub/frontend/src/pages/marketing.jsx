@@ -61,6 +61,7 @@ const Marketing = () =>{
         `code_challenge_method=S256&` +
         `state=${state}`
     return(
+        <div className="h-auto">
             <div className="w-full h-96 bg-white rounded flex justify-center">
                 <div className="m-auto border rounded-sm grid grid-cols-2">
                     <div className="border-r m-3"><img src={etsyLogo} />Etsy</div>
@@ -70,6 +71,7 @@ const Marketing = () =>{
                 </div>
 
             </div>
+        </div>
         )
 }
 export default Marketing

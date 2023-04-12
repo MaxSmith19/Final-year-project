@@ -99,7 +99,7 @@ function App() {
                 <Route path="/Ledgers" element={<Ledgers handleIsLoading={handleIsLoading}/>} />
                 <Route path="/Dashboard" element={<Dashboard handleIsLoading={handleIsLoading} />} />
                 <Route path="/UserSettings" element={<UserSettings handleIsLoading={handleIsLoading} />} />
-                <Route path="/Legislation" element={<Legislation handleIsLoading={handleIsLoading} />} />
+                <Route path="/Legislation" element={<Legislation />} />
                 <Route path="/Marketing" element={<Marketing handleIsLoading={handleIsLoading} />} />
                 <Route path="/Inventory" element={<Inventory handleIsLoading={handleIsLoading} />} />
               </>
