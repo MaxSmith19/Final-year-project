@@ -35,10 +35,10 @@ const Legislation = () =>{
         <h1 className="text-5xl mb-4">Relevant Links</h1>
         <hr className="border-gray-400 mb-4" />
         <ul className="list-disc ml-8 mb-4">
-            <li><a href="https://www.gov.uk/income-tax">Income Tax Information (Gov.uk)</a></li>
-            <li><a href="https://www.gov.uk/vat-businesses">VAT Information for Businesses (Gov.uk)</a></li>
-            <li><a href="https://www.tax.service.gov.uk/calculators">HMRC Tax Calculators</a></li>
-            <li><a href="https://www.gov.uk/self-assessment-tax-returns">Self Assessment Tax Returns (Gov.uk)</a></li>
+            <li><a className="rLinks" href="https://www.gov.uk/income-tax">Income Tax Information (Gov.uk)</a></li>
+            <li><a className="rLinks" href="https://www.gov.uk/vat-businesses">VAT Information for Businesses (Gov.uk)</a></li>
+            <li><a className="rLinks" href="https://www.tax.service.gov.uk/calculators">HMRC Tax Calculators</a></li>
+            <li><a className="rLinks" href="https://www.gov.uk/self-assessment-tax-returns">Self Assessment Tax Returns (Gov.uk)</a></li>
         </ul>
         <p>These links provide more information and resources to help you understand and manage your taxes.</p>
         </div>

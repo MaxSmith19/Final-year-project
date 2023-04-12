@@ -86,11 +86,11 @@ table th{
 html{
     background-color: #9ae2ff;
 }
-a{
+.rLinks{
  color: blue ;
 
 }
-a:hover{
+.rLinks:hover{
     color: red
 }
 html, body {
