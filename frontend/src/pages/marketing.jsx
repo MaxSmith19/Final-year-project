@@ -36,7 +36,7 @@ const Marketing = () =>{
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Socials/get',
+            url: `${process.env.REACT_APP_SERVER_URL}/api/Socials/get`,
             headers: {
                 'Authorization': `Bearer ${Cookies.get("token")}`
             }
@@ -75,7 +75,7 @@ const Marketing = () =>{
     const url = `https://www.etsy.com/oauth/connect?` +
         `response_type=code&` +
         `client_id=${process.env.REACT_APP_ETSY_KEYSTRING}&` +
-        `redirect_uri=http://localhost:5000/api/Socials/etsyCallback&` +
+        `redirect_uri=${process.env.REACT_APP_SERVER_URL}api/Socials/etsyCallback&` +
         `scope=feedback_r%20shops_r&` +
         `code_challenge=${challenge}&` +
         `code_challenge_method=S256&` +

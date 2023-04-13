@@ -29,7 +29,7 @@ const Dashboard = ({handleIsLoading}) =>{
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: 'http://localhost:5000/api/Ledgers',
+        url: `process.env.REACT_APP_SERVER_URL}/api/Ledgers`,
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -123,7 +123,7 @@ const Dashboard = ({handleIsLoading}) =>{
         handleIsLoading(true);
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
-        const response = await axios.get('http://localhost:5000/api/Users/get', {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/Users/get`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

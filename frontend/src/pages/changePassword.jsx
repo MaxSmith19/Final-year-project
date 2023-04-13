@@ -29,7 +29,7 @@ const ChangePassword = (props) => {
 
     var config = {
       method: 'post',
-      url: 'http://localhost:5000/api/Users/changePassword',
+      url: `${process.env.REACT_APP_SERVER_URL}/api/Users/changePassword`,
       headers: { 
         'Content-Type': 'application/x-www-form-urlencoded',
       },

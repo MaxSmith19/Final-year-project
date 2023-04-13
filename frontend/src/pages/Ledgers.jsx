@@ -96,7 +96,7 @@ function Ledgers({handleIsLoading}) {
             let config = {
                 method: 'get',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:5000/api/Ledgers',
+                url: `${process.env.REACT_APP_SERVER_URL}api/Ledgers`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -186,7 +186,7 @@ function Ledgers({handleIsLoading}) {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Ledgers',
+            url: `${process.env.REACT_APP_SERVER_URL}/api/Ledgers`,
             headers: { 
                     'Authorization': `Bearer ${token}`,
             },
@@ -307,7 +307,7 @@ function Ledgers({handleIsLoading}) {
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Ledgers/delete',
+            url: `${process.env.REACT_APP_SERVER_URL}/api/Ledgers/delete`,
             headers: {},
             data: {
                 _id: currentLedgerID

@@ -23,7 +23,7 @@ function Inventory({handleIsLoading})  {
         const config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Inventory/',
+            url: `${process.env.REACT_APP_SERVER_URL}/api/Inventory/`,
             headers: { 
                     'Authorization': `Bearer ${token}`
             }
@@ -42,7 +42,7 @@ function Inventory({handleIsLoading})  {
         const config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Inventory/',
+            url: `${process.env.REACT_APP_SERVER_URL}api/Inventory/`,
             headers: { 
                     'Authorization': `Bearer ${token}`
             }
@@ -107,7 +107,7 @@ function Inventory({handleIsLoading})  {
         let config = {
             method: 'put',
             maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Inventory/update',
+            url: `${process.env.REACT_APP_SERVER_URL}api/Inventory/update`,
             headers: { 
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/x-www-form-urlencoded'

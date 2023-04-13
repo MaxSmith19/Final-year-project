@@ -14,7 +14,7 @@ const UserSettings = (props) => {
     let config = {
       method: 'delete',
       maxBodyLength: Infinity,
-      url: 'http://localhost:5000/api/Users/del',
+      url: `${process.env.REACT_APP_SERVER_URL}/api/Users/del`,
       headers: {
         "authorization": `Bearer ${token}`, 
       },
@@ -43,7 +43,7 @@ const UserSettings = (props) => {
     formData.append('businessLogo', businessLogo)
 
     axios
-      .put('http://localhost:5000/api/Users/update', formData, {
+      .put(`${process.env.REACT_APP_SERVER_URL}/api/Users/update`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
