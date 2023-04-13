@@ -432,6 +432,9 @@ function Ledgers({handleIsLoading}) {
                 </tbody>
                 </table>
             }
+                <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={addRow}>Add new row</label>
+                
+
                 <div className="w-4/12 float-right text-lg">
                     <label className="bg-slate-50">Balance</label>
                     <input className="gpb rounded pl-4 bg-slate-300 shadow-sm float-right" value={balance} required />

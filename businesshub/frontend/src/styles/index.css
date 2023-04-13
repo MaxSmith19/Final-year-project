@@ -16,7 +16,6 @@ footer {
     background-color: rgb(0, 0, 0);
 
 }
-
 .darkMode li{
     background-color: rgba(255, 192, 74, 0.562);
 }
@@ -33,6 +32,10 @@ footer {
 }
 .darkMode tr input{
     background-color: rgba(61, 61, 61, 0.945);
+
+}
+.darkMode label{
+    background-color: rgba(71, 71, 71, 0.945);
 
 }
 .darkMode h1{

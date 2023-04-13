@@ -49,7 +49,7 @@ const Nav = (props) => {
                             
                         <div className={isAccountOpen? 'invisible':' grid grid-col-2 grid-row-2 focus:outline-none bg-white mt-1 mr-3 '}>
                             <a href="#" className=" text-2xl text-right bg-white  hover:bg-gray-700 hover:text-white mb-0.5 transition ease-in-out duration-300 "><Link to="/UserSettings">Account settings</Link></a>
-                            <a href="#" className=" text-2xl text-right bg-white hover:bg-gray-700 hover:text-white mb-0.5 transition ease-in-out duration-300 border-t" onClick={()=>logOut()}>Log out</a>
+                            <a href="#" className="text-2xl text-right bg-white hover:bg-gray-700 hover:text-white mb-0.5 transition ease-in-out duration-300 border-t" onClick={()=>logOut()}>Log out</a>
                         </div>
                     </div>
                 </div>
@@ -61,27 +61,28 @@ const Nav = (props) => {
                 />
 
             <div className={isNavOpen ? "overlay" : "h-0"}>
-            <button className={isNavOpen ? "transition -rotate-180 duration-300 text-white mt-3 ml-3 hover:text-gray-500" : "invisible"} onClick={() => setNav(false)}>
+            <button className={isNavOpen ? "transition -rotate-180 duration-300 text-white mt-3 ml-3 hover:text-gray-500 sm:pt-20 md:pt-20" : "invisible"} onClick={() => setNav(false)}>
                 <VscChevronLeft className="mt-3 ml-2" size={isNavOpen ? "50" : "0"} />
             </button>
             <div className={isNavOpen ? "overlay-content flex justify-center" : "hidden"}>
-            <div className="flex justify-evenly w-full">
+            <div className="md:mb-10 sm:mb-10 lg:flex justify-evenly w-full">
                 <div className="mt-6 mr-6">
-                <h2 className="text-6xl text-white font-medium mb-4 underline">Services</h2>
-                <a onClick={() => setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>
-                <a onClick={() => setNav(false)}><Link to="/Ledgers">Ledgers</Link></a>
-                <a onClick={() => setNav(false)}><Link to="/Inventory">Inventory</Link></a>
-                <a onClick={() => setNav(false)}><Link to="/Marketing">Marketing<br /><p className="text-sm">(experimental)</p></Link></a>
+                    <h2 className="text-6xl text-white font-medium mb-4 underline">Services</h2>
+                    <a onClick={() => setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>
+                    <a onClick={() => setNav(false)}><Link to="/Ledgers">Ledgers</Link></a>
+                    <a onClick={() => setNav(false)}><Link to="/Inventory">Inventory</Link></a>
+                    <a onClick={() => setNav(false)}><Link to="/Marketing">Marketing<br /><p className="text-sm">(experimental)</p></Link></a>
                 </div>
                 <div className="mt-6 mr-6">
-                <h2 className="text-6xl text-white font-medium mb-4 underline">About</h2>
-                <a onClick={() => setNav(false)}><Link to="/Legislation">Legislation</Link></a>
+                    <h2 className="text-6xl text-white font-medium mb-4 underline">About</h2>
+                    <a onClick={() => setNav(false)}><Link to="/Legislation">Legislation</Link></a>
                 </div>
                 <div className="mt-6">
-                <h2 className="text-6xl text-white font-medium mb-4 underline">Preferences</h2>
-                <label className=''>Dark Mode:
-                    <Switch className='ml-4 text-center' onChange={() => changeMode()} checked={isDarkMode} />
-                </label>
+                    <h2 className="text-6xl text-white font-medium mb-4 underline">Preferences</h2>
+                    <label className=''>Dark Mode:
+                        <Switch className='ml-4 text-center' onChange={() => changeMode()} checked={isDarkMode} />
+                    </label>
+                    <a className="hidden md:visible sm:visible"onClick={() => logOut()}>Log out</a>
                 </div>
             </div>
             </div>
