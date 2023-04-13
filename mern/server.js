@@ -8,6 +8,7 @@ const bodyParser = require("body-parser")
 const port = process.env.PORT || 5050
 const {connectDB} = require("./config/db")
 const cookieParser = require("cookie-parser")
+const {userRoutes} = require("./routes/userRoutes")
 
 connectDB()
 
@@ -20,7 +21,7 @@ app.use(cookieParser())
 app.use('/uploads', express.static('uploads'));
 
 
-app.use('/api/Users', require("./routes/userRoutes"))
+app.use('/api/Users', userRoutes)
 app.use('/api/Ledgers', require('./routes/ledgersRoutes'))
 app.use('/api/Socials', require('./routes/socialMediaRoutes'))
 app.use('/api/Inventory', require('./routes/inventoryRoutes'))
