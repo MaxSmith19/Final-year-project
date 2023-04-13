@@ -7,8 +7,6 @@ const { corsMiddleWare } = require("./middleware/corsMiddleware")
 const bodyParser = require("body-parser")
 const port = process.env.PORT || 5050
 const {connectDB} = require("./config/db")
-const allowedOrigins = ["http://localhost:5000"]
-const skipOriginCheck = true;
 const cookieParser = require("cookie-parser")
 
 connectDB()
@@ -23,7 +21,6 @@ app.use('/uploads', express.static('uploads'));
 
 
 app.use('/api/Users', require('./routes/userRoutes'))
-app.use('/api/Admin', require('./routes/adminRoutes'))
 app.use('/api/Ledgers', require('./routes/ledgersRoutes'))
 app.use('/api/Socials', require('./routes/socialMediaRoutes'))
 app.use('/api/Inventory', require('./routes/inventoryRoutes'))

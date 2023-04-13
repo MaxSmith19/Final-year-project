@@ -3,14 +3,20 @@
 @tailwind utilities;
 
 
+
+main {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}
+
 .darkMode .animationContainer {
     background-color: rgb(0, 0, 0);
 
 }
-
-.darkMode li{
-    background-color: rgba(255, 192, 74, 0.562);
-}
+.darkMode 
 .darkMode .bg-white{
     background-color: rgb(53, 53, 53);
     color: grey !important;
@@ -24,6 +30,10 @@
 }
 .darkMode tr input{
     background-color: rgba(61, 61, 61, 0.945);
+
+}
+.darkMode label{
+    background-color: rgba(71, 71, 71, 0.945);
 
 }
 .darkMode h1{
@@ -71,9 +81,26 @@ table th{
 }
 html{
     background-color: #9ae2ff;
+}
+.rLinks{
+ color: blue ;
 
 }
+.rLinks:hover{
+    color: red
+}
+html, body {
+  height: 100%;
+  min-height: 100vh;
+}
 
+.footer-bottom{
+    bottom: 100vh;
+}
+footer {
+      margin-top: auto;
+    margin-top: auto !important;
+}
 
 .overlay {
     height: 100%;

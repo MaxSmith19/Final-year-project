@@ -16,12 +16,30 @@ function Inventory({handleIsLoading})  {
         setIngredientsRows([])
         getInventory()
     },[])
-
+    const createInventory = async()=>{
+        
+        const userIDCookie = document.cookie.split("=")[1]; 
+        const token = userIDCookie.split(";")[0];
+        const config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:5000/api/Inventory/',
+            headers: { 
+                    'Authorization': `Bearer ${token}`
+            }
+        };
+        try{
+            const response=await axios.request(config)
+            getInventory()
+        }catch(error){
+            console.log(error)
+        }
+    }
     const getInventory = async() =>{
         handleIsLoading(true)
         const userIDCookie = document.cookie.split("=")[1]; 
         const token = userIDCookie.split(";")[0];
-        let config = {
+        const config = {
             method: 'get',
             maxBodyLength: Infinity,
             url: 'http://localhost:5000/api/Inventory/',
@@ -30,8 +48,8 @@ function Inventory({handleIsLoading})  {
             }
         };
         try{
-        const response = await axios.request(config)
-            console.log(response.data[0])
+            const response = await axios.request(config)
+
             response.data[0].inventoryData.forEach(element => {
                 setInventoryRows(inventoryRows => [...inventoryRows, {
                     Item: element.Item,
@@ -52,7 +70,7 @@ function Inventory({handleIsLoading})  {
             handleIsLoading(false)
         }
         catch(error){
-            console.log(error);
+            createInventory()
         }
     }
 
@@ -130,8 +148,8 @@ function Inventory({handleIsLoading})  {
    
           setIngredientsRows([...ingredientsRows, newRow]);
           //adds a new blank row to the table
-
     }
+    
     const deleteIngredientsRow = (index) =>{
         const updatedIngredientsRows = [...ingredientsRows];
         updatedIngredientsRows.splice(index, 1)
@@ -189,6 +207,7 @@ function Inventory({handleIsLoading})  {
                 ))}
                 </tbody>
                 </table>   
+                <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={addInventoryRow}>Add new row</label>
 
             </div>
             <h1 className='text-center text-6xl mb-10'>Supplies</h1>
@@ -232,8 +251,10 @@ function Inventory({handleIsLoading})  {
                 ))}
                 </tbody>
                 </table>   
+                <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={addIngredientsRow}>Add new row</label>
                 
             </div>
+
             <button onClick={onSave} id="saveButton"className="transition-all ease-in-out duration-75 rounded-full fixed bottom-10 right-10 bg-green-700 p-3 hidden"><FiSave size={50}/></button>          
 
             </>

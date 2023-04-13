@@ -27,7 +27,7 @@ function Animation({isDarkMode}) {
   }, []);
 
   return (
-    <ul className="animationContainer">
+    <ul className="animationContainer footer-bottom">
       <li className=""> </li>
       <li className=""> </li>
       <li className=""> </li>

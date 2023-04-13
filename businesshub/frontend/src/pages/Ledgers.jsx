@@ -6,6 +6,7 @@ import Chart from 'chart.js/auto'
 import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
 import { BsDash} from 'react-icons/bs'
+import Time from 'react-time'
 const qs = require('qs');
 
 function Ledgers({handleIsLoading}) {
@@ -147,18 +148,18 @@ function Ledgers({handleIsLoading}) {
         }
     };
     
-    const changeLedger = (event) => {
+    const changeLedger = (name) => {
         let ledgerData = ""
-
         cacheResponse.forEach(element => {
             //Check the cached Response to get the data from the ledger
-            if(element.ledgerName === event.target.value) {
+            if(element.ledgerName === name) {
                 ledgerData = element.ledgerData;
                 setCurrentLedgerID(element._id);
             }
         })
-        setCurrentLedgerName(event.target.value);
-        if(ledgerData!==undefined || ledgerData===""){
+        setCurrentLedgerName(name);
+        if(ledgerData!==""){
+            console.log(ledgerData);
             setLedgerRows([])
             ledgerData.forEach(element => {
                 setLedgerRows(LedgerRows => [...LedgerRows, {
@@ -178,6 +179,10 @@ function Ledgers({handleIsLoading}) {
     const createLedger = async () =>{
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
+        if(ledgerNames.includes("New Ledger")){
+            toast.error("You already have a new Ledger, rename or delete it!")
+            return
+        }
         //get the token
         let config = {
             method: 'post',
@@ -194,76 +199,75 @@ function Ledgers({handleIsLoading}) {
             //Create a new ledger with the temporary name of "New Ledger"
             const response = await axios.request(config);
             //we dont need any response necessarily, just whether it was successful (where it is reloaded)
-            window.location.reload();
+            setLedgerNames([...ledgerNames, "New Ledger"])
+            setCurrentLedgerID(response.data._id)
+            setCurrentLedgerName("New Ledger")
+            const newCacheResponse = [...cacheResponse];
+            newCacheResponse.push(response.data)
+            setCacheResponse(newCacheResponse)
         } catch (error) {
             console.log(error);
             //else an error is shown to the user
         } 
     }
     
-    const onSave = async () => {
-        const userIDCookie = document.cookie.split("=")[1];
-        const token = userIDCookie.split(";")[0];
-        let config = {
-            method: 'put',
-            maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Ledgers/update',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: {
-                _id: currentLedgerID,
-                ledgerData: ledgerRows
-            }
-        };
-        //Not editing the name of the ledger
-        cacheResponse.forEach(element => {
-            if (element.ledgerName === editedLedgerName) {
-                toast.error("You already have a ledger called " + element.ledgerName)
-                setEditedLedgerName("")
-                window.location.reload()
-                //a ledger name cannot be the same as another, otherwise loss of data integrity
-            }
-        })
-        if (editedLedgerName !== "") {
-            config = {
-                method: 'put',
-                maxBodyLength: Infinity,
-                url: 'http://localhost:5000/api/Ledgers/update',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data: {
-                    _id: currentLedgerID,
-                    ledgerName: editedLedgerName
-                }
-            };
-        }
-        //Changing the name of the ledger
+    const updateLedger = async (config) => {
         try {
-            const response = await axios.request(config);
-            cacheResponse.forEach((element, index) => {
-                if (element.ledgerName === currentLedgerName) {
-                    const newCacheResponse = [...cacheResponse];
-                    newCacheResponse[index] = response.data;
-                    setCacheResponse(newCacheResponse);
-                    const newLedgerNames = [...ledgerNames];
-                    newLedgerNames[index] = response.data.ledgerName;
-                    setLedgerNames(newLedgerNames)
-                    toast.success("Ledger updated successfully")
-                    //get the cached response, replace the existing ledger and replace with the new one from the response
-                    //Cuts out the need for getLedgers and uneccessary API calls to getLedgers
-                }
-            })
-            setEditedLedgerName("");
-    
+          const response = await axios.request(config);
+          cacheResponse.forEach((element, index) => {
+            if (element.ledgerName === currentLedgerName) {
+              const newCacheResponse = [...cacheResponse];
+              newCacheResponse[index] = response.data;
+              setCacheResponse(newCacheResponse);
+              const newLedgerNames = [...ledgerNames];
+              newLedgerNames[index] = response.data.ledgerName;
+              setLedgerNames(newLedgerNames);
+              toast.success("Ledger updated successfully");
+            }
+          });
+          setEditedLedgerName("");
         } catch (error) {
-            console.log(error)
+          console.error(error);
+          toast.error("Ledger update failed");
         }
-        document.getElementById("saveButton").classList.add("hidden")
-    }
+      };
+      
+      const onSave = async () => {
+        const [, userIDCookie] = document.cookie.split("=");
+        const token = userIDCookie.split(";")[0];
+        const config = {
+          method: 'put',
+          maxBodyLength: Infinity,
+          url: 'http://localhost:5000/api/Ledgers/update',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: {
+            _id: currentLedgerID,
+            ledgerData: ledgerRows,
+            balance: balance
+          }
+        };
+        cacheResponse.forEach((element) => {
+          if (element.ledgerName === editedLedgerName) {
+            toast.error(`You already have a ledger called ${element.ledgerName}`);
+            setEditedLedgerName("");
+            return;
+          }
+        });
+        if (editedLedgerName !== "") {
+          config.data.ledgerName = editedLedgerName;
+        }
+        try {
+          await updateLedger(config);
+          toast.success("Ledger updated successfully");
+        } catch (error) {
+          console.error(error);
+          toast.error("Ledger update failed");
+        }
+        document.getElementById("saveButton").classList.add("hidden");
+      };
     
         
     const addRow = () => {
@@ -312,17 +316,28 @@ function Ledgers({handleIsLoading}) {
         };
         try {
             const response = await axios.request(config);
-            toast.warn("Ledger Deleted");
             const newCacheResponse = [...cacheResponse];
             newCacheResponse.splice(newCacheResponse.indexOf(response.data), 1);
+            const newLedgerNames = [...ledgerNames];
+            newLedgerNames.splice(newLedgerNames.indexOf(response.data.ledgerName), 1);
+            setLedgerNames(newLedgerNames)
             setCacheResponse(newCacheResponse);
+            getLedgers()
+            toast.warn("Ledger Deleted");
         } catch (error) {
             console.log(error);
         }
     };
+
     const onChangeCell = (event, index, key) => {
         const newRows = [...ledgerRows];
-        newRows[index][key] = event.target.value;
+        let value = event.target.value; 
+        if (key === "credit" && value > 0) {
+            value = -1 * value;
+        }
+        //Credit needs to be negative
+
+        newRows[index][key] = value;
         //get the index (row) and the actual cell being changed
         setLedgerRows(newRows);
         //set the ledgerRows to contain the data from the new row
@@ -333,6 +348,12 @@ function Ledgers({handleIsLoading}) {
             button.classList.remove("hidden")
         }
     }
+    const todayDate = new Date()
+    const formattedDate = todayDate.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
     return(
             <div className='transition-all ease-in delay-300 '>
             <div className="chartContainer bg-white rounded-xl shadow-2xl p-2 mb-5">
@@ -344,14 +365,14 @@ function Ledgers({handleIsLoading}) {
             <div className="bg-white pb-16 w-full m-auto p-4 rounded-xl shadow-2xl">
                 <div className="border flex align-center p-2 ledgerOptions">
                         <h1 className='text-xl mr-3'> Select ledger: </h1>
-                        <select className='ml-4 md:ml-0 text-xl text-center rounded-md col-span-4 w-1/2' onChange={changeLedger}>
+                        <select className='ml-4 md:ml-0 text-xl text-center rounded-md col-span-4 w-1/2' onChange={(event) =>changeLedger(event.target.value)}>
                             { ledgerNames.map((ledgerName, index) => (
                                 <option key={index} value={ledgerName}>{ledgerName}</option> 
                                 ))}
                         </select>
                         <div className="">
-                            <button className="ml-4 mr-4 text-xl rounded-md p-1 w-1/12" value={"New"} onClick={()=>createLedger()}><MdPostAdd size={30}/></button>
-                            <button className="ml-4 text-xl rounded-md p-1 w-1/12" onClick={()=>setInSettings(!inSettings)}><AiOutlineEdit size={30}/></button>
+                            <button id="new" className="ml-4 mr-4 text-xl rounded-md p-1 w-1/12" value={"New"} onClick={()=>createLedger()}><MdPostAdd size={30}/></button>
+                            <button id="settings" className="ml-4 text-xl rounded-md p-1 w-1/12" onClick={()=>setInSettings(!inSettings)}><AiOutlineEdit size={30}/></button>
                         </div>
                     </div>
 
@@ -384,7 +405,7 @@ function Ledgers({handleIsLoading}) {
                     <tr key={index} className="h-10 bg-slate-200 rounded shadow-sm sm:text-left hover:bg-slate-300 transition-all ease-in-out duration-300" ref={event => (row[index] =event)}>
                         <td className="p-1">
                             <label className="block w-full bg-slate-50 sm:hidden">Date</label>
-                            <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" required />
+                            <input defaultValue={formattedDate} className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.date} onChange={(event)=>onChangeCell(event, index, "date")} type="date" required />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Notes</label>
@@ -393,13 +414,13 @@ function Ledgers({handleIsLoading}) {
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Debit</label>
                             <span className="absolute pl-1 sm:hidden md:hidden gbp">£</span>
-                            <input className="rounded pl-4 bg-slate-50 w-full shadow-sm text-green-500" value={row.debit || 0} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required min={0}/>
+                            <input className="rounded pl-4 bg-slate-50 w-full shadow-sm text-green-500" value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required min={0}/>
                         </td>
 
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Credit</label>
                             <span className="absolute pl-1 sm:hidden md:hidden gbp">£ -</span>
-                            <input className="rounded pl-5 bg-slate-50 w-full shadow-sm text-red-500" value={row.credit || 0} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required max={0} />
+                            <input className="rounded pl-5 bg-slate-50 w-full shadow-sm text-red-500" value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required min={-1} />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={()=>deleteRow(index)}>Delete row</label>
@@ -411,7 +432,13 @@ function Ledgers({handleIsLoading}) {
                 </tbody>
                 </table>
             }
-                <input className="gpb rounded pl-4 bg-slate-300 w-2/12 shadow-sm float-right" value={balance } required />
+                <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={addRow}>Add new row</label>
+                
+
+                <div className="w-4/12 float-right text-lg">
+                    <label className="bg-slate-50">Balance</label>
+                    <input className="gpb rounded pl-4 bg-slate-300 shadow-sm float-right" value={balance} required />
+                </div>
             </div>
             <button onClick={onSave} id="saveButton"className="transition-all ease-in-out duration-75 rounded-full fixed bottom-10 right-10 bg-green-700 p-3 hidden"><FiSave size={50}/></button>          
 
