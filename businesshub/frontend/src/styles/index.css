@@ -16,9 +16,7 @@ footer {
     background-color: rgb(0, 0, 0);
 
 }
-.darkMode li{
-    background-color: rgba(255, 192, 74, 0.562);
-}
+.darkMode 
 .darkMode .bg-white{
     background-color: rgb(53, 53, 53);
     color: grey !important;

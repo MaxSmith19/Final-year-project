@@ -207,6 +207,7 @@ function Inventory({handleIsLoading})  {
                 ))}
                 </tbody>
                 </table>   
+                <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={addInventoryRow}>Add new row</label>
 
             </div>
             <h1 className='text-center text-6xl mb-10'>Supplies</h1>
@@ -250,8 +251,10 @@ function Inventory({handleIsLoading})  {
                 ))}
                 </tbody>
                 </table>   
+                <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={addIngredientsRow}>Add new row</label>
                 
             </div>
+
             <button onClick={onSave} id="saveButton"className="transition-all ease-in-out duration-75 rounded-full fixed bottom-10 right-10 bg-green-700 p-3 hidden"><FiSave size={50}/></button>          
 
             </>
