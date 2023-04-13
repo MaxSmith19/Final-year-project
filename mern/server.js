@@ -20,10 +20,10 @@ app.use(cookieParser())
 app.use('/uploads', express.static('uploads'));
 
 
-app.use('/api/Users', require("./routes/userRoutes"))
-app.use('/api/Ledgers', require('./routes/ledgersRoutes'))
-app.use('/api/Socials', require('./routes/socialMediaRoutes'))
-app.use('/api/Inventory', require('./routes/inventoryRoutes'))
+app.use('/api/Users', require("./routes/userRoutes.js"))
+app.use('/api/Ledgers', require('./routes/ledgersRoutes.js'))
+app.use('/api/Socials', require('./routes/socialMediaRoutes.js'))
+app.use('/api/Inventory', require('./routes/inventoryRoutes.js'))
 
 
 
