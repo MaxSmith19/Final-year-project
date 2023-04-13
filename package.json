@@ -38,7 +38,6 @@
     "react-spinners": "^0.13.8",
     "react-switch": "^7.0.0",
     "react-table": "^7.8.0",
-    "react-time": "^4.3.0",
     "react-toastify": "4.1",
     "regex": "^0.1.1",
     "sass": "^1.58.0",
@@ -49,7 +48,7 @@
     "start": "node mern/server.js",
     "server": "nodemon mern/server.js",
     "client": "npm start --prefix frontend",
-    "app": "concurrently \"npm run server\" \"npm run client\"",
+    "app": "concurrently \"npm start\" \"npm run client\"",
     "test": "jest"
   },
   "eslintConfig": {

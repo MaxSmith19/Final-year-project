@@ -6,7 +6,6 @@ import Chart from 'chart.js/auto'
 import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
 import { BsDash} from 'react-icons/bs'
-import Time from 'react-time'
 const qs = require('qs');
 
 function Ledgers({handleIsLoading}) {
@@ -97,7 +96,7 @@ function Ledgers({handleIsLoading}) {
             let config = {
                 method: 'get',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:5000/api/Ledgers',
+                url: `${process.env.REACT_APP_SERVER_URL}api/Ledgers`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -187,7 +186,7 @@ function Ledgers({handleIsLoading}) {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Ledgers',
+            url: `${process.env.REACT_APP_SERVER_URL}/api/Ledgers`,
             headers: { 
                     'Authorization': `Bearer ${token}`,
             },
@@ -308,7 +307,7 @@ function Ledgers({handleIsLoading}) {
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: 'http://localhost:5000/api/Ledgers/delete',
+            url: `${process.env.REACT_APP_SERVER_URL}/api/Ledgers/delete`,
             headers: {},
             data: {
                 _id: currentLedgerID
@@ -348,12 +347,7 @@ function Ledgers({handleIsLoading}) {
             button.classList.remove("hidden")
         }
     }
-    const todayDate = new Date()
-    const formattedDate = todayDate.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
+
     return(
             <div className='transition-all ease-in delay-300 '>
             <div className="chartContainer bg-white rounded-xl shadow-2xl p-2 mb-5">

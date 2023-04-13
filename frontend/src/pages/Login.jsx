@@ -53,7 +53,7 @@ const Login = (props) => {
     if(nullFlag===false){
       var config = {
         method: 'post',
-        url: 'http://localhost:5000/api/Users/',
+        url: `${process.env.REACT_APP_SERVER_URL}/api/Users/`,
         headers: { 
           'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -83,7 +83,7 @@ const Login = (props) => {
 
     var config = {
       method: 'post',
-      url: 'http://localhost:5000/api/Users/login/',
+      url: `${process.env.REACT_APP_SERVER_URL}/api/Users/login/`,
       headers: { 
         'Content-Type': 'application/x-www-form-urlencoded',
       },
