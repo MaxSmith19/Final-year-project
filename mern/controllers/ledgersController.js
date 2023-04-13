@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler")
 
-const Ledger = require("../models/LedgersModel")
+const Ledger = require("../models/ledgersModel")
 const {decodeJWT, generateJWT} = require("../middleware/authMiddleware")
 
 const getLedger = asyncHandler(async (req, res) => {
