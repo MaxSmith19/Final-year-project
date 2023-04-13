@@ -46,12 +46,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node mern/server.js",
-    "server": "nodemon mern/server.js",
-    "client": "NODE_OPTIONS=--max-old-space-size=2048 npm start --prefix frontend",
-    "app": "concurrently \"npm start\" \"npm run client\"",
-    "test": "jest"
+    "start": "react-scripts --max_old_space_size=512 start",
+    "build": "react-scripts --max_old_space_size=512 build",
+    "test": "react-scripts --max_old_space_size=512 test",
+    "eject": "react-scripts eject"
   },
+  
   "eslintConfig": {
     "extends": [
       "react-app",
