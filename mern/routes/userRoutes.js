@@ -7,7 +7,7 @@ const {
   loginUser,
   updateUser,
   deleteUser,
-} = require('../controllers/UserController');
+} = require('../controllers/userController');
 const { protect } = require("../middleware/authMiddleware");
 const { upload } = require('../middleware/imageUploadMiddleware');
 
