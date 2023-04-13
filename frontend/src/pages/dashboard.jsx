@@ -172,7 +172,6 @@ const Dashboard = ({handleIsLoading}) =>{
                       <div className="chartItem" >
                         <canvas id="balanceChart"></canvas>
                         <h2 className='text-2xl'>{ledgerName}</h2>
-                        <p>Credit vs debit</p>
                     </div>
                     </div>
                   <div className="bg-white h-96 w-full m-auto rounded-xl shadow-2xl p-2">
