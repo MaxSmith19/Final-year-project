@@ -245,7 +245,8 @@ function Ledgers({handleIsLoading}) {
           },
           data: {
             _id: currentLedgerID,
-            ledgerData: ledgerRows
+            ledgerData: ledgerRows,
+            balance: balance
           }
         };
         cacheResponse.forEach((element) => {
@@ -330,7 +331,13 @@ function Ledgers({handleIsLoading}) {
 
     const onChangeCell = (event, index, key) => {
         const newRows = [...ledgerRows];
-        newRows[index][key] = event.target.value;
+        let value = event.target.value; 
+        if (key === "credit" && value > 0) {
+            value = -1 * value;
+        }
+        //Credit needs to be negative
+
+        newRows[index][key] = value;
         //get the index (row) and the actual cell being changed
         setLedgerRows(newRows);
         //set the ledgerRows to contain the data from the new row
@@ -407,13 +414,13 @@ function Ledgers({handleIsLoading}) {
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Debit</label>
                             <span className="absolute pl-1 sm:hidden md:hidden gbp">£</span>
-                            <input className="rounded pl-4 bg-slate-50 w-full shadow-sm text-green-500" value={row.debit || 0} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required min={0}/>
+                            <input className="rounded pl-4 bg-slate-50 w-full shadow-sm text-green-500" value={row.debit} onChange={(event)=>onChangeCell(event, index, "debit")} type="number" required min={0}/>
                         </td>
 
                         <td className="p-1">
                             <label className="block bg-slate-50 sm:hidden">Credit</label>
                             <span className="absolute pl-1 sm:hidden md:hidden gbp">£ -</span>
-                            <input className="rounded pl-5 bg-slate-50 w-full shadow-sm text-red-500" value={row.credit || 0} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required max={0} />
+                            <input className="rounded pl-5 bg-slate-50 w-full shadow-sm text-red-500" value={row.credit} onChange={(event)=>onChangeCell(event, index, "credit")} type="number" required min={-1} />
                         </td>
                         <td className="p-1">
                             <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={()=>deleteRow(index)}>Delete row</label>
@@ -427,7 +434,7 @@ function Ledgers({handleIsLoading}) {
             }
                 <div className="w-4/12 float-right text-lg">
                     <label className="bg-slate-50">Balance</label>
-                    <input className="gpb rounded pl-4 bg-slate-300 shadow-sm float-right" value={balance } required />
+                    <input className="gpb rounded pl-4 bg-slate-300 shadow-sm float-right" value={balance} required />
                 </div>
             </div>
             <button onClick={onSave} id="saveButton"className="transition-all ease-in-out duration-75 rounded-full fixed bottom-10 right-10 bg-green-700 p-3 hidden"><FiSave size={50}/></button>          

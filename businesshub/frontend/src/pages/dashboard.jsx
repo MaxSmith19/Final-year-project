@@ -9,9 +9,10 @@ const qs = require('qs');
 
 
 const Dashboard = ({handleIsLoading}) =>{
-    const [userEmail, setUserEmail] = useState("");
-    const [businessName, setBusinessName] = useState("");
-    const [imageSrc, setImageSrc] = useState("");
+    let [userEmail, setUserEmail] = useState("");
+    let [businessName, setBusinessName] = useState("");
+    let [imageSrc, setImageSrc] = useState("");
+    let [ledgerName, setLedgerName] = useState("");
     const navigate = useNavigate()
     useEffect(() => {
         getUserInfo();
@@ -37,19 +38,19 @@ const Dashboard = ({handleIsLoading}) =>{
       };
       try{
         const response = await axios.request(config)
+        setLedgerName(response.data[0].ledgerName)
         const ledgerRows = response.data[0].ledgerData
         //get the first ledger in the users ledgers (most likely to be their main ledger)
         let labels=[]
-        let data=[]
         let debitData =[]
         let creditData =[]
         const bchrt = document.getElementById('balanceChart').getContext('2d');
         ledgerRows.forEach(elements =>{
             labels.push(elements.date)
-            data.push(elements.balance)
             debitData.push(elements.debit)
             creditData.push(elements.credit)
         })
+        let balance =ledgerRows.balance
 
         const chart = new Chart(bchrt, {
           type: 'line',
@@ -57,52 +58,55 @@ const Dashboard = ({handleIsLoading}) =>{
             labels: labels,
             datasets: [
               {
+                type: 'line',
                 label: 'Balance',
-                data: 0,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1,
-                fill: true,
+                data: balance,
+                borderColor: 'rgba(0, 162, 235, 1)',
+                borderWidth: 2,
+                fill: false,
               },
               {
+                type: 'line',
                 label: 'Debit',
+                backgroundColor: 'rgb(54, 162, 235)',
                 data: debitData,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1,
-                fill: true,
               },
               {
+                type: 'line',
                 label: 'Credit',
+                backgroundColor: 'rgb(255, 99, 132)',
                 data: creditData,
-                backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                borderColor: 'rgba(255, 206, 86, 1)',
-                borderWidth: 1,
-                fill: true,
               },
             ],
           },
           options: {
-            title: {
-              display: true,
-              text: 'Balance, Debit and Credit over Time',
-              fontSize: 16,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Balance, Debit and Credit over Time',
+                font: {
+                  size: 16,
+                },
+              },
+              legend: {
+                display: true,
+                position: 'bottom',
+              },
             },
             scales: {
-              yAxes: [
-                {
-                  ticks: {
-                    beginAtZero: true,
-                  },
+              y: {
+                stacked: true,
+                ticks: {
+                  beginAtZero: true,
                 },
-              ],
-            },
-            legend: {
-              display: true,
-              position: 'bottom',
+              },
+              x: {
+                stacked: true,
+              },
             },
           },
         });
+        
         
           
           
@@ -114,36 +118,33 @@ const Dashboard = ({handleIsLoading}) =>{
         console.log(error)
       }
     }
-      const getUserInfo = () => {
-        handleIsLoading(true)
+    const getUserInfo = async() => {
+      try {
+        handleIsLoading(true);
         const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
-
-        axios.get('http://localhost:5000/api/Users/get', {
+        const response = await axios.get('http://localhost:5000/api/Users/get', {
           headers: {
             Authorization: `Bearer ${token}`
           }
-        })
-        .then((response) => {
-          var responseData = {
-            businessName: response.data[0].businessName,
-            email: response.data[0].email,
-            businessLogo: response.data[0].businessLogo
-          }
-
-          setBusinessName(responseData.businessName);
-          setUserEmail(responseData.email);
-          setImageSrc(responseData.businessLogo);
-          localStorage.setItem('businessName', responseData.businessName);
-          localStorage.setItem('businessLogo', responseData.businessLogo);
-          //local storage is not used often, but contains the name and logo to be used by the header 
-          //the image is used to show in the frontend design in some areas.
-          handleIsLoading(false)
-        })
-        .catch((error) => {
-          console.log(error);
         });
+        const responseData = {
+          businessName: response.data[0].businessName,
+          email: response.data[0].email,
+          businessLogo: response.data[0].businessLogo
+        };
+        setBusinessName(responseData.businessName);
+        setUserEmail(responseData.email);
+        setImageSrc(responseData.businessLogo);
+        localStorage.setItem('businessName', responseData.businessName);
+        localStorage.setItem('businessLogo', responseData.businessLogo);
+        //local storage is not used often, but contains the name and logo to be used by the header 
+        //the image is used to show in the frontend design in some areas.
+        handleIsLoading(false);
+      } catch (error) {
+        console.log(error);
       }
+    }
       
     return(
             <div className="grid gap-6 md:grid-rows-3 lg:grid-rows-3 xl:grid-cols-3">
@@ -168,10 +169,13 @@ const Dashboard = ({handleIsLoading}) =>{
                 <div className="bg-white h-96 w-full m-auto rounded-xl shadow-2xl p-2">
                     <h1 className="text-5xl ">Ledgers</h1>
                     <hr />
-                    <div className="chartItem" >
-                      <canvas id="balanceChart"></canvas>
+                      <div className="chartItem" >
+                        <canvas id="balanceChart"></canvas>
+                        <h2 className='text-2xl'>{ledgerName}</h2>
+                        <p>Credit vs debit</p>
                     </div>
-                </div><div className="bg-white h-96 w-full m-auto rounded-xl shadow-2xl p-2">
+                    </div>
+                  <div className="bg-white h-96 w-full m-auto rounded-xl shadow-2xl p-2">
                     <h1 className="text-5xl ">Marketing</h1>
                     <hr />
                 </div>

@@ -19,9 +19,6 @@ const Nav = (props) => {
 
     const navigate = useNavigate()
 
-    useEffect(() => {
-        console.log(props.isLoading)
-    },[props.isLoading])
     const changeMode =() =>{
         setIsDarkMode(!isDarkMode)
         localStorage.setItem("isDarkMode",!isDarkMode)
@@ -63,21 +60,34 @@ const Nav = (props) => {
                 loading={props.isLoading}
                 />
 
-        <div className={isNavOpen? "overlay":"h-0"}>
-        <button className={isNavOpen? "transition -rotate-180 duration-300 text-white mt-3 ml-3 hover:text-gray-500" :"invisible"} onClick={()=>setNav(false)}> <VscChevronLeft className="mt-3 ml-2" size={isNavOpen? "50":"0"} /></button>
-                <div className={isNavOpen? "overlay-content":"hidden"}> 
-                    <label className=''>Dark Mode:  
-                        <Switch className='ml-4 text-center' onChange={()=>changeMode()} checked={isDarkMode}/>
-                    </label>    
-                    <a onClick={()=>setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>
-                    <a onClick={()=>setNav(false)}><Link to="/Ledgers">Ledgers</Link></a>
-                    <a onClick={()=>setNav(false)}><Link to="/Inventory">Inventory</Link></a>
-                    <a onClick={()=>setNav(false)}><Link to="/Marketing">Marketing</Link></a>
-                    <a onClick={()=>setNav(false)}><Link to="/Legislation">Legislation</Link></a>
-
+            <div className={isNavOpen ? "overlay" : "h-0"}>
+            <button className={isNavOpen ? "transition -rotate-180 duration-300 text-white mt-3 ml-3 hover:text-gray-500" : "invisible"} onClick={() => setNav(false)}>
+                <VscChevronLeft className="mt-3 ml-2" size={isNavOpen ? "50" : "0"} />
+            </button>
+            <div className={isNavOpen ? "overlay-content flex justify-center" : "hidden"}>
+            <div className="flex justify-evenly w-full">
+                <div className="mt-6 mr-6">
+                <h2 className="text-6xl text-white font-medium mb-4 underline">Services</h2>
+                <a onClick={() => setNav(false)}><Link to="/Dashboard">Dashboard</Link></a>
+                <a onClick={() => setNav(false)}><Link to="/Ledgers">Ledgers</Link></a>
+                <a onClick={() => setNav(false)}><Link to="/Inventory">Inventory</Link></a>
+                <a onClick={() => setNav(false)}><Link to="/Marketing">Marketing<br /><p className="text-sm">(experimental)</p></Link></a>
+                </div>
+                <div className="mt-6 mr-6">
+                <h2 className="text-6xl text-white font-medium mb-4 underline">About</h2>
+                <a onClick={() => setNav(false)}><Link to="/Legislation">Legislation</Link></a>
+                </div>
+                <div className="mt-6">
+                <h2 className="text-6xl text-white font-medium mb-4 underline">Preferences</h2>
+                <label className=''>Dark Mode:
+                    <Switch className='ml-4 text-center' onChange={() => changeMode()} checked={isDarkMode} />
+                </label>
                 </div>
             </div>
             </div>
+            </div>
+            </div>
+
     </>
     )
 }

@@ -36,7 +36,6 @@ function App() {
 
   
   useEffect(() => {
-    
     unpackCookie();
   }, []);
 

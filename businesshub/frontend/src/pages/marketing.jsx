@@ -16,20 +16,20 @@ const Marketing = () =>{
     },[])
 
     const getEtsyUserID = async (accessToken) => {
-        try {
-          const response = await axios.get('https://api.etsy.com/v3/oauth/scopes', {
-            headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Content-Type': 'application/json'
-            }
-          });
+        // try {
+        //   const response = await axios.get('https://localhost:5000/api/Socials/getEtsyID', {
+        //     headers: {
+        //       'Authorization': `Bearer ${accessToken}`,
+        //       'Content-Type': 'application/json'
+        //     }
+        //   });
       
-          if (response.data.results && response.data.results.length > 0) {
-            return response.data.results[0].user_id;
-          }
-        } catch (error) {
-          console.error('Error fetching user ID:', error);
-        }
+        //   if (response.data.results && response.data.results.length > 0) {
+        //     return response.data.results[0].user_id;
+        //   }
+        // } catch (error) {
+        //   console.error('Error fetching user ID:', error);
+        // }
       };
 
     const checkUserSocials = async()=>{
@@ -44,7 +44,7 @@ const Marketing = () =>{
         try{
             const response = await axios.request(config)
             setEtsyID(getEtsyUserID(response.data.accessToken))
-            setEtsyOAuth(true)
+            setEtsyOAuth(false)
             console.log(etsyID)
         
         }catch(error) {
@@ -82,7 +82,7 @@ const Marketing = () =>{
         `state=${state}`;
 
 return (
-  <div className="h-auto mb-80">
+  <div className="h-auto mb-96">
     <div className="w-full h-96 bg-white rounded flex justify-center items-center">
       <div className="m-auto border rounded-sm grid grid-cols-2 gap-4 p-4">
         <div className="flex justify-center items-start border-r">

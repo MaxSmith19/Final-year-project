@@ -7,8 +7,6 @@ const { corsMiddleWare } = require("./middleware/corsMiddleware")
 const bodyParser = require("body-parser")
 const port = process.env.PORT || 5050
 const {connectDB} = require("./config/db")
-const allowedOrigins = ["http://localhost:5000"]
-const skipOriginCheck = true;
 const cookieParser = require("cookie-parser")
 
 connectDB()
