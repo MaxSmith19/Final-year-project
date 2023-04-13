@@ -97,6 +97,5 @@ module.exports ={
     getSocials,
     generatePKCE,
     etsyCallback,
-    registerSocials,
-
+    registerSocials
 }
