@@ -104,6 +104,7 @@ const Login = (props) => {
       }
     })
     .catch((error) => {
+        console.log(error.response.data)
         toast.error(error.response.data)
         setErrorMessage("Email or password is incorrect");
         console.log(errorMessage);

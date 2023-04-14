@@ -15,7 +15,7 @@ const app=express()
 
 app.use(express.json())
 app.use(express.urlencoded(false))
-app.use(cors())
+app.use(cors({origin: process.env.APP_URL}))
 app.use(cookieParser())
 app.use('/uploads', express.static('uploads'));
 
