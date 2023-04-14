@@ -21,9 +21,12 @@ app.use('/uploads', express.static('uploads'));
 
 // Add the following middleware to include the Access-Control-Allow-Origin header
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  next()
-})
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+    next();
+  });
+  
 
 app.use('/api/Users', require("./routes/userRoutes.js"))
 app.use('/api/Ledgers', require('./routes/ledgersRoutes.js'))
