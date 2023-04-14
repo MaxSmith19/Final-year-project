@@ -15,23 +15,6 @@ const Marketing = () =>{
         generatePKCE()
     },[])
 
-    const getEtsyUserID = async (accessToken) => {
-        // try {
-        //   const response = await axios.get('https://localhost:5000/api/Socials/getEtsyID', {
-        //     headers: {
-        //       'Authorization': `Bearer ${accessToken}`,
-        //       'Content-Type': 'application/json'
-        //     }
-        //   });
-      
-        //   if (response.data.results && response.data.results.length > 0) {
-        //     return response.data.results[0].user_id;
-        //   }
-        // } catch (error) {
-        //   console.error('Error fetching user ID:', error);
-        // }
-      };
-
     const checkUserSocials = async()=>{
         let config = {
             method: 'get',
