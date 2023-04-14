@@ -19,6 +19,11 @@ app.use(cors({origin: process.env.APP_URL}))
 app.use(cookieParser())
 app.use('/uploads', express.static('uploads'));
 
+// Add the following middleware to include the Access-Control-Allow-Origin header
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  next()
+})
 
 app.use('/api/Users', require("./routes/userRoutes.js"))
 app.use('/api/Ledgers', require('./routes/ledgersRoutes.js'))
