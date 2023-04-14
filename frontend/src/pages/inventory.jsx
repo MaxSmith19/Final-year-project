@@ -12,10 +12,55 @@ function Inventory({handleIsLoading})  {
     //Cache the entire response so that it doesn't have to be requested every time
     //If they are in the settings mode or not.
     useEffect(() => {
-        setInventoryRows([])
-        setIngredientsRows([])
-        getInventory()
-    },[])
+        setInventoryRows([]);
+        setIngredientsRows([]);
+        getInventory();
+      }, []);
+      
+      useEffect(() => {
+        if (cacheResponse.length > 0) {
+          setInventoryRows(cacheResponse[0].inventoryData.map((element) => ({
+            Item: element.Item,
+            Description: element.Description,
+            Quantity: element.Quantity,
+            SellingPrice: element.SellingPrice,
+          })));
+          setIngredientsRows(cacheResponse[0].ingredientsData.map((element) => ({
+            Item: element.Item,
+            Description: element.Description,
+            Quantity: element.Quantity,
+            ppu: element.ppu,
+          })));
+        }
+      }, [cacheResponse]);
+      
+      const getInventory = async () => {
+        handleIsLoading(true);
+        const userIDCookie = document.cookie.split("=")[1];
+        const token = userIDCookie.split(";")[0];
+        const config = {
+          method: "get",
+          maxBodyLength: Infinity,
+          url: `${process.env.REACT_APP_SERVER_URL}/api/Inventory/`,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        try {
+          const response = await axios.request(config);
+          if (response.data.length === 0) {
+            await createInventory();
+            await getInventory();
+          } else {
+            setCacheResponse(response.data);
+          }
+          handleIsLoading(false);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      
+      
     const createInventory = async()=>{
         
         const userIDCookie = document.cookie.split("=")[1]; 
@@ -35,44 +80,7 @@ function Inventory({handleIsLoading})  {
             console.log(error)
         }
     }
-    const getInventory = async() =>{
-        handleIsLoading(true)
-        const userIDCookie = document.cookie.split("=")[1]; 
-        const token = userIDCookie.split(";")[0];
-        const config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: `${process.env.REACT_APP_SERVER_URL}api/Inventory/`,
-            headers: { 
-                    'Authorization': `Bearer ${token}`
-            }
-        };
-        try{
-            const response = await axios.request(config)
 
-            response.data[0].inventoryData.forEach(element => {
-                setInventoryRows(inventoryRows => [...inventoryRows, {
-                    Item: element.Item,
-                    Description: element.Description,
-                    Quantity: element.Quantity,
-                    SellingPrice: element.SellingPrice
-                }]);
-            });
-            response.data[0].ingredientsData.forEach(element => {
-                setIngredientsRows(ingredientsRows => [...ingredientsRows, {
-                    Item: element.Item,
-                    Description: element.Description,
-                    Quantity: element.Quantity,
-                    ppu: element.ppu
-                }])
-            })
-            setCacheResponse(response.data)
-            handleIsLoading(false)
-        }
-        catch(error){
-            createInventory()
-        }
-    }
 
     const onChangeInventoryCell = (event, index, key) => {
         const newRows = [...inventoryRows];
@@ -107,7 +115,7 @@ function Inventory({handleIsLoading})  {
         let config = {
             method: 'put',
             maxBodyLength: Infinity,
-            url: `${process.env.REACT_APP_SERVER_URL}api/Inventory/update`,
+            url: `${process.env.REACT_APP_SERVER_URL}/api/Inventory/update`,
             headers: { 
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/x-www-form-urlencoded'

@@ -48,7 +48,7 @@
   "scripts": {
     "start": "node mern/server.js",
     "server": "nodemon mern/server.js",
-    "client": "NODE_OPTIONS=--max-old-space-size=4096 npm start --prefix frontend",
+    "client": "npm start --prefix frontend",
     "app": "concurrently \"npm start\" \"npm run client\"",
     "test": "jest"
   },

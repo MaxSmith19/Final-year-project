@@ -29,7 +29,7 @@ const Dashboard = ({handleIsLoading}) =>{
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `process.env.REACT_APP_SERVER_URL}/api/Ledgers`,
+        url: `${process.env.REACT_APP_SERVER_URL}/api/Ledgers`,
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/x-www-form-urlencoded'
