@@ -26,7 +26,7 @@ const Marketing = () =>{
         };
         try{
             const response = await axios.request(config)
-            setEtsyID(getEtsyUserID(response.data.accessToken))
+            // setEtsyID(getEtsyUserID(response.data.accessToken))
             setEtsyOAuth(false)
             console.log(etsyID)
         

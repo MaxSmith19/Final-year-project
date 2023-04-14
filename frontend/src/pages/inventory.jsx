@@ -200,7 +200,7 @@ function Inventory({handleIsLoading})  {
                         <input className="rounded pl-2 bg-slate-50 w-full shadow-sm" value={row.SellingPrice} onChange={(event)=>onChangeInventoryCell(event, index, "SellingPrice")} type="number" required />
                     </td>
                     <td>                    
-                        <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={()=>deleteRow(index)}>Delete row</label>
+                        <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={()=>deleteInventoryRow(index)}>Delete row</label>
                         <button className=""onClick={()=>deleteInventoryRow(index)}> <BsDash /></button>
                     </td>
                 </tr>
@@ -244,7 +244,7 @@ function Inventory({handleIsLoading})  {
                         <input className=" rounded pl-2 bg-slate-50 w-full shadow-sm"value={row.ppu} onChange={(event)=>onChangeIngredientsCell(event, index, "ppu")} type="number" required />
                     </td>
                     <td>                    
-                        <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={()=>deleteRow(index)}>Delete row</label>
+                        <label className="block bg-slate-50 lg:hidden md:hidden  cursor-pointer " onClick={()=>deleteIngredientsRow(index)}>Delete row</label>
                         <button className=""onClick={()=>deleteIngredientsRow(index)}> <BsDash /></button>
                     </td>
                 </tr>
