@@ -6,7 +6,6 @@ import Chart from 'chart.js/auto'
 import { FiSave } from 'react-icons/fi'
 import { toast } from 'react-toastify';
 import { BsDash} from 'react-icons/bs'
-import { CSVLink } from 'react-csv';
 const qs = require('qs');
 
 function Ledgers({handleIsLoading}) {
@@ -25,11 +24,9 @@ function Ledgers({handleIsLoading}) {
     const [inSettings, setInSettings] = useState(0);
     //If they are in the settings mode or not.
     const [balance, setBalance] = useState(0);
-    const [csvData, setCsvData] = useState("")
     useEffect(() => {
         setLedgerRows([])
         getLedgers();
-        tableToCsv()
     }, [] //having the empty array as an initial value will cause the effect to run only once
           //CHANGING THIS WILL CAUSE IT TO CRASH BECAUSE OF ALL THE RENDERING
           // if there is an item in the array, useEffect will run when that item is changed.
@@ -37,21 +34,19 @@ function Ledgers({handleIsLoading}) {
     );
     useEffect(() =>{
         calculateBalance();
-    
+
         let labels=[]
         let data=[]
         let debitData =[]
         let creditData =[]
-        let balanceData = []
         const bchrt = document.getElementById('balanceChart').getContext('2d');
         ledgerRows.forEach(elements =>{
             labels.push(elements.date)
             data.push(elements.balance)
             debitData.push(elements.debit)
             creditData.push(elements.credit)
-            balanceData.push(elements.balance) 
         })
-    
+
         const chart = new Chart(bchrt, {
             type: 'line',
             data: {
@@ -68,41 +63,25 @@ function Ledgers({handleIsLoading}) {
                   backgroundColor: 'rgb(255, 99, 132)',
                   borderColor: 'rgb(255, 99, 132)',
                   data: creditData
-                },
-                {
-                  label: 'Balance',
-                  backgroundColor: 'rgb(75, 192, 192)',
-                  borderColor: 'rgb(75, 192, 192)',
-                  data: balanceData 
                 }
               ]
             },
             options: {
-                plugins: {
-                  title: {
-                    display: true,
-                    text: 'Balance, Debit and Credit over Time',
-                    font: {
-                      size: 16,
-                    },
-                  },
-                  legend: {
-                    display: true,
-                    position: 'bottom',
-                  },
-                },
-                responsive: true,
-                maintainAspectRatio: false, 
+              title: {
+                display: true,
+                text: "Debit and Credit over Dates"
               },
-            });
+              responsive: true,
+              maintainAspectRatio: false
+            }
+          });
           
           
           return () =>{
             chart.destroy()
-    
+
           }
     },[ledgerRows])
-    
 
     const getLedgers = async () => {
         handleIsLoading(true);
@@ -151,7 +130,6 @@ function Ledgers({handleIsLoading}) {
                 }
                 setCurrentLedgerID(response.data[0]._id);
                 setCurrentLedgerName(response.data[0].ledgerName);
-                console.log(ledgerRows)
                 //set these usestates for easier usage later on for other calls
             }
             if(ledgerData!=null){
@@ -254,20 +232,8 @@ function Ledgers({handleIsLoading}) {
       };
       
       const onSave = async () => {
-        const [, userIDCookie] = document.cookie.split("=");
+        const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
-
-        const updatedLedgerRows = [];
-        let previousBalance = 0;
-        ledgerRows.forEach((row, index) => {
-          const debit = row.debit || 0;
-          const credit = row.credit || 0;
-          const balance = index === 0 ? debit + credit : previousBalance + debit + credit;
-          const updatedRow = { ...row, balance };
-          updatedLedgerRows.push(updatedRow);
-          previousBalance = balance;
-        });
-
         const config = {
           method: 'put',
           maxBodyLength: Infinity,
@@ -278,7 +244,7 @@ function Ledgers({handleIsLoading}) {
           },
           data: {
             _id: currentLedgerID,
-            ledgerData: updatedLedgerRows,
+            ledgerData: ledgerRows,
             balance: balance
           }
         };
@@ -294,8 +260,8 @@ function Ledgers({handleIsLoading}) {
         }
         try {
           await updateLedger(config);
-          toast.success("Ledger updated successfully");
         } catch (error) {
+          console.error(error);
           toast.error("Ledger update failed");
         }
         document.getElementById("saveButton").classList.add("hidden");
@@ -380,16 +346,11 @@ function Ledgers({handleIsLoading}) {
             button.classList.remove("hidden")
         }
     }
-    const tableToCsv =() =>{
-        setCsvData(ledgerRows.map((row) => {
-        return [row.date, row.notes, row.debit, row.credit];
-        }));
 
-    }
     return(
             <div className='transition-all ease-in delay-300 '>
             <div className="chartContainer bg-white rounded-xl shadow-2xl p-2 mb-5">
-                <div className="chartItem w-full" >
+                <div className="chartItem" >
                     <canvas id="balanceChart"></canvas>
                 </div>
             </div>
@@ -468,7 +429,6 @@ function Ledgers({handleIsLoading}) {
                 
 
                 <div className="w-4/12 float-right text-lg">
-                    {/* <CSVLink data={csvData}> Export to Excel</CSVLink> */}
                     <label className="bg-slate-50">Balance</label>
                     <input className="gpb rounded pl-4 bg-slate-300 shadow-sm float-right" value={balance} required />
                 </div>
