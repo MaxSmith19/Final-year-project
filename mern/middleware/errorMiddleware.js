@@ -1,4 +1,16 @@
-const errorHandler = (err, req, res, next) => {
+const fs = require("fs");
+const path = require("path");
+
+const logsDirectory = path.join(__dirname, "../logs");
+
+// Create the logs directory if it doesn't exist
+if (!fs.existsSync(logsDirectory)) {
+    fs.mkdirSync(logsDirectory);
+    console.log(`Logs directory created: ${logsDirectory}`);
+  }
+  
+
+  const errorHandler = (err, req, res, next) => {
     const statusCode = res.statusCode ? res.statusCode : 500;
   
     // Get the client's IP address
