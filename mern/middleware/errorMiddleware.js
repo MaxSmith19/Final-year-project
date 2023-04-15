@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const logsDirectory = path.join(__dirname, "../logs");
-
+const logFilePath = path.join(logsDirectory, "error.log");
 // Create the logs directory if it doesn't exist
 if (!fs.existsSync(logsDirectory)) {
     fs.mkdirSync(logsDirectory);
@@ -10,7 +10,11 @@ if (!fs.existsSync(logsDirectory)) {
   }
   
 
-  const errorHandler = (err, req, res, next) => {
+  const errorHandler = (err, req, res, next) => {   
+    if (res.headersSent) {
+      return next(err);
+    }
+  
     const statusCode = res.statusCode ? res.statusCode : 500;
   
     // Get the client's IP address
@@ -39,6 +43,7 @@ if (!fs.existsSync(logsDirectory)) {
     res.json({
       message: err.message,
       stack: process.env.NODE_ENV === "production" ? null : err.stack,
+      //if it is in production, then no stack will be returned, just the error.
     });
   };
   
