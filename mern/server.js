@@ -25,6 +25,7 @@ app.use('/api/Ledgers', require('./routes/ledgersRoutes.js'))
 app.use('/api/Socials', require('./routes/socialMediaRoutes.js'))
 app.use('/api/Inventory', require('./routes/inventoryRoutes.js'))
 
+app.use(errorHandler)
 
 
 app.listen(port,()=>console.log(`Server started on port ${port}`))
