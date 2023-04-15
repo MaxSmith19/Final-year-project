@@ -12,11 +12,7 @@ const cookieParser = require("cookie-parser")
 connectDB()
 
 const app=express()
-app.use((req, res, next) => {
-    const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    //get the clients IP connection
-    next();
-  });
+
   
 app.use(express.json())
 app.use(express.urlencoded(false))
