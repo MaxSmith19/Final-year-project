@@ -1,38 +1,43 @@
-const asyncHandler = require("express-async-handler");
+const { getUser } = require("../controllers/userController");
 const User = require("../models/userModel");
 const { decodeJWT } = require("../middleware/authMiddleware");
-const { getUser } = require("../controllers/userController");
-
-// Mock the req and res objects
-const req = {};
-const res = {
-  status: jest.fn(() => res),
-  json: jest.fn(),
-};
-
-jest.mock('../middleware/authMiddleware', () => ({
-  decodeJWT: jest.fn(),
-}));
 
 describe("getUser function", () => {
-  // Test the case where a valid token is provided
-  test("should return user data for a valid token", async () => {
-    const token = "valid_token";
-    const decodedToken = { id: "user_id" };
-    const userData = { name: "John Doe", email: "johndoe@example.com" };
+  let req, res;
+  const userData = {
+    _id: "user_id",
+    email: "test@example.com",
+    password: "password",
+  };
+  const token = "valid_token";
+  const decodedToken = { id: "user_id" };
 
+  beforeEach(() => {
+    req = {};
+    res = {
+      status: jest.fn(() => res),
+      json: jest.fn(),
+    };
+    jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test("should return user data for a valid token", async () => {
     // Mock the decodeJWT and User.find functions
     decodeJWT.mockReturnValue(decodedToken);
-    User.find.mockResolvedValue([userData]);
+    User.find = jest.fn().mockResolvedValue([userData]);
 
     await getUser({ headers: { authorization: `Bearer ${token}` } }, res);
 
-    // Check that the status and json methods were called correctly
+    expect(decodeJWT).toHaveBeenCalledWith(req, res);
+    expect(User.find).toHaveBeenCalledWith({ _id: decodedToken.id });
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith([userData]);
   });
 
-  // Test the case where an invalid token is provided
   test("should return an error for an invalid token", async () => {
     const token = "invalid_token";
     const error = new Error("Invalid token");
@@ -44,24 +49,25 @@ describe("getUser function", () => {
 
     await getUser({ headers: { authorization: `Bearer ${token}` } }, res);
 
-    // Check that the status and json methods were called correctly
+    expect(decodeJWT).toHaveBeenCalledWith(req, res);
+    expect(console.error).toHaveBeenCalledWith(error);
     expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: error.message });
+    expect(res.json).toHaveBeenCalledWith("Invalid token");
   });
 
-  // Test the case where an error occurs when retrieving user data
   test("should return an error when an error occurs", async () => {
-    const token = "valid_token";
     const error = new Error("Database error");
 
     // Mock the decodeJWT and User.find functions to throw an error
     decodeJWT.mockReturnValue({ id: "user_id" });
-    User.find.mockRejectedValue(error);
+    User.find = jest.fn().mockRejectedValue(error);
 
     await getUser({ headers: { authorization: `Bearer ${token}` } }, res);
 
-    // Check that the status and json methods were called correctly
+    expect(decodeJWT).toHaveBeenCalledWith(req, res);
+    expect(User.find).toHaveBeenCalledWith({ _id: decodedToken.id });
+    expect(console.error).toHaveBeenCalledWith(error);
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ message: error.message });
+    expect(res.json).toHaveBeenCalledWith("Database error");
   });
 });
