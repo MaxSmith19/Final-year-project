@@ -61,7 +61,7 @@ const UserSettings = (props) => {
       setTicketTitle('');
       setTicketDescription('');
     } catch (error) {
-      console.log(error);
+      toast.error(error.response)
     }
   };
   
@@ -88,7 +88,7 @@ const UserSettings = (props) => {
         toast.success("User updated successfully")
       })
       .catch((error) => {
-        console.log(error)
+        toast.error(error)
       })
   }
 

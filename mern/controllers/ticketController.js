@@ -17,7 +17,7 @@ const createTicket = asyncHandler(async (req, res) => {
     description: req.body.description
   });
 
-  res.status(201).json({ message: "Ticket created", ticket: newTicket });
+  res.status(201).json("Ticket successfully created")
 });
 
 const getTickets = asyncHandler(async (req, res) => {
