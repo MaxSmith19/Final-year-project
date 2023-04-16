@@ -3,11 +3,14 @@ import axios from 'axios'
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
-
+const qs = require('qs')
 const UserSettings = (props) => {
   const [businessName, setBusinessName] = useState('')
   const [businessLogo, setBusinessLogo] = useState(null)
   const [deleteBtnPressed, setDeleteBtnPressed] = useState(false)
+  const [ticketBtnPressed, setTicketBtnPressed] = useState(false)
+  const [ticketTitle, setTicketTitle] = useState('');
+  const [ticketDescription, setTicketDescription] = useState('');
   const navigate = useNavigate()
   const deleteUser = () =>{
     const token = Cookies.get('token')
@@ -32,7 +35,36 @@ const UserSettings = (props) => {
     console.log(error)
   }
   }
+  const submitTicket = async (e) => {
+    const userIDCookie = document.cookie.split('=')[1]
+    const token = userIDCookie.split(';')[0]
+    try {
+      const data = qs.stringify({
+        title: ticketTitle,
+        description: ticketDescription
+    });
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${process.env.REACT_APP_SERVER_URL}/api/Tickets`,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: data
+    };
 
+      const response = await axios.request(config);
+      console.log(response.data);
+      toast.success('Ticket created successfully');
+      setTicketBtnPressed(false);
+      setTicketTitle('');
+      setTicketDescription('');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   const onSubmit = (e) => {
     e.preventDefault()
     const userIDCookie = document.cookie.split('=')[1]
@@ -62,7 +94,7 @@ const UserSettings = (props) => {
 
   return (
     <div className="flex justify-center">
-      <div className="max-w-lg mt-12 form-width form-length">
+      <div className="max-w-lg mt-12 form-width form-length mb-96">
         <h1 className="block text-gray-700 font-bold text-center text-5xl mb-10">
           Your Account
         </h1>
@@ -126,6 +158,50 @@ const UserSettings = (props) => {
             </div>
           )}
         
+        </div>
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-20 w-full p-20 ">
+        {!ticketBtnPressed && (
+          <div className="mb-6">
+            <label className="block text-gray-700 text-xl font-bold mb-2">
+              Report a bug
+            </label>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => setTicketBtnPressed(true)}>
+              Report a bug
+            </button>
+          </div>
+        )}
+        {ticketBtnPressed && (
+          <div className="mb-6 flex flex-col items-center">
+            <label className="block text-gray-700 text-xl font-bold mb-2">
+              Report a bug
+            </label>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-xl font-bold mb-2">
+                Title
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3"
+                type="text"
+                onChange={(event) => setTicketTitle(event.target.value)}
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-xl font-bold mb-2">
+                Description
+              </label>
+              <textarea
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3"
+                onChange={(event) => setTicketDescription(event.target.value)}
+              ></textarea>
+            </div>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded  items-center mb-4" onClick={submitTicket}>
+              Submit
+            </button>
+            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded items-center" onClick={() => setTicketBtnPressed(false)}>
+              Cancel
+            </button>
+          </div>
+        )}
         </div>
       </div>
     </div>)

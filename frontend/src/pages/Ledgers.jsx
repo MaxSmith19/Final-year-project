@@ -249,7 +249,7 @@ function Ledgers({handleIsLoading}) {
       };
       
       const onSave = async () => {
-        const [, userIDCookie] = document.cookie.split("=");
+        const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
 
         const updatedLedgerRows = [];
