@@ -93,14 +93,19 @@ const Login = (props) => {
     axios(config)
     .then((response) => {
       if (response.status === 200) {
-        console.log(response.data)
         const token = response.data.token;
         document.cookie = "token=" + token +"; SameSite=None; Secure";
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+
         toast.success("Successfully Logged In");
         props.onLogin();
-        
+        if(response.data.isAdmin === true) {
+          props.isAdmin(true)
+          navigate("/AdminDashboard");
+        }else{
+            props.isAdmin(false)
         navigate("/Dashboard");
+        }
       }
     })
     .catch((error) => {
@@ -121,7 +126,9 @@ const Login = (props) => {
   }
 
   const loginActive = activeTab === 'login';
+  //true if the activetab is login
   const registerActive = activeTab === 'register';
+  //true if the activetab is register
 
   return (
     <div className="flex justify-center align-center">

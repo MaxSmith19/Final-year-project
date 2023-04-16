@@ -7,6 +7,7 @@ import Dashboard from './pages/dashboard'
 import Legislation from './pages/legislation';
 import Marketing from './pages/marketing'
 import Inventory from './pages/inventory'
+import AdminDashboard from './pages/adminDashboard';
 import { Navigate } from 'react-router-dom';
 import Footer from "./Components/Footer";
 import { useEffect, useState } from 'react';
@@ -22,9 +23,9 @@ function App() {
     const storedValue = localStorage.getItem("isDarkMode");
     return storedValue !== null ? JSON.parse(storedValue) : false;
   });
-  
 
   const [isLoading, setLoading] = useState(true)
+  const [isAdmin, setAdmin] = useState(false)
   const unpackCookie = () => {
     const authCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
     if (authCookie !== undefined) {
@@ -70,6 +71,10 @@ function App() {
   const handleIsLoading = (value) => {
     setLoading(value);
   };
+  const handleIsAdmin = (value) =>{
+    console.log(value)
+    setAdmin(value);
+  }
   
   return (
     <>
@@ -101,9 +106,12 @@ function App() {
                 <Route path="/Legislation" element={<Legislation />} />
                 <Route path="/Marketing" element={<Marketing />} />
                 <Route path="/Inventory" element={<Inventory handleIsLoading={handleIsLoading} />} />
+                {isAdmin &&(
+                  <Route path="/AdminDashboard" element={<AdminDashboard handleIsLoading={handleIsLoading} />} />
+                )}
               </>
             ) : (<Route path="/" exact element={<Navigate replace to="/Login"></Navigate>} />)}
-            <Route path="/Login" element={<Login onLogin={handleLogin} handleIsLoading={handleIsLoading}/>} />
+            <Route path="/Login" element={<Login onLogin={handleLogin} handleIsLoading={handleIsLoading} isAdmin={handleIsAdmin}/>} />
             <Route path="/changePassword" element={<ChangePassword />} />
           </Routes>
              

@@ -21,7 +21,7 @@ const createTicket = asyncHandler(async (req, res) => {
 });
 
 const getTickets = asyncHandler(async (req, res) => {
-  const tickets = await Ticket.find({}).populate("user", "email");
+  const tickets = await Ticket.find();
 
   res.status(200).json({ tickets });
 });
