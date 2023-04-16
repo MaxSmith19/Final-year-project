@@ -6,19 +6,22 @@ const {decodeJWT, generateJWT} = require("../middleware/authMiddleware")
 const getLedger = asyncHandler(async (req, res) => {
     const token = decodeJWT(req,res)
     const params = req.body.ledgerName
+    
     let Ledgers = {}
     if(params !== undefined){
-      Ledgers = await Ledger.find({
+      Ledgers = await Ledger.findOne({
         userID: token.id,
         ledgerName: req.body.ledgerName
+        //if a ledger name is specified, only retrieve that ledger
       });
     }else{
       Ledgers = await Ledger.find({
         userID: token.id
+        //else use "find" to retrive all ledger names
       });
     }
     res.status(200).json(Ledgers)
-    //differerent to how getUser works as we need all ledgers of one use
+    
   })
 
 

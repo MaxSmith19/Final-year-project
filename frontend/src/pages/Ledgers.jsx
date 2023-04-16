@@ -232,7 +232,7 @@ function Ledgers({handleIsLoading}) {
       };
       
       const onSave = async () => {
-        const [, userIDCookie] = document.cookie.split("=");
+        const userIDCookie = document.cookie.split("=")[1];
         const token = userIDCookie.split(";")[0];
         const config = {
           method: 'put',
@@ -260,7 +260,6 @@ function Ledgers({handleIsLoading}) {
         }
         try {
           await updateLedger(config);
-          toast.success("Ledger updated successfully");
         } catch (error) {
           console.error(error);
           toast.error("Ledger update failed");

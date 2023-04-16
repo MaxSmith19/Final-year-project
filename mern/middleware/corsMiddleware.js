@@ -1,11 +1,13 @@
-const corsMiddleware = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'localhost'); //replace localhost with actual host
-    res.header('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, PATCH, POST, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Authorization');
+const cors = require("cors");
 
-    next();
-}
+const corsMiddleware = cors({
+  origin: ["http://localhost:3000"], // Replace with the actual origin(s) you want to allow
+  methods: ["GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "X-Requested-With", "Authorization"],
+  credentials: true, // Allow cookies to be sent with the request (if needed)
+  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+});
 
-module.exports ={
-    corsMiddleware
-}
+module.exports = {
+  corsMiddleware,
+};
