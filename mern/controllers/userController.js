@@ -18,30 +18,33 @@ const getUser = asyncHandler(async (req, res) => {
 
 
 //LOGS USER INTO SYSTEM, CHECKING DATA FROM MONGO
-const loginUser = asyncHandler(async(req,res) =>{
-    const {email} = req.body
-    const user = await User.findOne({"email":email})
-    //findOne is needed as it find the first available user with the given email
-    //As there should only be one user with the given email
-    if(!user){
-        res.status(401).json("User not found")
-        throw new Error("User not found")
-        //Throw an error using the errorMiddleware 
-    }
-    const token = generateToken(user._id)
-    if(await(bcrypt.compare(req.body.password, user.password))){
-        //if the hashed password matches the hashed password in the database
+const loginUser = asyncHandler(async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      // findOne is needed as it find the first available user with the given email
+      // As there should only be one user with the given email
+      if (!user) {
+        res.status(401).json({ message: "User not found" });
+        return;
+      }
+      const token = generateToken(user._id);
+      if (await bcrypt.compare(req.body.password, user.password)) {
+        // if the hashed password matches the hashed password in the database
         res.status(200).json({
-            _id : user._id,
-            token: token,
-            isAdmin: user.isAdmin
-        })
-        //send the token back to the client to be formed into a cookie
-    }else{
-        res.status(401).json("Password is incorrect")
-        throw new Error("Wrong password")
+          _id: user._id,
+          token: token,
+          isAdmin: user.isAdmin,
+        });
+      } else {
+        res.status(401).json({ message: "Password is incorrect" });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
     }
-})
+  });
+  
 
 const changePassword =asyncHandler(async(req, res) => {
     const Users = await User.findOne({email: req.body.email})
