@@ -1,6 +1,6 @@
 const { getUser } = require("../controllers/userController");
 const User = require("../models/userModel");
-const {decodeJWT, generateToken} = require("../middleware/authMiddleware");
+const {decodeJWT, generateToken} = require("../middleware/authMiddleware")
 
 
 describe("getUser function", () => {
