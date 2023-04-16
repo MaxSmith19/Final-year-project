@@ -24,7 +24,7 @@ const etsyCallback = asyncHandler(async(req, res) => {
         method: "post",
         url: tokenUrl,
         data: `grant_type=authorization_code
-        &client_id=uapiuzi36a2v2pdub362s2sn
+        &client_id=${process.env.ETSY_SECRET}
         &redirect_uri=${etsyRedirectUrl}
         &code=${code}
         &code_verifier=${verifier}`,
@@ -67,11 +67,13 @@ const writeToSocials = asyncHandler(async(tokenData,userToken)=>{
 const generatePKCE = asyncHandler(async (req, res) =>{
 
     const sha256 = (buffer) => crypto.createHash("sha256").update(buffer).digest();
+    //Create a hash to be accepted by the ETSY callback
     const codeVerifier = base64URLEncode(crypto.randomBytes(32));
     const codeChallenge = base64URLEncode(sha256(codeVerifier));
+    //using the sha256 constant, encode the code verifier
     const state = Math.random().toString(36).substring(7);
     res.status(200).json({state: state, challenge:codeChallenge,verifier: codeVerifier});
-
+    //Code provided by Etsy https://developers.etsy.com/documentation/tutorials/quickstart
 })
 
 const getSocials = asyncHandler(async (req, res) => {
