@@ -46,7 +46,7 @@ const UserSettings = (props) => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `${process.env.REACT_APP_SERVER_URL}/api/Tickets`,
+        url: `${process.env.REACT_APP_SERVER_URL}/api/Tickets/create`,
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/x-www-form-urlencoded'

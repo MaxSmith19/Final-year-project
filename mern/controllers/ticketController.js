@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Ticket = require("../models/ticketModel");
-
+const {decodeJWT} = require("../models/decodeJWT");
 const createTicket = asyncHandler(async (req, res) => {
   const token=decodeJWT(req,res)
 
