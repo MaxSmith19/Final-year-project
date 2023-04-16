@@ -1,85 +1,63 @@
-const { User } = require('../models/userModel')
-const { registerUser } = require('../controllers/userController')
+const asyncHandler = require("express-async-handler");
+const User = require("../models/userModel");
+const { decodeJWT } = require("../middleware/authMiddleware");
+const { getUser } = require("../controllers/userController");
 
-jest.mock('../models/user')
+// Mock the req and res objects
+const req = {};
+const res = {
+  status: jest.fn(() => res),
+  json: jest.fn(),
+};
 
-describe('registerUser', async () => {
-  let req, res
+describe("getUser function", () => {
+  // Test the case where a valid token is provided
+  test("should return user data for a valid token", async () => {
+    const token = "valid_token";
+    const decodedToken = { id: "user_id" };
+    const userData = { name: "John Doe", email: "johndoe@example.com" };
 
-  beforeEach(() => {
-    req = {
-      body: {
-        email: 'test@example.com',
-        password: 'password123',
-        businessName: 'Test Business'
-      }
-    }
-    res = {
-      status: jest.fn(() => res),
-      json: jest.fn()
-    }
-  })
+    // Mock the decodeJWT and User.find functions
+    decodeJWT.mockReturnValue(decodedToken);
+    User.find.mockResolvedValue([userData]);
 
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
+    await getUser({ headers: { authorization: `Bearer ${token}` } }, res);
 
-  it('registers a new user and returns a token', async () => {
-    User.findOne.mockResolvedValue(null)
-    User.create.mockResolvedValue({
-      _id: 'user123'
-    })
-    const expectedToken = 'mocked_token'
+    // Check that the status and json methods were called correctly
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith([userData]);
+  });
 
-    const generateTokenMock = jest.fn(() => expectedToken)
+  // Test the case where an invalid token is provided
+  test("should return an error for an invalid token", async () => {
+    const token = "invalid_token";
+    const error = new Error("Invalid token");
 
-    const bcryptMock = {
-      hash: jest.fn(() => 'mocked_hash')
-    }
+    // Mock the decodeJWT function to throw an error
+    decodeJWT.mockImplementation(() => {
+      throw error;
+    });
 
-    const validEmail = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
-    const validPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+    await getUser({ headers: { authorization: `Bearer ${token}` } }, res);
 
-    const originalValidEmail = validEmail.test
-    const originalValidPassword = validPassword.test
+    // Check that the status and json methods were called correctly
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith({ message: error.message });
+  });
 
-    validEmail.test = jest.fn(() => true)
-    validPassword.test = jest.fn(() => true)
+  // Test the case where an error occurs when retrieving user data
+  test("should return an error when an error occurs", async () => {
+    const token = "valid_token";
+    const error = new Error("Database error");
 
-    const originalBcryptHash = bcrypt.hash
-    bcrypt.hash = jest.fn(() => 'mocked_hash')
+    // Mock the decodeJWT and User.find functions to throw an error
+    decodeJWT.mockReturnValue({ id: "user_id" });
+    User.find.mockRejectedValue(error);
 
-    const originalGenerateToken = generateToken
-    generateToken = generateTokenMock
+    await getUser({ headers: { authorization: `Bearer ${token}` } }, res);
 
-    await registerUser(req, res)
-
-    expect(User.findOne).toHaveBeenCalledWith({ email: req.body.email })
-    expect(bcrypt.hash).toHaveBeenCalledWith(req.body.password, 10)
-    expect(User.create).toHaveBeenCalledWith({
-      email: req.body.email,
-      password: 'mocked_hash',
-      businessName: req.body.businessName
-    })
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith({
-      token: expectedToken
-    })
-
-    validEmail.test = originalValidEmail
-    validPassword.test = originalValidPassword
-    bcrypt.hash = originalBcryptHash
-    generateToken = originalGenerateToken
-  })
-
-  it('returns an error if the user already exists', async () => {
-    User.findOne.mockResolvedValue({
-      _id: 'existing_user'
-    })
-
-    await registerUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(401)
-    expect(res.json).toHaveBeenCalledWith('User already exists')
-  })
-})
+    // Check that the status and json methods were called correctly
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ message: error.message });
+  });
+});
