@@ -15,7 +15,10 @@ const app=express()
 
 app.use(express.json())
 app.use(express.urlencoded(false))
-app.use(cors({ origin: 'http://82.20.49.101', "http://localhost:3000" }));
+app.use(cors({ 
+  origin: ['http://82.20.49.101', 'http://localhost:3000'], 
+  credentials: true 
+}));
 app.use((req, res, next) => {
   console.log(req.headers.origin)
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
