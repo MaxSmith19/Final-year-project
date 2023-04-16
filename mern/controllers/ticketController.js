@@ -12,9 +12,9 @@ const createTicket = asyncHandler(async (req, res) => {
   }
 
   const newTicket = await Ticket.create({
+    userID: token.id,
     title:req.body.title,
-    description: req.body.description,
-    user: token.id,
+    description: req.body.description
   });
 
   res.status(201).json({ message: "Ticket created", ticket: newTicket });
