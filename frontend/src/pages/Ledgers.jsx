@@ -34,19 +34,21 @@ function Ledgers({handleIsLoading}) {
     );
     useEffect(() =>{
         calculateBalance();
-
+    
         let labels=[]
         let data=[]
         let debitData =[]
         let creditData =[]
+        let balanceData = []
         const bchrt = document.getElementById('balanceChart').getContext('2d');
         ledgerRows.forEach(elements =>{
             labels.push(elements.date)
             data.push(elements.balance)
             debitData.push(elements.debit)
             creditData.push(elements.credit)
+            balanceData.push(elements.balance) 
         })
-
+    
         const chart = new Chart(bchrt, {
             type: 'line',
             data: {
@@ -63,23 +65,38 @@ function Ledgers({handleIsLoading}) {
                   backgroundColor: 'rgb(255, 99, 132)',
                   borderColor: 'rgb(255, 99, 132)',
                   data: creditData
+                },
+                {
+                  label: 'Balance',
+                  backgroundColor: 'rgb(75, 192, 192)',
+                  borderColor: 'rgb(75, 192, 192)',
+                  data: balanceData 
                 }
               ]
             },
             options: {
-              title: {
-                display: true,
-                text: "Debit and Credit over Dates"
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Balance, Debit and Credit over Time',
+                    font: {
+                      size: 16,
+                    },
+                  },
+                  legend: {
+                    display: true,
+                    position: 'bottom',
+                  },
+                },
+                responsive: true,
+                maintainAspectRatio: false, 
               },
-              responsive: true,
-              maintainAspectRatio: false
-            }
-          });
+            });
           
           
           return () =>{
             chart.destroy()
-
+    
           }
     },[ledgerRows])
 
@@ -232,8 +249,20 @@ function Ledgers({handleIsLoading}) {
       };
       
       const onSave = async () => {
-        const userIDCookie = document.cookie.split("=")[1];
+        const [, userIDCookie] = document.cookie.split("=");
         const token = userIDCookie.split(";")[0];
+
+        const updatedLedgerRows = [];
+        let previousBalance = 0;
+        ledgerRows.forEach((row, index) => {
+          const debit = row.debit || 0;
+          const credit = row.credit || 0;
+          const balance = index === 0 ? debit + credit : previousBalance + debit + credit;
+          const updatedRow = { ...row, balance };
+          updatedLedgerRows.push(updatedRow);
+          previousBalance = balance;
+        });
+
         const config = {
           method: 'put',
           maxBodyLength: Infinity,
@@ -244,7 +273,7 @@ function Ledgers({handleIsLoading}) {
           },
           data: {
             _id: currentLedgerID,
-            ledgerData: ledgerRows,
+            ledgerData: updatedLedgerRows,
             balance: balance
           }
         };
@@ -260,8 +289,8 @@ function Ledgers({handleIsLoading}) {
         }
         try {
           await updateLedger(config);
+          toast.success("Ledger updated successfully");
         } catch (error) {
-          console.error(error);
           toast.error("Ledger update failed");
         }
         document.getElementById("saveButton").classList.add("hidden");
