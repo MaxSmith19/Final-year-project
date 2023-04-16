@@ -10,6 +10,10 @@ const res = {
   json: jest.fn(),
 };
 
+jest.mock('../middleware/authMiddleware', () => ({
+  decodeJWT: jest.fn(),
+}));
+
 describe("getUser function", () => {
   // Test the case where a valid token is provided
   test("should return user data for a valid token", async () => {
