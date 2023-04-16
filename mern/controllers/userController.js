@@ -33,7 +33,8 @@ const loginUser = asyncHandler(async(req,res) =>{
         //if the hashed password matches the hashed password in the database
         res.status(200).json({
             _id : user._id,
-            token: token
+            token: token,
+            isAdmin: user.isAdmin
         })
         //send the token back to the client to be formed into a cookie
     }else{
