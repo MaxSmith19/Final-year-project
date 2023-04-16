@@ -16,7 +16,12 @@ const app=express()
 app.use(express.json())
 app.use(express.urlencoded(false))
 app.use(cors({ origin: 'http://82.20.49.101' }));
-
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+  next();
+});
 app.use(cookieParser())
 app.use('/uploads', express.static('uploads'));
   
