@@ -6,7 +6,7 @@ const createTicket = asyncHandler(async (req, res) => {
   const token=decodeJWT(req,res)
 
 
-  if (!title || !description) {
+  if (!req.body.title || !req.body.description) {
     res.status(400).json({ message: "Please provide title and description" });
     return;
   }
