@@ -26,4 +26,8 @@ const getTickets = asyncHandler(async (req, res) => {
   res.status(200).json({ tickets });
 });
 
-module.exports = { createTicket, getTickets };
+const removeTicket = asyncHandler(async (req, res) => {
+  const ticket = await Ticket.findByIdAndDelete({req.body._id})
+
+});
+module.exports = { createTicket, getTickets, removeTicket };
