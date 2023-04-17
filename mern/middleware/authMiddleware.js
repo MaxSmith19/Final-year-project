@@ -35,11 +35,15 @@ const decodeJWT = (req, res) => {
     return decoded=jwt.verify(token, process.env.JWT_SECRET);
 }
     //for generating jwt tokens for authentication
-const generateToken = (id) => {
-    return jwt.sign({id}, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES,
-    })
-}
+    const generateToken = (id) => {
+        console.log("Generating token with ID:", id);
+        const token = jwt.sign({id}, process.env.JWT_SECRET, {
+          expiresIn: process.env.JWT_EXPIRES,
+        });
+        console.log("Token generated:", token);
+        return token;
+      }
+      
 
 
 module.exports={
