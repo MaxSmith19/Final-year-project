@@ -8,7 +8,10 @@ const User = require('../models/userModel');
 const { generateToken } = require('../middleware/authMiddleware');
 
 jest.mock('../middleware/authMiddleware');
-
+beforeAll(async () => {
+  await User.deleteMany({})
+  //delete everything in users collection
+})
 //LOGIN TEST SUITE
 describe('POST /api/Users/login/', () => {
   const user = {

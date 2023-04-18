@@ -6,7 +6,6 @@ const {decodeJWT, generateJWT} = require("../middleware/authMiddleware")
 const getLedger = asyncHandler(async (req, res) => {
     const token = decodeJWT(req,res)
     const params = req.body.ledgerName
-    
     let Ledgers = {}
     if(params !== undefined){
       Ledgers = await Ledger.findOne({
