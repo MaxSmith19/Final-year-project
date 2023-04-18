@@ -9,16 +9,6 @@ const { generateToken } = require('../middleware/authMiddleware');
 
 jest.mock('../middleware/authMiddleware');
 
-beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-});
-
-afterAll(async () => {
-  await mongoose.disconnect();
-});
 //LOGIN TEST SUITE
 describe('POST /api/Users/login/', () => {
   const user = {
@@ -27,8 +17,6 @@ describe('POST /api/Users/login/', () => {
     email: 'test@example.com',
     password: 'password'
   };
-
-
 
   beforeEach(async () => {
     await User.create({
