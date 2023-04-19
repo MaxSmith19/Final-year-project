@@ -48,7 +48,7 @@ const loginUser = asyncHandler(async (req, res) => {
           isAdmin: user.isAdmin,
         });
       } else {
-        res.status(401).json({ message: "Password is incorrect" });
+        res.status(401).json({ message: "Email or password is incorrect" });
       }
     } catch (error) {
       console.log(error);
