@@ -221,6 +221,7 @@ function Ledgers({handleIsLoading}) {
             const newCacheResponse = [...cacheResponse];
             newCacheResponse.push(response.data)
             setCacheResponse(newCacheResponse)
+            toast.success("a new ledger has been created!")
         } catch (error) {
             console.log(error);
             //else an error is shown to the user
