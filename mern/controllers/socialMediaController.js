@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const {decodeJWT, generateToken} = require("../middleware/authMiddleware")
 const Social = require("../models/socialMediaModel")
 const crypto = require("crypto")
-// const axios = require("axios")
+const axios = require("axios")
 
 const etsyRedirectUrl= "http://localhost:5000/api/Socials/etsyCallback"
 const base64URLEncode = (str) =>
