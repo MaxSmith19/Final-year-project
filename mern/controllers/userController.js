@@ -9,7 +9,7 @@ const { useRowState } = require("react-table");
 const getUser = asyncHandler(async (req, res) => {
     const token=decodeJWT(req,res)
     //use the decode function from AuthMiddleware to decode the token
-    const Users = await User.find({_id:token.id}).select("-password");
+    const Users = await User.findOne({_id:token.id}).select("-password");
     //recieve the users data using the token id, without their password being shown
     res.status(200).json(Users)
     // OK - Sending the data back to the client
@@ -127,10 +127,11 @@ const deleteUser = asyncHandler(async(req, res) =>{
 const decodeJWT = (req, res) => {
   try{
     let token = req.headers.authorization.split(" ")[1]
+    console.log(token)
     if(token===null){
       token= req.cookies.token
     }
-    jwt.verify(token, process.env.JWT_SECRET);
+    return jwt.verify(token, process.env.JWT_SECRET);
   }catch(error){
     res.status(401).json({message: error.message})
     throw new Error("jwt must be provided")

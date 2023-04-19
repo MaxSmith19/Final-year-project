@@ -129,9 +129,9 @@ const Dashboard = ({handleIsLoading}) =>{
           }
         });
         const responseData = {
-          businessName: response.data[0].businessName,
-          email: response.data[0].email,
-          businessLogo: response.data[0].businessLogo
+          businessName: response.data.businessName,
+          email: response.data.email,
+          businessLogo: response.data.businessLogo
         };
         setBusinessName(responseData.businessName);
         setUserEmail(responseData.email);
@@ -156,7 +156,9 @@ const Dashboard = ({handleIsLoading}) =>{
                     <hr/>
                     <div>
                         {/* topHalf */}
-                        <img onClick={()=>navigate("/userSettings")} alt="Your logo" className={imageSrc ? "w-full cursor-pointer h-full text-center m-auto mt-3 mb-3 shadow-md":"w-32 cursor-pointer h-32 text-center m-auto mt-3 mb-3 shadow-md"} src={imageSrc ? `http://localhost:5000/${imageSrc}` : "http://localhost:5000/uploads/uploadImage.png"} />
+                        <img onClick={()=>navigate("/userSettings")} alt="Your logo"
+                         className={imageSrc ? "w-full cursor-pointer h-full text-center m-auto mt-3 mb-3 shadow-md":"w-32 cursor-pointer h-32 text-center m-auto mt-3 mb-3 shadow-md"} 
+                          src={imageSrc ? `${process.env.REACT_APP_SERVER_URL}/${imageSrc}` : `${process.env.REACT_APP_SERVER_URL}/uploads/uploadImage.png`} />
                     </div> 
                     <hr />
                     <div className="w-full h-auto mt-4">  
