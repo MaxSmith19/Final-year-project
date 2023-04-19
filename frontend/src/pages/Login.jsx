@@ -5,6 +5,7 @@ import * as qs from 'qs'
 import {toast} from 'react-toastify'
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
+import emailjs from 'emailjs-com';
 
 const Login = (props) => {
   const [businessName, setBusinessName] = useState('');
@@ -16,7 +17,7 @@ const Login = (props) => {
   const [activeTab, setActiveTab] = useState("login");
 
   const navigate = useNavigate();
-  
+  emailjs.init('HqqR2U3h77ojWp2-j');
   useEffect(() => {
     //Check if the user is already logged in
     try{
@@ -29,6 +30,22 @@ const Login = (props) => {
       navigate("/Login")
     }
   },[])
+
+  const sendEmail = (verification_link) => {
+    console.log(email)
+    emailjs.send('service_g7gnses', 'template_oo6c3rd', {
+      to_name: email,
+      from_name: 'FYPApp',
+      verification_link: verification_link,
+    }, 
+    )
+    .then((result) => {
+      toast.success("An email has been sent, please verify your email")
+    }, (error) => {
+      console.log(error.text);
+    });
+  }
+
   const onSubmitRegistration = async (e) => {
     e.preventDefault();
     const dataArray = [email, businessName, password, confirmPassword];
@@ -62,13 +79,12 @@ const Login = (props) => {
     try{      
       const response = await axios(config)
         const token = response.data.token;
-        document.cookie = "token=" + token +"; SameSite=Strict";
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
-        toast.success("Account successfully created")
-        props.onLogin()
-        navigate("/dashboard")
+        const verificationLink = `${process.env.REACT_APP_SERVER_URL}/api/Users/verifyUser?token=${token}`
+        sendEmail(verificationLink)
+        
     }catch(error) {
-        toast.error(error.response.data);
+      console.log(error)
+        toast.error(error);
       };
       
     }
@@ -92,6 +108,7 @@ const Login = (props) => {
     
     axios(config)
     .then((response) => {
+      console.log(response)
       if (response.status === 200) {
         const token = response.data.token;
         document.cookie = "token=" + token +"; SameSite=None; Secure";

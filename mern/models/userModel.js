@@ -5,7 +5,8 @@ const userSchema = mongoose.Schema({
     businessLogo: {type:String,required: false},
     email: {type:String,required:true},
     password:{type:String,required:true},
-    isAdmin: {type:Boolean,required:false, default:false}
+    isAdmin: {type:Boolean,required:false, default:false},
+    verified: {type:Boolean,required:true, default:false}
 });
  
 module.exports = mongoose.model('User',userSchema)

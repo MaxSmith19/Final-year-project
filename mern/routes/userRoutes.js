@@ -7,6 +7,7 @@ const {
   loginUser,
   updateUser,
   deleteUser,
+  verifyUser
 } = require('../controllers/userController');
 const { protect } = require("../middleware/authMiddleware");
 const { upload } = require('../middleware/imageUploadMiddleware');
@@ -18,5 +19,6 @@ router.route('/login/').post(loginUser);
 router.route("/changePassword").post(changePassword);
 router.route('/update').put(protect, upload.single('businessLogo'), updateUser);
 router.route("/del").delete(deleteUser);
+router.route("/verifyUser").get(verifyUser);
 
 module.exports = router;

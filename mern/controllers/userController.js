@@ -3,9 +3,19 @@ const bcrypt = require("bcrypt")
 const User = require("../models/userModel");
 const { validEmail,validPassword } = require("../regex");
 const jwt = require("jsonwebtoken");
-const { useRowState } = require("react-table");
 
 //Returns all data on user based on their given mongo _id
+const verifyUser = asyncHandler(async (req, res) => {
+  console.log("verifyUser")
+  const token =  jwt.verify(req.query.token, process.env.JWT_SECRET);
+  const user = await User.findOneAndUpdate({ _id: token.id }, { isVerified: true });
+  res.status(200).json({message:"User verified!"});
+  res.redirect('http://localhost:3000/login');
+
+  
+});
+
+ 
 const getUser = asyncHandler(async (req, res) => {
     const token=decodeJWT(req,res)
     //use the decode function from AuthMiddleware to decode the token
@@ -26,6 +36,9 @@ const loginUser = asyncHandler(async (req, res) => {
       if (!user) {
         console.log(user)
         res.status(401).json({ message: "User not found" });
+      }
+      if(!user.verified){
+        res.status(401).json({ message: "User is not verified" });
       }
       if (await bcrypt.compare(req.body.password, user.password)) {
         // if the hashed password matches the hashed password in the database
@@ -64,14 +77,14 @@ const registerUser = asyncHandler(async(req, res) =>{
     const email = req.body.email
 
     if(!validEmail.test(req.body.email)){
-        res.status(400).json("Email does not meet the requirements")
+        return res.status(400).json("Email does not meet the requirements")
     }
     if(!validPassword.test(req.body.password)){
-        res.status(400).json("Password does not meet the requirements")
-    }
+        return res.status(400).json("Password does not meet the requirements")
+      }
     const userExists = await User.findOne({email})
     if(userExists){
-        res.status(400).json("User already exists")
+        return res.status(400).json("User already exists")
     }
     const hashedPassword= await bcrypt.hash(req.body.password,10)
     //hash the password using the blowfish en cryption algorithm, 
@@ -151,5 +164,6 @@ module.exports ={
     changePassword,
     registerUser,
     updateUser,
-    deleteUser
-}
+    deleteUser,
+    verifyUser
+} 
