@@ -13,7 +13,7 @@ const ChangePassword = (props) => {
   const [oldPassword, setOldPassword] = useState('');
 
   const navigate = useNavigate();
-
+  
   const onSubmit = async (e) => {
     e.preventDefault();
     if(password !== confirmPassword || password === "" || confirmPassword === "" ) {

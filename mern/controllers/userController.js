@@ -4,9 +4,10 @@ const User = require("../models/userModel");
 const { validEmail,validPassword } = require("../regex");
 const jwt = require("jsonwebtoken");
 
+//@ROUTE POST /verifyUser
+//@HEADER Authorization- the users bearer token
 //Returns all data on user based on their given mongo _id
 const verifyUser = asyncHandler(async (req, res) => {
-  console.log("verifyUser")
   const token =  jwt.verify(req.query.token, process.env.JWT_SECRET);
   const user = await User.findOneAndUpdate({ _id: token.id }, { isVerified: true });
   res.status(200).json({message:"User verified!"});
@@ -15,7 +16,9 @@ const verifyUser = asyncHandler(async (req, res) => {
   
 });
 
- 
+//@ROUTE GET /get
+//@HEADER Authorization- the users bearer token
+//@Desc Gets the currently authenticated users credentials
 const getUser = asyncHandler(async (req, res) => {
     const token=decodeJWT(req,res)
     //use the decode function from AuthMiddleware to decode the token
@@ -25,8 +28,9 @@ const getUser = asyncHandler(async (req, res) => {
     // OK - Sending the data back to the client
   })
 
-
-//LOGS USER INTO SYSTEM, CHECKING DATA FROM MONGO
+//@ROUTE POST /LOGIN
+//@HEADER Authorization- the users bearer token
+//@DESC LOGS USER INTO SYSTEM, CHECKING DATA FROM MONGO
 const loginUser = asyncHandler(async (req, res) => {
     try {
       const { email } = req.body;
@@ -34,7 +38,6 @@ const loginUser = asyncHandler(async (req, res) => {
       // findOne is needed as it find the first available user with the given email
       // As there should only be one user with the given email
       if (!user) {
-        console.log(user)
         res.status(401).json({ message: "User not found" });
       }
       if(!user.verified){
@@ -56,7 +59,9 @@ const loginUser = asyncHandler(async (req, res) => {
     }
   });
   
-
+//@ROUTE POST /changePassword
+//@HEADER Authorization- the users bearer token
+//@Desc uses the provided URL + token to change the users password
 const changePassword =asyncHandler(async(req, res) => {
     const Users = await User.findOne({email: req.body.email})
 
@@ -71,20 +76,22 @@ const changePassword =asyncHandler(async(req, res) => {
 
 
 })
-
+//@ROUTE POST /
 //REGISTERS USER, ADDS DATA INTO MONGO
+//@HEADER Authorization- the users bearer token
+//@Desc Creates a new user and adds them to mongo
 const registerUser = asyncHandler(async(req, res) =>{
     const email = req.body.email
 
     if(!validEmail.test(req.body.email)){
-        return res.status(400).json("Email does not meet the requirements")
+        return res.status(401).json("Email does not meet the requirements")
     }
     if(!validPassword.test(req.body.password)){
-        return res.status(400).json("Password does not meet the requirements")
+        return res.status(401).json("Password does not meet the requirements")
       }
     const userExists = await User.findOne({email})
     if(userExists){
-        return res.status(400).json("User already exists")
+        return res.status(401).json("User already exists")
     }
     const hashedPassword= await bcrypt.hash(req.body.password,10)
     //hash the password using the blowfish en cryption algorithm, 
@@ -102,6 +109,9 @@ const registerUser = asyncHandler(async(req, res) =>{
     })
 })
 
+//@ROUTE PUT /update
+//@HEADER Authorization- the users bearer token
+//@desc Updates the currently authenticated user
 const updateUser = asyncHandler(async( req, res) =>{
   try{
     const token = jwt.verify(req.headers.authorization.split(" ")[1], 
@@ -125,7 +135,9 @@ const updateUser = asyncHandler(async( req, res) =>{
     res.status(401).json({error: error.message})
   }
 })
-
+//@ROUTE DELETE /del
+//@HEADER Authorization- the users bearer token
+//@desc deletes the currently authenticated user from the database
 const deleteUser = asyncHandler(async(req, res) =>{
     const token = decodeJWT(req,res)
     const Users = await User.findById({_id: token.id})
@@ -137,10 +149,10 @@ const deleteUser = asyncHandler(async(req, res) =>{
     res.status(200).json(deletedUser);
 
 })
+
 const decodeJWT = (req, res) => {
   try{
     let token = req.headers.authorization.split(" ")[1]
-    console.log(token)
     if(token===null){
       token= req.cookies.token
     }

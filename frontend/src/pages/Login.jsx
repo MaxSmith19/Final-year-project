@@ -32,7 +32,6 @@ const Login = (props) => {
   },[])
 
   const sendEmail = (verification_link) => {
-    console.log(email)
     emailjs.send('service_g7gnses', 'template_oo6c3rd', {
       to_name: email,
       from_name: 'FYPApp',
@@ -40,7 +39,6 @@ const Login = (props) => {
     }, 
     )
     .then((result) => {
-      toast.success("An email has been sent, please verify your email")
     }, (error) => {
       console.log(error.text);
     });
@@ -81,6 +79,7 @@ const Login = (props) => {
         const token = response.data.token;
         const verificationLink = `${process.env.REACT_APP_SERVER_URL}/api/Users/verifyUser?token=${token}`
         sendEmail(verificationLink)
+        toast.success("An email has been sent, please verify your email")
         
     }catch(error) {
       console.log(error)
@@ -132,7 +131,22 @@ const Login = (props) => {
   });
 
   }
+  const onSubmitPassword = async (e) => {
+    e.preventDefault();
 
+    if(email!==null){
+      emailjs.send('service_g7gnses', 'template_pnu7hjv', {
+        to_name: email,
+        verification_link: `${process.env.REACT_APP_APP_URL}/changePassword`
+      })
+        .then((result) => {
+          console.log('Email sent successfully:', result.text);
+        })
+        .catch((error) => {
+          console.error('Email failed to send:', error);
+        });
+    }
+  }
   const toggleTab = (tab) => {
     setActiveTab(tab);
     setBusinessName("")
@@ -145,6 +159,7 @@ const Login = (props) => {
   //true if the activetab is login
   const registerActive = activeTab === 'register';
   //true if the activetab is register
+  const passwordActive = activeTab === 'password'
 
   return (
     <div className="flex justify-center align-center">
@@ -169,7 +184,7 @@ const Login = (props) => {
               <input id="pword" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="password" onChange={(e) => setPassword(e.target.value)} value={password} required/>
             </div>
             <div>
-              <h1 className="mb-5"><Link className="text-blue-600" to="/changePassword">Forgot your password?</Link></h1>
+              <h1 className="mb-5"><a className="text-blue-600" to="/changePassword" onClick={()=>toggleTab('password')()}>Forgot your password?</a></h1>
             </div>
             <div>
               {errorMessage && <div className="text-red-500">{errorMessage}</div>}
@@ -215,6 +230,23 @@ const Login = (props) => {
             </button>
           </div>
         </form>
+        )}
+        {passwordActive && (
+            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={onSubmitPassword}>
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => navigate('/Login')}>
+                </button>
+              <div class="mb-6">
+                <label class="block text-gray-700 text-xl font-bold mb-2" for="password">
+                  Email address
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3" type="text" onChange={(e)=>setEmail(e.target.value)} value={email}/>
+              </div>
+              <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded " type="submit">
+                  Submit
+                </button>
+              </div>
+            </form>
         )}
       </div>
     </div>

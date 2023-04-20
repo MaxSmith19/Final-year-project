@@ -13,7 +13,9 @@ beforeAll(async () => {
   await Ledger.deleteMany({})
   //delete everything in Ledgers collection
 });
-
+afterAll(async () => {
+  await Ledger.deleteMany({})
+})
 describe('POST /api/Ledgers', () => {
   let authToken;
   let ledger;
@@ -95,13 +97,29 @@ describe('POST /api/Ledgers', () => {
 
     // Check if all the ledgers were retrieved
     const ledgers = res.json.mock.calls[0][0];
-    console.log(ledgers)
     expect(ledgers[0].ledgerName).toEqual(ledgerData.ledgerName);
     expect(ledgers[0].userID).toEqual('fake-user-id');
     expect(ledgers[0].balance).toEqual(ledgerData.balance);
     await Ledger.findOneAndDelete({ledgerName: ledgerData.ledgerName});
   });
+  it('should not create a new ledger for a user without an auth token', async () => {
 
+    const req = {
+      body: ledgerData,
+      headers :{
+        Authorization: ""
+      }
+    };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    await createLedger(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(401);
+
+  });
   it('should create a new ledger', async () => {
 
     const req = {
@@ -127,6 +145,31 @@ describe('POST /api/Ledgers', () => {
     expect(ledger.balance).toEqual(ledgerData.balance);
     await Ledger.findOneAndDelete({ledgerName: ledgerData.ledgerName});
   });
+  it('should create a new ledger when no data provided but with an auth token', async () => {
+
+    const req = {
+      headers: {
+        authorization: authToken,
+      },
+    };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    await createLedger(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(201);
+
+    // Check if the ledger was saved in the database
+    const ledger = await Ledger.findOne({ ledgerName: ledgerData.ledgerName });
+    expect(ledger).not.toBeNull();
+    expect(ledger.ledgerName).toEqual(ledgerData.ledgerName);
+    expect(ledger.userID).toEqual('fake-user-id');
+    expect(ledger.balance).toEqual(ledgerData.balance);
+    await Ledger.findOneAndDelete({ledgerName: ledgerData.ledgerName});
+  });
+  
   it('should update the balance of an existing ledger', async () => {
     const updatedBalance = 200;
     
@@ -221,7 +264,7 @@ describe('POST /api/Ledgers', () => {
     // Delete the test ledger
     await Ledger.findByIdAndDelete(ledgerId);
   });
-  it('should delete a ledger', async () => {
+  it('should delete an existing ledger', async () => {
     const req = {
       body: {
         _id: ledger._id,
@@ -243,6 +286,27 @@ describe('POST /api/Ledgers', () => {
     // Check if the ledger was deleted from the database
     const deletedLedger = await Ledger.findById(ledger._id);
     expect(deletedLedger).toBeNull();
+  });
+
+  it('should not delete ledger that does not exist', async () => {
+    const req = {
+      body: {
+        _id: "invalidID",
+      },
+      headers: {
+        authorization: authToken,
+      },
+    };
+  
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+  
+    await deleteLedger(req, res);
+  
+    expect(res.status).toHaveBeenCalledWith(500);
+  
   });
   
 })

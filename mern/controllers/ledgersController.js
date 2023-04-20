@@ -24,17 +24,29 @@ const getLedger = asyncHandler(async (req, res) => {
   })
 
 
-const createLedger = asyncHandler(async(req, res) =>{
-  const token = decodeJWT(req,res)
-  const ledger = await Ledger.create({
-    userID: token.id,
-    ledgerName: req.body.ledgerName,
-    ledgerData: [{date: "", notes: "", debit: 0, credit: 0}],
-    balance: req.body.balance || 0
-    //start the ledger with a blank row
+  const createLedger = asyncHandler(async(req, res) =>{
+    try{
+      if(req.headers.Authorization!==""){
+      const token = decodeJWT(req,res)
+
+        const ledger = await Ledger.create({
+          userID: token.id,
+          ledgerName: req.body.ledgerName || "New Ledger",
+          ledgerData: [{date: "", notes: "", debit: 0, credit: 0}],
+          balance: req.body.balance || 0
+          //start the ledger with a blank row
+        })
+        res.status(201).json(ledger)
+      }else{
+        res.status(401).json({error: "Unauthorized to create ledger"})
+      }
+    }catch(error){
+      res.status(401).json({error: "Unauthorized to create ledger"})
+    }
   })
-  res.status(201).json(ledger)
-})
+  
+  
+  
 
 const updateLedger = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
@@ -54,14 +66,21 @@ const updateLedger = asyncHandler(async(req, res) =>{
       }, {new: true})
     res.status(201).json(Ledgers)
   }
-  
 })
- 
-const deleteLedger = asyncHandler(async(req, res) =>{
+
+const deleteLedger = asyncHandler(async(req, res, next) => {
   const ledgerID = req.body._id
-  const Ledgers = await Ledger.findByIdAndDelete(ledgerID)  
-  res.status(201).json(Ledgers)
+  try {
+    const Ledgers = await Ledger.findByIdAndDelete(ledgerID)
+    if (!Ledgers) {
+      res.status(404).json({message: "Ledger not found" })
+    }
+    res.status(201).json(Ledgers)
+  } catch (error) {
+    res.status(500).json({message: error.message})
+  }
 })
+
 
 module.exports ={
     getLedger,
