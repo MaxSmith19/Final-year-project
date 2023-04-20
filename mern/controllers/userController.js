@@ -10,11 +10,7 @@ const jwt = require("jsonwebtoken");
 const verifyUser = asyncHandler(async (req, res) => {
   const token = jwt.verify(req.query.token, process.env.JWT_SECRET);
   const user = await User.findOneAndUpdate({ _id: token.id }, { isVerified: true });
-  res.status(200).json({message:"User verified!"});
-
-  setTimeout(() => {
-    res.redirect('http://localhost:3000/login');
-  }, 500);
+    res.redirect(`${process.env.APP_URL}/login`);
 });
 
 
