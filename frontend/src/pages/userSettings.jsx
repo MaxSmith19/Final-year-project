@@ -18,9 +18,7 @@ const UserSettings = (props) => {
       method: 'delete',
       maxBodyLength: Infinity,
       url: `${process.env.REACT_APP_SERVER_URL}/api/Users/del`,
-      headers: {
-        "authorization": `Bearer ${token}`, 
-      },
+      
       
   };
   try{

@@ -150,6 +150,7 @@ const deleteUser = asyncHandler(async(req, res) =>{
 
 const decodeJWT = (req, res) => {
   try{
+    console.log(req.headers.authorization)
     let token = req.headers.authorization.split(" ")[1]
     if(token===null){
       token= req.cookies.token
