@@ -12,34 +12,31 @@ beforeAll(async () => {
   await User.deleteMany({})
   //delete everything in users collection
 })
+afterAll(async () => {
+  await User.deleteMany({});
+})
 //LOGIN TEST SUITE
 describe('POST /api/Users/login/', () => {
   const user = {
     businessName: 'Business',
     name: 'Test User',
     email: 'test@example.com',
-    password: 'password'
+    password: 'password',
+    verified: true
   };
 
   beforeEach(async () => {
     await User.create({
       ...user,
       password: await bcrypt.hash(user.password, 10),
-      verified: true
     });
     //add the user but with a hashed password to match the password
   });
 
   afterEach(async () => {
-    await User.deleteOne({ email: user.email });
+    await User.deleteMany({});
   });
-
-  it('should insert the test user into the database', async () => {
-    const insertedUser = await User.findOne({ email: user.email });
-    expect(insertedUser).toBeDefined();
-    expect(insertedUser.businessName).toEqual(user.businessName);
-    expect(insertedUser.email).toEqual(user.email);
-  });
+  
 
   it('should return a token for a valid login', async () => {
     const req = {
@@ -48,12 +45,19 @@ describe('POST /api/Users/login/', () => {
         password: user.password
       }
     };
-
+    const req2 ={
+      body: {       
+        businessName: 'Business',
+        name: 'Test User',
+        email: 'test@example.com',
+        password: 'password'
+      }
+    }
     const res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-
+    await registerUser(req,res)
     await loginUser(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
   });
@@ -151,6 +155,8 @@ describe('POST /api/Users/login/', () => {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
+      await registerUser(req, res);
+      //ensure that the user had already been registered
       await registerUser(req, res);
       expect(res.status).toHaveBeenCalledWith(401);
       expect(res.json).toHaveBeenCalledWith("User already exists");

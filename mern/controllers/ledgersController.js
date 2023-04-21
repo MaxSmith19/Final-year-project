@@ -27,13 +27,13 @@ const getLedger = asyncHandler(async (req, res) => {
   const createLedger = asyncHandler(async(req, res) =>{
     try{
       if(req.headers.Authorization!==""){
-      const token = decodeJWT(req,res)
-
+        const token = decodeJWT(req,res)
         const ledger = await Ledger.create({
           userID: token.id,
-          ledgerName: req.body.ledgerName || "New Ledger",
+          ledgerName: req.body && req.body.ledgerName ? req.body.ledgerName : "New Ledger",
           ledgerData: [{date: "", notes: "", debit: 0, credit: 0}],
-          balance: req.body.balance || 0
+          balance: req.body && req.body.balance ? req.body.balance : 0,
+
           //start the ledger with a blank row
         })
         res.status(201).json(ledger)
@@ -41,6 +41,7 @@ const getLedger = asyncHandler(async (req, res) => {
         res.status(401).json({error: "Unauthorized to create ledger"})
       }
     }catch(error){
+      console.log(error)
       res.status(401).json({error: "Unauthorized to create ledger"})
     }
   })

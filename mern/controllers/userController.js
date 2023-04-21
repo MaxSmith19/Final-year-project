@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 const verifyUser = asyncHandler(async (req, res) => {
   const token = jwt.verify(req.query.token, process.env.JWT_SECRET);
   const user = await User.findOneAndUpdate({ _id: token.id }, { isVerified: true });
-    res.redirect(`${process.env.APP_URL}/login`);
+  res.redirect(`${process.env.APP_URL}/login`);
 });
 
 
@@ -52,7 +52,6 @@ const loginUser = asyncHandler(async (req, res) => {
         res.status(401).json({ message: "Email or password is incorrect" });
       }
     } catch (error) {
-      console.log(error);
       res.status(500).json({ message: "Server Error" });
     }
   });
@@ -89,6 +88,7 @@ const registerUser = asyncHandler(async(req, res) =>{
       }
     const userExists = await User.findOne({email})
     if(userExists){
+      console.log("User already exists")
         return res.status(401).json("User already exists")
     }
     const hashedPassword= await bcrypt.hash(req.body.password,10)
@@ -130,7 +130,7 @@ const updateUser = asyncHandler(async( req, res) =>{
     //using the given data, update the user in the database with the content in the request body
     res.status(200).json(updatedUser)
   }catch(error){
-    res.status(401).json({error: error.message})
+    res.status(401).json({error: "User is not verified"})
   }
 })
 //@ROUTE DELETE /del

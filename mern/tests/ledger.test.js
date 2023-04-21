@@ -34,7 +34,8 @@ describe('POST /api/Ledgers', () => {
   beforeEach(async () => {
     await User.create({
       ...user,
-      password: await bcrypt.hash(user.password, 10)
+      password: await bcrypt.hash(user.password, 10),
+      verified: true
     });
 
     generateToken.mockReturnValue('fake-token');
@@ -149,7 +150,7 @@ describe('POST /api/Ledgers', () => {
 
     const req = {
       headers: {
-        authorization: authToken,
+        Authorization: authToken,
       },
     };
     const res = {
