@@ -6,7 +6,6 @@ const Footer = () => {
     <footer className="bg-gray-800 px-4 py-4 mt-56">
         <div className="grid grid-cols-3">
           <div>
-            <h1>test</h1>
           </div>
           <div className="text-center text-gray-400">
             <div className="h-1/3">

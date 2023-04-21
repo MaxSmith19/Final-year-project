@@ -3,6 +3,10 @@ const asyncHandler = require("express-async-handler")
 const Inventory = require("../models/inventoryModel")
 const {decodeJWT, generateJWT} = require("../middleware/authMiddleware")
 
+
+//@ROUTE GET /
+//@HEADER Authorization- the users bearer token
+//Returns all inventory data on user based on their given mongo _id
 const getInventory = asyncHandler(async (req, res) => {
     const token = decodeJWT(req,res)
     const inv = await Inventory.find({
@@ -10,7 +14,9 @@ const getInventory = asyncHandler(async (req, res) => {
     })
     res.status(200).json(inv)
 })
-
+//@ROUTE POST /
+//@HEADER Authorization- the users bearer token
+//Creates an inventory for the user if they don't already have one
 const createInventory = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
   const check = await Inventory.findOne({userID: token.id})
@@ -23,7 +29,9 @@ const createInventory = asyncHandler(async(req, res) =>{
     res.status(201).json(inv)
   }
 )
-
+//@ROUTE PUT /update
+//@HEADER Authorization- the users bearer token
+//updates the current authorised users inventory
 const updateInventory = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
   const id = await Inventory.findOne({userID:token.id})
@@ -36,7 +44,10 @@ const updateInventory = asyncHandler(async(req, res) =>{
   
   res.status(201).json(inv)
 })
-  
+
+//@ROUTE DELETE /delete
+//@HEADER Authorization- the users bearer token
+//Deletes the currently authorised users inventory
 const deleteInventory = asyncHandler(async(req, res) =>{
   const InventoryID = req.body._id
   const inv = await Inventory.findByIdAndDelete(InventoryID)  

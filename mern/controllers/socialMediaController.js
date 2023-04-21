@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const {decodeJWT, generateToken} = require("../middleware/authMiddleware")
 const Social = require("../models/socialMediaModel")
 const crypto = require("crypto")
-// const axios = require("axios")
+const axios = require("axios")
 
 const etsyRedirectUrl= "http://localhost:5000/api/Socials/etsyCallback"
 const base64URLEncode = (str) =>
@@ -14,6 +14,9 @@ const base64URLEncode = (str) =>
         .replace(/\//g, "_")
         .replace(/=/g, "");
 
+//@ROUTE GET /etsyCallback
+//@HEADER Authorization- the users bearer token
+//Returns all data on user based on their given mongo _id
 const etsyCallback = asyncHandler(async(req, res) => {
     const code = req.query.code;
     const verifier = req.cookies.code_verifier;
@@ -24,16 +27,15 @@ const etsyCallback = asyncHandler(async(req, res) => {
         method: "post",
         url: tokenUrl,
         data: `grant_type=authorization_code
-        &client_id=${process.env.ETSY_SECRET}
-        &redirect_uri=${etsyRedirectUrl}
-        &code=${code}
-        &code_verifier=${verifier}`,
-        //Very different to the rest of the programs data requests, but axios broke unless this call
-        //was written this way.
+               &client_id=${process.env.ETSY_SECRET}
+               &redirect_uri=${etsyRedirectUrl}
+               &code=${code}
+               &code_verifier=${verifier}`,
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      };      
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
+           
       
     axios.request(config)
     .then((response) => {
@@ -43,6 +45,7 @@ const etsyCallback = asyncHandler(async(req, res) => {
         res.redirect("http://localhost:3000/marketing")
     })
     .catch((error) => {
+        console.log(error)
         res.send(error.message)
     })
     })
@@ -63,6 +66,9 @@ const writeToSocials = asyncHandler(async(tokenData,userToken)=>{
     }
     return socialsToChange;
 })
+//@ROUTE GET /etsyCallback
+//@HEADER Authorization- the users bearer token
+//Generates the Code challenge required for Etsy authentication
 const generatePKCE = asyncHandler(async (req, res) =>{
 
     const sha256 = (buffer) => crypto.createHash("sha256").update(buffer).digest();
@@ -74,7 +80,9 @@ const generatePKCE = asyncHandler(async (req, res) =>{
     res.status(200).json({state: state, challenge:codeChallenge,verifier: codeVerifier});
     //Code provided by Etsy https://developers.etsy.com/documentation/tutorials/quickstart
 })
-
+//@ROUTE GET /get
+//@HEADER Authorization- the users bearer token
+//Returns all marketing data on user based on their given mongo _id
 const getSocials = asyncHandler(async (req, res) => {
     const token=decodeJWT(req,res)
 
@@ -89,11 +97,7 @@ const registerSocials = asyncHandler(async (req, res) => {
     })
     res.status(200).json(Socials)
 })
-const updateSocials = asyncHandler(async (req, res) => {
-    const token = decodeJWT(req, res)
-    const Socials = await Social.updateOne()
 
-})
 module.exports ={
     getSocials,
     generatePKCE,

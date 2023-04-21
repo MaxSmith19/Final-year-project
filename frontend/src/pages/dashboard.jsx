@@ -5,6 +5,7 @@ import { RiAccountBoxFill } from 'react-icons/ri';
 import { MdEmail } from 'react-icons/md';
 import Chart from 'chart.js/auto'
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 const qs = require('qs');
 
 
@@ -13,13 +14,33 @@ const Dashboard = ({handleIsLoading}) =>{
     let [businessName, setBusinessName] = useState("");
     let [imageSrc, setImageSrc] = useState("");
     let [ledgerName, setLedgerName] = useState("");
+    let [etsyOAuth, setEtsyOAuth] = useState(null)
     const navigate = useNavigate()
     useEffect(() => {
         getUserInfo();
         getUserLedger()
+        checkUserSocials()
         //use effect runs the command on loading
       }, []);
-
+      const checkUserSocials = async()=>{
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: `${process.env.REACT_APP_SERVER_URL}/api/Socials/get`,
+            headers: {
+                'Authorization': `Bearer ${Cookies.get("token")}`
+            }
+        };
+        try{
+            const response = await axios.request(config)
+            // setEtsyID(getEtsyUserID(response.data.accessToken))
+            setEtsyOAuth(false)
+            console.log(etsyID)
+        
+        }catch(error) {
+            console.log(error);
+        };
+    }
     const getUserLedger =async() =>{
       const userIDCookie = document.cookie.split("=")[1]; 
       const token = userIDCookie.split(";")[0];
@@ -177,9 +198,19 @@ const Dashboard = ({handleIsLoading}) =>{
                     </div>
                     </div>
                   <div className="bg-white h-96 w-full m-auto rounded-xl shadow-2xl p-2">
-                    <h1 className="text-5xl ">Marketing</h1>
-                    <hr />
+                  <h1 className="text-5xl">Marketing</h1>
+                  <hr />
+                  {etsyOAuth ? (
+                    <div className="bg-green-200 p-2 rounded-xl">
+                      <p className="text-lg font-semibold">You are authenticated by Etsy</p>
+                    </div>
+                  ) : (
+                    <div className="bg-red-200 p-2 rounded-xl">
+                      <p className="text-lg font-semibold">You are not authenticated by Etsy</p>
+                    </div>
+                  )}
                 </div>
+
             </div>
         )
 }

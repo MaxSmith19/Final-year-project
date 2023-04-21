@@ -3,6 +3,9 @@ const asyncHandler = require("express-async-handler")
 const Ledger = require("../models/ledgersModel")
 const {decodeJWT, generateJWT} = require("../middleware/authMiddleware")
 
+//@ROUTE GET /
+//@HEADER Authorization- the users bearer token
+//Returns authorised users ledgers
 const getLedger = asyncHandler(async (req, res) => {
     const token = decodeJWT(req,res)
     const params = req.body.ledgerName
@@ -23,7 +26,9 @@ const getLedger = asyncHandler(async (req, res) => {
     
   })
 
-
+//@ROUTE POST /
+//@HEADER Authorization- the users bearer token
+//Creates a new ledger for the authorised user
   const createLedger = asyncHandler(async(req, res) =>{
     try{
       if(req.headers.Authorization!==""){
@@ -48,7 +53,9 @@ const getLedger = asyncHandler(async (req, res) => {
   
   
   
-
+//@ROUTE PUT /update
+//@HEADER Authorization- the users bearer token
+//Updates the authorised users token given the ID
 const updateLedger = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
   const ledgerID = req.body._id
@@ -68,7 +75,9 @@ const updateLedger = asyncHandler(async(req, res) =>{
     res.status(201).json(Ledgers)
   }
 })
-
+//@ROUTE DELETE /delete
+//@HEADER Authorization- the users bearer token
+//Deletes the given ledger from the database
 const deleteLedger = asyncHandler(async(req, res, next) => {
   const ledgerID = req.body._id
   try {
