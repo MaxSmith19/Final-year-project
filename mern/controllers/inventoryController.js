@@ -9,7 +9,6 @@ const {decodeJWT, generateJWT} = require("../middleware/authMiddleware")
 //Returns all inventory data on user based on their given mongo _id
 const getInventory = asyncHandler(async (req, res) => {
     const token = decodeJWT(req,res)
-    const inv1 = await Inventory.deleteMany({})
     const inv = await Inventory.find({
         userID: token.id
     })
@@ -21,12 +20,13 @@ const getInventory = asyncHandler(async (req, res) => {
 const createInventory = asyncHandler(async(req, res) =>{
   const token = decodeJWT(req,res)
   const check = await Inventory.findOne({userID: token.id})
-  console.log(check)
+  if(!check){
     const inv = await Inventory.create({
       userID: token.id,
       inventoryData: [{Item:"",Description:"", Quantity:"", SellingPrice:""}],
       ingredientsData: [{Item:"", Description:"", Quantity: "", ppu: ""}]
     })  
+  }
     res.status(201).json(inv)
   }
 )

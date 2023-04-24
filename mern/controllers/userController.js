@@ -8,11 +8,13 @@ const jwt = require("jsonwebtoken");
 //@HEADER Authorization- the users bearer token
 //Returns all data on user based on their given mongo _id
 const verifyUser = asyncHandler(async (req, res) => {
-  const token = jwt.verify(req.query.token, process.env.JWT_SECRET);
-  const user = await User.findOneAndUpdate({ _id: token.id }, { isVerified: true }, {new: true});
-  console.log(user)
+  console.log("verifyUser")
+  const token =  jwt.verify(req.query.token, process.env.JWT_SECRET);
+  const user = await User.findOneAndUpdate({ _id: token.id }, { verified: true });
   res.redirect(`${process.env.APP_URL}/login`);
+ 
 });
+
 
 
 //@ROUTE GET /get

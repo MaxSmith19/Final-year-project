@@ -27,7 +27,7 @@ const etsyCallback = asyncHandler(async(req, res) => {
         method: "post",
         url: tokenUrl,
         data: `grant_type=authorization_code
-               &client_id=${process.env.ETSY_SECRET}
+               &client_id=${process.env.ETSY_KEYSTRING}
                &redirect_uri=${etsyRedirectUrl}
                &code=${code}
                &code_verifier=${verifier}`,

@@ -16,23 +16,10 @@ function Inventory({handleIsLoading})  {
         setIngredientsRows([]);
         getInventory();
       }, []);
-      
+            
       useEffect(() => {
-        if (cacheResponse.length > 0) {
-          setInventoryRows(cacheResponse[0].inventoryData.map((element) => ({
-            Item: element.Item,
-            Description: element.Description,
-            Quantity: element.Quantity,
-            SellingPrice: element.SellingPrice,
-          })));
-          setIngredientsRows(cacheResponse[0].ingredientsData.map((element) => ({
-            Item: element.Item,
-            Description: element.Description,
-            Quantity: element.Quantity,
-            ppu: element.ppu,
-          })));
-        }
-      }, [cacheResponse]);
+        getInventory();
+      }, []);
       
       const getInventory = async () => {
         handleIsLoading(true);
@@ -52,13 +39,29 @@ function Inventory({handleIsLoading})  {
             await createInventory();
             await getInventory();
           } else {
-            setCacheResponse(response.data);
+            setInventoryRows(
+              response.data[0].inventoryData.map((element) => ({
+                Item: element.Item,
+                Description: element.Description,
+                Quantity: element.Quantity,
+                SellingPrice: element.SellingPrice,
+              }))
+            );
+            setIngredientsRows(
+              response.data[0].ingredientsData.map((element) => ({
+                Item: element.Item,
+                Description: element.Description,
+                Quantity: element.Quantity,
+                ppu: element.ppu,
+              }))
+            );
           }
           handleIsLoading(false);
         } catch (error) {
           console.log(error);
         }
       };
+      
       
       
     const createInventory = async()=>{
