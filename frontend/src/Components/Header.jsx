@@ -41,7 +41,7 @@ const Nav = (props) => {
             <div className=" ml-2">
                         <button className={isNavOpen? "w-0 h-0" :" mr-3 duration-150 focus:outline-none bg-white border-2 border-gray-300 p-1 mt-2 hover:bg-gray-700 hover:border-gray-700"} onClick={()=>setNav(true)}> <VscThreeBars size={isNavOpen? "0":"50"}/></button>
                     </div>
-                <h1 className='m-3 text-5xl text-center sm:w-0 md:w-0'>{(localStorage.getItem("businessName"))}</h1>
+                <h1 className='m-3 text-5xl text-center'>{(localStorage.getItem("businessName"))}</h1>
                 <div className="relative">
                         <button className="float-right mr-2 transition-all ease-in-out duration-150 focus:outline-none bg-white border-2 border-gray-300 rounded-full p-1 mt-2 hover:bg-gray-700 hover:border-gray-700" onClick={()=>setIsAccountOpen(!isAccountOpen)} >
                             {isAccountOpen? <RiAccountCircleLine size="50" className="text-gray-800 hover:text-white"/>:

@@ -24,7 +24,6 @@ const AdminDashboard = ({ handleIsLoading }) => {
     };
     try {
       const response = await axios.request(config);
-      console.log(response.data.tickets);
       setTickets(response.data.tickets);
       handleIsLoading(false);
     } catch (error) {
