@@ -9,6 +9,7 @@ const {decodeJWT, generateJWT} = require("../middleware/authMiddleware")
 //Returns all inventory data on user based on their given mongo _id
 const getInventory = asyncHandler(async (req, res) => {
     const token = decodeJWT(req,res)
+    const inv1 = await Inventory.deleteMany({})
     const inv = await Inventory.find({
         userID: token.id
     })

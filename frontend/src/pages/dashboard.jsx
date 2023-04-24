@@ -35,7 +35,6 @@ const Dashboard = ({handleIsLoading}) =>{
             const response = await axios.request(config)
             // setEtsyID(getEtsyUserID(response.data.accessToken))
             setEtsyOAuth(false)
-            console.log(etsyID)
         
         }catch(error) {
             console.log(error);
