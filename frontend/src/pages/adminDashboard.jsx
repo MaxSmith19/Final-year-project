@@ -29,28 +29,33 @@ const AdminDashboard = ({ handleIsLoading }) => {
       handleIsLoading(false);
     } catch (error) {
       console.error(error);
-      handleIsLoading(false);
+      handleIsLoading(false); 
     }
   };
-  const resolveTicket = async(index)=>{
-    console.log(tickets[index])
+  const resolveTicket = async (index) => {
+    console.log(tickets[index]);
     const config = {
-        method: 'delete',
-        url: `${process.env.REACT_APP_SERVER_URL}/api/Tickets/remove`,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        data:{
-            _id: tickets[index]._id
-        }
-      };
-    try{
-        const response = await axios.request(config);
-        toast.success("Ticket Resolved")
-    }catch (error) {
-
+      method: 'delete',
+      url: `${process.env.REACT_APP_SERVER_URL}/api/Tickets/remove`,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        _id: tickets[index]._id,
+      },
+    };
+    try {
+      const response = await axios.request(config);
+      // Create a new array without the resolved ticket
+      const updatedTickets = tickets.filter((_, i) => i !== index);
+      // Update the state with the new array
+      setTickets(updatedTickets);
+      toast.success('Ticket Resolved');
+    } catch (error) {
+      console.error(error);
     }
-  }
+  };
+  
   return (
     <div className="bg-white w-full rounded shadow-xl mb-96 p-4">
       <table className="table-auto w-full h-auto md:table-fixed sm:table-fixed rounded">
