@@ -156,8 +156,6 @@ const Dashboard = ({handleIsLoading}) =>{
         setBusinessName(responseData.businessName);
         setUserEmail(responseData.email);
         setImageSrc(responseData.businessLogo);
-        localStorage.setItem('businessName', responseData.businessName);
-        localStorage.setItem('businessLogo', responseData.businessLogo);
         //local storage is not used often, but contains the name and logo to be used by the header 
         //the image is used to show in the frontend design in some areas.
         handleIsLoading(false);

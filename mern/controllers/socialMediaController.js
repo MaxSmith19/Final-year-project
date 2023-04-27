@@ -42,7 +42,7 @@ const etsyCallback = asyncHandler(async(req, res) => {
         const tokenData = response.data;
         const data=writeToSocials(tokenData,req.cookies.token)
         console.log(data)
-        res.redirect("http://localhost:3000/marketing")
+        res.redirect(`${process.env.APP_URL}/marketing`)
     })
     .catch((error) => {
         console.log(error)

@@ -80,9 +80,12 @@ const UserSettings = (props) => {
         },
       })
       .then((response) => {
-        console.log(response.data)
-        localStorage.setItem('businessName', response.data.businessName)
-        localStorage.setItem('businessLogo', response.data.businessLogo)
+        if(response.data.businessName!=="null"){
+          localStorage.setItem('businessName', response.data.businessName)
+        }
+        if(response.data.businessLogo!=="null"){
+          localStorage.setItem('businessLogo', response.data.businessLogo)
+        }
         toast.success("User updated successfully")
       })
       .catch((error) => {
