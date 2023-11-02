@@ -1,4 +1,4 @@
-# Final-year-project
+# (ManageMe) Final-year-project
 
 # Abstract
 Small businesses play a crucial role in our economy, but many of these business
